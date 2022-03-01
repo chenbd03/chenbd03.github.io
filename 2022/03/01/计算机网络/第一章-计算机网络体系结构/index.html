@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="chenbd03">
+
+
+
+
+
+<title>计算机网络体系结构 | blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+    
+    <script>
+    !
+    function() {
+    function n(n, e, t) {
+    return n.getAttribute(e) || t
+    }
+    function e(n) {
+    return document.getElementsByTagName(n)
+    }
+    function t() {
+    var t = e("script"),
+    o = t.length,
+    i = t[o - 1];
+    return {
+    l: o,
+    z: n(i, "zIndex", -1), //置于主页面背后
+    o: n(i, "opacity", .5), //线条透明度
+    c: n(i, "color", "0,0,0"), //线条颜色
+    n: n(i, "count", 100) //线条数量
+    }
+    }
+    function o() {
+    a = m.width = window.innerWidth ||
+    document.documentElement.clientWidth || document.body.clientWidth,
+    c = m.height = window.innerHeight ||
+    document.documentElement.clientHeight || document.body.clientHeight
+    }
+    function i() {
+    r.clearRect(0, 0, a, c);
+    var n, e, t, o, m, l;
+    s.forEach(function(i, x) {
+    for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 :
+    1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1,
+    1), e = x + 1; e < u.length; e++) n = u[e],
+    null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l
+    = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o,
+    i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t /
+    2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y),
+    r.lineTo(n.x, n.y), r.stroke()))
+    }),
+    x(i)
+    }
+    var a, c, u, m = document.createElement("canvas"),
+    d = t(),
+    l = "c_n" + d.l,
+    r = m.getContext("2d"),
+    x = window.requestAnimationFrame || window.webkitRequestAnimationFrame
+    || window.mozRequestAnimationFrame || window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(n) {
+    window.setTimeout(n, 1e3 / 45)
+    },
+    w = Math.random,
+    y = {
+    x: null,
+    y: null,
+    max: 2e4
+    };
+    m.id = l,
+    m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z +
+    ";opacity:" + d.o,
+    e("body")[0].appendChild(m),
+    o(),
+    window.onresize = o,
+    window.onmousemove = function(n) {
+    n = n || window.event,
+    y.x = n.clientX,
+    y.y = n.clientY
+    },
+    window.onmouseout = function() {
+    y.x = null,
+    y.y = null
+    };
+    for (var s = [], f = 0; d.n > f; f++) {
+    var h = w() * a,
+    g = w() * c,
+    v = 2 * w() - 1,
+    p = 2 * w() - 1;
+    s.push({
+    x: h,
+    y: g,
+    xa: v,
+    ya: p,
+    max: 6e3
+    })
+    }
+    u = s.concat([y]),
+    setTimeout(function() {
+    i()
+    },
+    100)
+    } ();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Chenbd03&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Chenbd03&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">计算机网络体系结构</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">chenbd03</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 1, 2022&nbsp;&nbsp;21:15:02</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h2><p>​    计网实则是一些互联的、自治的计算机系统的结合</p>
+<h2 id="二、组成"><a href="#二、组成" class="headerlink" title="二、组成"></a>二、组成</h2><ul>
+<li>组成上：“软硬协”-“软件（FTP程序、聊天程序等）、硬件（路由器、网卡等）、协议”</li>
+<li>工作方式上：边缘部分（通信、资源共享） 和核心部分（提供连通性和交换服务）</li>
+<li>功能上：通信子网（物理层、数据链路层、网络层），资源子网（会话层、表示层、物理层）</li>
+</ul>
+<h2 id="三、功能"><a href="#三、功能" class="headerlink" title="三、功能"></a>三、功能</h2><p>数据通信、资源共享、负载均衡等</p>
+<h2 id="四、分类"><a href="#四、分类" class="headerlink" title="四、分类"></a>四、分类</h2><ul>
+<li><p>按分布范围：“广城局”-“广域网、城域网、局域网”</p>
+<p>【注意】判断是局域网还是广域网，通常是看他们采用那种方式，如果采用交换交换方式，则是广域网，如果是广播技术则是局域网</p>
+</li>
+<li><p>按拓扑结构：总线形网络、星形网络、环形网络、网状网络</p>
+</li>
+<li><p>按交换技术：电路交换网络、报文交换网络（存储-转发网络）、分组交换网络</p>
+</li>
+</ul>
+<h2 id="五、性能指标"><a href="#五、性能指标" class="headerlink" title="五、性能指标"></a>五、性能指标</h2><ul>
+<li>速率：亦称数据传输率、数据率、比特率，单位：kb&#x2F;s, Mb&#x2F;s, Gb&#x2F;s（小写的b哦！）</li>
+<li>带宽：亦称最高数据传输速率，单位b&#x2F;s,kb&#x2F;s,Mb&#x2F;s,Gb&#x2F;s</li>
+<li>时延：<ul>
+<li><strong>发送时延（传输时延）：数据长度&#x2F;信道宽度(带宽)</strong><br><strong>传播时延：信道长度&#x2F;电磁波在信道上的传播速率</strong><br>处理时延：例如从分组中提取数据部分,进行差错检验或查找适当的路由等<br>排队时延</li>
+</ul>
+</li>
+<li><strong>往返时延：传播时延x2+末端处理时间（通常不算）</strong></li>
+</ul>
+<h2 id="六、协议、接口、服务概念"><a href="#六、协议、接口、服务概念" class="headerlink" title="六、协议、接口、服务概念"></a>六、协议、接口、服务概念</h2><ul>
+<li><p>协议：控制两个（或多个）<strong>对等实体</strong>进行通信的规则的集合，是<strong>水平</strong>的；<strong>不对等实体之间没有协议</strong></p>
+<ul>
+<li>语法：规定了数据传输的<strong>格式</strong></li>
+<li>语义：规定了所要完成的<strong>功能</strong></li>
+<li>同步(时序)：规定了执行<strong>各种操作的条件、时序关系</strong>等</li>
+</ul>
+</li>
+<li><p>接口（服务访问点SAP）：通过SAP提供给上层使用的，实际上它是一个逻辑接口</p>
+</li>
+<li><p>服务：指<strong>下层为紧邻的上层提供的功能调用，是垂直的，单向的</strong></p>
+<p>【注意】第n层向第n+1层提供服务时，此服务不仅包含第n层本身功能，还包含由下层服务提供的功能</p>
+</li>
+</ul>
+<h2 id="七、参考模型和体系结构-※※※"><a href="#七、参考模型和体系结构-※※※" class="headerlink" title="七、参考模型和体系结构  ※※※"></a><strong>七、参考模型和体系结构  ※※※</strong></h2><ul>
+<li><p><strong>OSI&#x2F;ISO参考模型:</strong> 主要记住七层的作用，各自有什么功能，对应什么协议，还要清楚各层之间的联系 –&gt; 口诀：”物联网淑惠适用”</p>
+<p><strong>要会分析和阐述数据 “解封装 ” 的过程（从一端的应用层进行封装到另一端的解封装的过程）</strong></p>
+<ol>
+<li><p>应用层:所有能和****用户交互产生网络流量****的程序，例如有文件传送的FTP、电子邮件的SMTP、万维网HTTP等</p>
+</li>
+<li><p>表示层:主要处理在两个通信系统中<em><strong>*交换信息的表示方式*</strong></em><em><strong>*,*<em><strong>其功能:</strong></em>*数据格式恢复、数据加密解密、数据压缩*</strong></em></p>
+</li>
+<li><p>会话层：为表示层实体或用户进程****建立连接*<em><strong>并在连接上有序地</strong></em>*传输数据****，也称建立同步，其功能：建立、管理及终止进程间的会话、可使用校验点使通信会话在通信失效时从校验点继续恢复通信，实现数据同步</p>
+</li>
+<li><p>传输层：负责主机之间端到端的通信，其功能：可靠传输、不可靠传输、差错控制、流量控制、复用分用</p>
+</li>
+<li><p>网络(IP)层：把网络层的协议数据单元（分组）从源端到目的端，为分组交换网上的不同主机通过通信服务，其功能：路由选择、流量控制、拥塞控制、差错控制</p>
+</li>
+<li><p>数据链路层：将网络层传来的IP数据报组装成帧，其功能：物理寻址、成帧、差错控制、流量控制，不提供拥塞控制功能</p>
+</li>
+<li><p>物理层：在物理介质上透明的传输比特流，功能：比特同步、比特编码</p>
+</li>
+</ol>
+</li>
+<li><p>TCP&#x2F;IP参考模型：应用层、传输层、网络层、网络接口层（实际就是数据链路层+物理层）</p>
+</li>
+<li><p>五层参考模型：应用层、传输层、网络层、数据链路层、物理层</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5141046-da98d209203c13c9.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp" alt="img"></p>
+</li>
+</ul>
+<p>【补充】</p>
+<p>1、ISO&#x2F;OSI参考模型和TCP&#x2F;IP模型</p>
+<p>(1) 共同点：都采取分层的体系结构、都基于独立的协议栈的概念、都可以解决异构互联网络</p>
+<p><strong>(2)</strong> <em><strong>不同点</strong></em>：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>ISO&#x2F;OSI参考模型</th>
+<th>TCP&#x2F;IP参考模型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>网络层</td>
+<td>无连接+面向连接</td>
+<td>无连接，不可靠</td>
+</tr>
+<tr>
+<td>传输层</td>
+<td>面向连接，可靠</td>
+<td>无连接+面向连接（UDP和TCP）</td>
+</tr>
+</tbody></table>
+<p>其中，OSI最大贡献是精确定义了服务、协议、接口的概念</p>
+<p>2、注意：ISO&#x2F;OSI参考模型，对等层次之间传送的数据单位称为该层的PDU（协议数据单元）；每层的PDU都有一个俗称：</p>
+<p>物理层：比特</p>
+<p>数据链路层：帧</p>
+<p>网络层：分组或数据报</p>
+<p>传输层：报文段（TCP）</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>chenbd03</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://chenbd03.github.io/2022/03/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E4%B8%80%E7%AB%A0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">https://chenbd03.github.io/2022/03/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E4%B8%80%E7%AB%A0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span><strong>Do you believe in DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"># 计算机网络</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2022/03/01/%E7%94%9F%E6%B4%BB%E7%BE%8E%E6%96%87%E8%AE%B0%E5%BD%95/%E7%BE%8E%E6%96%87%E8%AE%B0%E5%BD%95/">美文记录</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© chenbd03 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
