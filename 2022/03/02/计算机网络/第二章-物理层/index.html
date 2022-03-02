@@ -13,7 +13,7 @@
 
 
 
-<title>第一章-计算机网络体系结构 | blog</title>
+<title>第二章-物理层 | blog</title>
 
 
 
@@ -283,7 +283,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">第一章-计算机网络体系结构</h1>
+            <h1 class="post-title">第二章-物理层</h1>
             
                 <div class="post-meta">
                     
@@ -292,7 +292,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">March 1, 2022&nbsp;&nbsp;21:15:02</a>
+                        Date: <a href="#">March 2, 2022&nbsp;&nbsp;15:26:44</a>
                         </span>
                     
                     
@@ -308,100 +308,138 @@
         </header>
 
         <div class="post-content">
-            <h2 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h2><p>​    计网实则是一些互联的、自治的计算机系统的结合</p>
-<h2 id="二、组成"><a href="#二、组成" class="headerlink" title="二、组成"></a>二、组成</h2><ul>
-<li>组成上：“软硬协”-“软件（FTP程序、聊天程序等）、硬件（路由器、网卡等）、协议”</li>
-<li>工作方式上：边缘部分（通信、资源共享） 和核心部分（提供连通性和交换服务）</li>
-<li>功能上：通信子网（物理层、数据链路层、网络层），资源子网（会话层、表示层、物理层）</li>
-</ul>
-<h2 id="三、功能"><a href="#三、功能" class="headerlink" title="三、功能"></a>三、功能</h2><p>数据通信、资源共享、负载均衡等</p>
-<h2 id="四、分类"><a href="#四、分类" class="headerlink" title="四、分类"></a>四、分类</h2><ul>
-<li><p>按分布范围：“广城局”-“广域网、城域网、局域网”</p>
-<p>【注意】判断是局域网还是广域网，通常是看他们采用那种方式，如果采用交换交换方式，则是广域网，如果是广播技术则是局域网</p>
-</li>
-<li><p>按拓扑结构：总线形网络、星形网络、环形网络、网状网络</p>
-</li>
-<li><p>按交换技术：电路交换网络、报文交换网络（存储-转发网络）、分组交换网络</p>
-</li>
-</ul>
-<h2 id="五、性能指标"><a href="#五、性能指标" class="headerlink" title="五、性能指标"></a>五、性能指标</h2><ul>
-<li>速率：亦称数据传输率、数据率、比特率，单位：kb&#x2F;s, Mb&#x2F;s, Gb&#x2F;s（小写的b哦！）</li>
-<li>带宽：亦称最高数据传输速率，单位b&#x2F;s,kb&#x2F;s,Mb&#x2F;s,Gb&#x2F;s</li>
-<li>时延：<ul>
-<li><strong>发送时延（传输时延）：数据长度&#x2F;信道宽度(带宽)</strong><br><strong>传播时延：信道长度&#x2F;电磁波在信道上的传播速率</strong><br>处理时延：例如从分组中提取数据部分,进行差错检验或查找适当的路由等<br>排队时延</li>
-</ul>
-</li>
-<li><strong>往返时延：传播时延x2+末端处理时间（通常不算）</strong></li>
-</ul>
-<h2 id="六、协议、接口、服务概念"><a href="#六、协议、接口、服务概念" class="headerlink" title="六、协议、接口、服务概念"></a>六、协议、接口、服务概念</h2><ul>
-<li><p>协议：控制两个（或多个）<strong>对等实体</strong>进行通信的规则的集合，是<strong>水平</strong>的；<strong>不对等实体之间没有协议</strong></p>
+            <h2 id="一、数据通信基础知识"><a href="#一、数据通信基础知识" class="headerlink" title="一、数据通信基础知识"></a>一、数据通信基础知识</h2><ul>
+<li><p>相关术语：</p>
 <ul>
-<li>语法：规定了数据传输的<strong>格式</strong></li>
-<li>语义：规定了所要完成的<strong>功能</strong></li>
-<li>同步(时序)：规定了执行<strong>各种操作的条件、时序关系</strong>等</li>
+<li>数据、信号、信道、信源、信宿</li>
+<li><strong>码元，速率（传输速率），波特，带宽</strong>   ※※※<br>码元：1码元可以携带若干比特信息，比如4进制码元-&gt;表明4个码元的离散状态-&gt;4种高低不平的信号波形-&gt;可携带2b信息量<br>速率：码元传输速率(波特率)，单位时间内数字通信系统所传输的码元个数；单位是波特(Baud)<br>信息传输速率(比特率)：单位时间内数字通信系统传输的二进制码元个数，单位是b&#x2F;s</li>
+</ul>
+<p>【注】1、若一个码元携带n bit的信息量，则M波特率的码元传输速率所对应的信息，传输速率则为n*M bit&#x2F;s</p>
+<p>​          2、码元速率与进制数无关，只与码元长度有关</p>
+<p>​          3、比特率&#x3D;波特率x log2（n），n表示一个信号码元所取有效离散值个数</p>
+</li>
+<li><p><strong>奈式准则和香农定理</strong> ※※※  （要会计算）</p>
+<ul>
+<li>奈氏准则：<ul>
+<li>公式：理想低通<strong>无噪声、带宽有限</strong>信道下的极限（最大）数据传输速率&#x3D;**2Wlog2(V)**；W为带宽，V为几种码元&#x2F;码元的离散电平数目</li>
 </ul>
 </li>
-<li><p>接口（服务访问点SAP）：通过SAP提供给上层使用的，实际上它是一个逻辑接口</p>
-</li>
-<li><p>服务：指<strong>下层为紧邻的上层提供的功能调用，是垂直的，单向的</strong></p>
-<p>【注意】第n层向第n+1层提供服务时，此服务不仅包含第n层本身功能，还包含由下层服务提供的功能</p>
+<li>香农定理<ul>
+<li>公式：<strong>带宽受限且有噪声干扰</strong>信道的极限数据传输速率&#x3D;**Wlog2(1+S&#x2F;N)**；W为带宽，S&#x2F;N为信噪比，信噪比&#x3D;10log10(S&#x2F;N)  (单位为dB)</li>
+</ul>
 </li>
 </ul>
-<h2 id="七、参考模型和体系结构-※※※"><a href="#七、参考模型和体系结构-※※※" class="headerlink" title="七、参考模型和体系结构  ※※※"></a><strong>七、参考模型和体系结构  ※※※</strong></h2><ul>
-<li><p><strong>OSI&#x2F;ISO参考模型:</strong> 主要记住七层的作用，各自有什么功能，对应什么协议，还要清楚各层之间的联系 –&gt; 口诀：”物联网淑惠适用”</p>
-<p><strong>要会分析和阐述数据 “解封装 ” 的过程（从一端的应用层进行封装到另一端的解封装的过程）</strong></p>
-<ol>
-<li><p>应用层:所有能和<strong>用户交互产生网络流量</strong>的程序，例如有文件传送的FTP、电子邮件的SMTP、万维网HTTP等</p>
+<p>​    【注】1、<strong>只有这两个公式,带宽单位是用Hz表</strong></p>
+<pre><code>          2、上述两个公式单位均为b/s
+</code></pre>
 </li>
-<li><p>表示层:主要处理在两个通信系统中<em><strong>*交换信息的表示方式*</strong></em><em><strong>*,*<em><strong>其功能:</strong></em>*数据格式恢复、数据加密解密、数据压缩*</strong></em></p>
-</li>
-<li><p>会话层：为表示层实体或用户进程<strong>建立连接</strong>并在连接上有序地<strong>传输数据</strong>，也称建立同步，其功能：建立、管理及终止进程间的会话、可使用校验点使通信会话在通信失效时从校验点继续恢复通信，实现数据同步</p>
-</li>
-<li><p>传输层：负责主机之间端到端的通信，其功能：可靠传输、不可靠传输、差错控制、流量控制、复用分用</p>
-</li>
-<li><p>网络(IP)层：把网络层的协议数据单元（分组）从源端到目的端，为分组交换网上的不同主机通过通信服务，其功能：路由选择、流量控制、拥塞控制、差错控制</p>
-</li>
-<li><p>数据链路层：将网络层传来的IP数据报组装成帧，其功能：物理寻址、成帧、差错控制、流量控制，不提供拥塞控制功能</p>
-</li>
-<li><p>物理层：在物理介质上透明的传输比特流，功能：比特同步、比特编码</p>
-</li>
-</ol>
-</li>
-<li><p>TCP&#x2F;IP参考模型：应用层、传输层、网络层、网络接口层（实际就是数据链路层+物理层）</p>
-</li>
-<li><p>五层参考模型：应用层、传输层、网络层、数据链路层、物理层</p>
-<p><img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fupload-images.jianshu.io%2Fupload_images%2F5141046-da98d209203c13c9.jpeg&refer=http%3A%2F%2Fupload-images.jianshu.io&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1648734207&t=5f3a6b848caef694c0014ed7b6552c58" alt="img"></p>
-</li>
-</ul>
-<p>【补充】</p>
-<p>1、ISO&#x2F;OSI参考模型和TCP&#x2F;IP模型</p>
-<p>(1) 共同点：都采取分层的体系结构、都基于独立的协议栈的概念、都可以解决异构互联网络</p>
-<p><strong>(2)</strong> <em><strong>不同点</strong></em>：</p>
+<li><p><strong>编码和调制</strong></p>
+<ul>
+<li><p><strong>编码</strong>：可分为<strong>数字数据编码为数字信号</strong>和模拟数据编码为数字信号</p>
+<ul>
+<li><p><strong>数字数据编码为数字信号</strong>:归零编码RZ、非归零编码NRZ、反向非归零编码NRZI、曼彻斯特编码、差分曼彻斯特编码、4B&#x2F;5B编码</p>
+<p><img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.pianshen.com%2Fimages%2F665%2F61069e46fb8cef9d225facf5ff615aa9.png&refer=http%3A%2F%2Fwww.pianshen.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1648799283&t=1afb2011ad4d9ee9ec28f3bb2936aecd" alt="img"></p>
 <table>
 <thead>
 <tr>
 <th></th>
-<th>ISO&#x2F;OSI参考模型</th>
-<th>TCP&#x2F;IP参考模型</th>
+<th>优点</th>
+<th>缺点</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>网络层</td>
-<td>无连接+面向连接</td>
-<td>无连接，不可靠</td>
+<td>归零编码RZ</td>
+<td>为传输双方提供自同步机制</td>
+<td>会占用一部分带宽</td>
 </tr>
 <tr>
-<td>传输层</td>
-<td>面向连接，可靠</td>
-<td>无连接+面向连接（UDP和TCP）</td>
+<td>非归零编码NRZ</td>
+<td>一个周期可全部用来传输数据</td>
+<td>无法传递时钟信号，难同步</td>
+</tr>
+<tr>
+<td>反向非归零编码NRZI</td>
+<td>既能传输时钟信号（同步），又尽量不损失带宽</td>
+<td></td>
+</tr>
+<tr>
+<td>曼彻斯特编码</td>
+<td>中间出现电平跳变，该跳变既可作为时钟信号，又作为数据信号。<strong>以太网的编码方式就是曼彻斯特编码</strong></td>
+<td>数据传输速率只有调制速率的一半。可看作一个时钟周期有2个码元，1个比特</td>
+</tr>
+<tr>
+<td>差分曼彻斯特编码</td>
+<td><strong>常用于局域网传输。</strong>可实现同步，抗干扰较好。也有电平的跳转</td>
+<td></td>
 </tr>
 </tbody></table>
-<p>其中，OSI最大贡献是精确定义了服务、协议、接口的概念</p>
-<p>2、注意：ISO&#x2F;OSI参考模型，对等层次之间传送的数据单位称为该层的PDU（协议数据单元）；每层的PDU都有一个俗称：</p>
-<p>物理层：比特</p>
-<p>数据链路层：帧</p>
-<p>网络层：分组或数据报</p>
-<p>传输层：报文段（TCP）</p>
+<ul>
+<li>【注意】对于4B&#x2F;5B编码,码元效率只有80%</li>
+</ul>
+</li>
+<li><p>模拟数据编码为数字信号：常用于音频信号进行编码的脉码调制PCM，应用于素材保存和音乐鉴赏；其三个步骤：①<strong>采样：采样频率&gt;&#x3D;2*信号最高频率</strong>，将连续信号变成时间上离散信号；②量化：数值转换；③编码</p>
+<p>【注】1、考题可能考模拟-&gt;数字,采样频率必须要求<strong>采样频率&gt;&#x3D;2*信号最高频率</strong>，若给了信号最高频率,需要乘以2倍</p>
+<p>2、<strong>数字数据编码为数字信号是编码的*核心考点，会分析图中几种编码的特点。会分析一个0&#x2F;1字符串，什么波形对应什么码</strong></p>
+<p>3、<strong>以太网采用的是曼彻斯特编码，一个bit带两个电平，故波特率是数据率的两倍</strong></p>
+</li>
+</ul>
+</li>
+<li><p>调制：可分为数字数据调制为模拟信号（调制）和模拟数据调制为模拟信号（解调）</p>
+<ul>
+<li>数字数据调制为模拟信号（调制）：幅移键控ASK（调幅）、频移键控FSK（调频）、相移键控PSK（调相）、正交振幅调制QAM（调幅+调相）</li>
+<li>模拟数据调制为模拟信号（解调）</li>
+</ul>
+</li>
+</ul>
+<p>【注意】编码和调制区别在于，最后转化的信号是数字信号还是模拟信号；是数字信号则是编码，若是模拟信号则是调制</p>
+</li>
+</ul>
+<h2 id="二、电路交换、报文交换、分组交换"><a href="#二、电路交换、报文交换、分组交换" class="headerlink" title="二、电路交换、报文交换、分组交换"></a>二、电路交换、报文交换、分组交换</h2><ul>
+<li><p>电路交换、报文交换、分组交换三种方式的对比</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/b8755004bc907a7d5e4e3bce5608f7581290f1ea841fcc38c1d0da0f0f6e328a535253303cfc5161a107da6502f6ed6e?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=%E5%9B%BE%E7%89%871.png&size=750" alt="img"></p>
+<p>其中分组交换还可进一步分为虚电路方式和无连接的数据报方式</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/1eae7ba3ee4c443b9b87148f14ec60bbc15f94af481bf7c2fab87ad65832b8b74f25458ad54530a8ea56b0f5fbae4a17?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=%E5%9B%BE%E7%89%872.png&size=750" alt="img"></p>
+<p>【注意】1、要会计算后两种数据的交换方式（属于存储转发的方式），熟知<strong>报文交换和分组交换过程是怎么样</strong></p>
+<p>​             2、分组交换下数据报电路和虚电路的区别，详细看王道书籍计算机网络</p>
+</li>
+</ul>
+<h2 id="三、传输介质和物理层设备"><a href="#三、传输介质和物理层设备" class="headerlink" title="三、传输介质和物理层设备"></a>三、传输介质和物理层设备</h2><ul>
+<li><p>传输介质</p>
+<ul>
+<li><p>导向传输介质</p>
+<p>​    双绞线：屏蔽双绞线（STP）和 非屏蔽双绞线（UTP）</p>
+<p>​    同轴电缆</p>
+<p>​    光纤：利用光纤传递光脉冲通信，由纤芯（实心的）和包层构成，利用光的全放射特性</p>
+</li>
+<li><p>非导向传输介质<br>无线电波：向所有方向传播<br>微波、红外线、激光：信号固定方向传播</p>
+</li>
+<li><p><strong>物理层接口四大特性：（记忆方法：机电功程）</strong></p>
+<p>​    机械特性：形状和尺寸、引脚数目和排列，固定和锁定装置等<br>​    电气特性：“电压范围”<br>​    功能特性：“含义，意义，用途”<br>​    规程特性（过程特性）：不同功能出现的各种时间的顺序</p>
+</li>
+</ul>
+</li>
+<li><p>物理层设备</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>作用</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>中继器</td>
+<td>再生数据信号和还原</td>
+<td>1、“5段-4个-3台规则”2、无存储转发，不能连接速率不同的网段</td>
+</tr>
+<tr>
+<td>集线器</td>
+<td>放大和转发</td>
+<td>1、共享式设备，不能分割冲突域和广播域2、实则是多端口中继器3、<strong>Hub默认为100Base-T集线器，即传输速率有100Mb&#x2F;s</strong></td>
+</tr>
+</tbody></table>
 
         </div>
 
@@ -416,7 +454,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://chenbd03.github.io/2022/03/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E4%B8%80%E7%AB%A0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">https://chenbd03.github.io/2022/03/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E4%B8%80%E7%AB%A0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</a></span>
+                        <span><a href="https://chenbd03.github.io/2022/03/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E7%89%A9%E7%90%86%E5%B1%82/">https://chenbd03.github.io/2022/03/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E7%89%A9%E7%90%86%E5%B1%82/</a></span>
                     </p>
                 
                 
@@ -453,10 +491,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2022/03/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E7%89%A9%E7%90%86%E5%B1%82/">第二章-物理层</a>
             
-            
-            <a class="next" rel="next" href="/2022/03/01/%E7%94%9F%E6%B4%BB%E7%BE%8E%E6%96%87%E8%AE%B0%E5%BD%95/%E7%BE%8E%E6%96%87%E8%AE%B0%E5%BD%95/">美文记录</a>
+            <a class="next" rel="next" href="/2022/03/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E4%B8%80%E7%AB%A0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">第一章-计算机网络体系结构</a>
             
         </section>
 
