@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="chenbd03">
+
+
+
+
+
+<title>第六章-应用层 | blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+    
+    <script>
+    !
+    function() {
+    function n(n, e, t) {
+    return n.getAttribute(e) || t
+    }
+    function e(n) {
+    return document.getElementsByTagName(n)
+    }
+    function t() {
+    var t = e("script"),
+    o = t.length,
+    i = t[o - 1];
+    return {
+    l: o,
+    z: n(i, "zIndex", -1), //置于主页面背后
+    o: n(i, "opacity", .5), //线条透明度
+    c: n(i, "color", "0,0,0"), //线条颜色
+    n: n(i, "count", 100) //线条数量
+    }
+    }
+    function o() {
+    a = m.width = window.innerWidth ||
+    document.documentElement.clientWidth || document.body.clientWidth,
+    c = m.height = window.innerHeight ||
+    document.documentElement.clientHeight || document.body.clientHeight
+    }
+    function i() {
+    r.clearRect(0, 0, a, c);
+    var n, e, t, o, m, l;
+    s.forEach(function(i, x) {
+    for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 :
+    1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1,
+    1), e = x + 1; e < u.length; e++) n = u[e],
+    null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l
+    = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o,
+    i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t /
+    2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y),
+    r.lineTo(n.x, n.y), r.stroke()))
+    }),
+    x(i)
+    }
+    var a, c, u, m = document.createElement("canvas"),
+    d = t(),
+    l = "c_n" + d.l,
+    r = m.getContext("2d"),
+    x = window.requestAnimationFrame || window.webkitRequestAnimationFrame
+    || window.mozRequestAnimationFrame || window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(n) {
+    window.setTimeout(n, 1e3 / 45)
+    },
+    w = Math.random,
+    y = {
+    x: null,
+    y: null,
+    max: 2e4
+    };
+    m.id = l,
+    m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z +
+    ";opacity:" + d.o,
+    e("body")[0].appendChild(m),
+    o(),
+    window.onresize = o,
+    window.onmousemove = function(n) {
+    n = n || window.event,
+    y.x = n.clientX,
+    y.y = n.clientY
+    },
+    window.onmouseout = function() {
+    y.x = null,
+    y.y = null
+    };
+    for (var s = [], f = 0; d.n > f; f++) {
+    var h = w() * a,
+    g = w() * c,
+    v = 2 * w() - 1,
+    p = 2 * w() - 1;
+    s.push({
+    x: h,
+    y: g,
+    xa: v,
+    ya: p,
+    max: 6e3
+    })
+    }
+    u = s.concat([y]),
+    setTimeout(function() {
+    i()
+    },
+    100)
+    } ();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Chenbd03&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Chenbd03&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">第六章-应用层</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">chenbd03</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 11, 2022&nbsp;&nbsp;21:36:48</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="一、网络应用模型"><a href="#一、网络应用模型" class="headerlink" title="一、网络应用模型"></a>一、网络应用模型</h2><h2 id="二、网络应用模型"><a href="#二、网络应用模型" class="headerlink" title="二、网络应用模型"></a>二、网络应用模型</h2><ul>
+<li>C&#x2F;S(客户&#x2F;服务器模型)<ul>
+<li><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/5c474abe78fe3d82e9e74910fa0d9ff1e164c653ba877b9904a72050c1d3720b19b2550f7153f8c1998e8acdee25c786?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312110038132.png&size=750" alt="image-20220312110038132">    </li>
+<li>服务器(提供计算服务的设备)<br>永久提供服务<br>  永久性访问地址&#x2F;域名<br>客户(请求服务计算的主机)<br>与服务器通信,使用服务器提供的服务<br>间歇性使用网络<br>可能使用动态IP地址<br>不与其他客户机直接通信<br>应用<br>Web、文件传输FTP、远程登录、电子邮件等</li>
+</ul>
+</li>
+<li>P2P(点对点&#x2F;对等模型)<ul>
+<li><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/fd052bb8ae2b8ca1dfd1a101f7dece89ad7272987bf063f74753917a3485e9e875afd8d30657082e6abdc63fd0d9099c?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312110030108.png&size=750" alt="image-20220312110030108" style="zoom:80%;" />    </li>
+<li>特点<ul>
+<li>不存在永远在线的服务器</li>
+<li><strong>每台主机可以提供服务，也可以请求服务</strong></li>
+<li><strong>任意端的系统&#x2F;结点可以直接通讯</strong></li>
+<li>节点间歇性接入网络</li>
+<li>节点可能改变IP地址</li>
+<li>可扩展性好</li>
+<li>网络健壮性强</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="二、应用进程相关"><a href="#二、应用进程相关" class="headerlink" title="二、应用进程相关"></a>二、应用进程相关</h2><ul>
+<li><p>DNS（域名系统）</p>
+<ul>
+<li><p><strong>作用：把便于人民记忆的具有特定含义的主机名转换为便于机器处理的IP地址</strong></p>
+</li>
+<li><p><strong>特点：DNS采用客户&#x2F;服务器模型,其协议运行在UDP之上,使用53端口号</strong></p>
+</li>
+<li><p>组成：</p>
+<ul>
+<li><p>层次域名空间：采用层次树状结构,任何连接到因特网的主机或路由器都有一个域名</p>
+<ul>
+<li><p>每个域名都有标号序列组成,而各标号之间用”.”分隔开</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/b81bf40a4783032c6f724674b2ab5e2ba8b80aff644d974cc62e3164da809f0cd3d26e197ba673cdecbde3f0d82ef95b?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312111820826.png&size=750" alt="image-20220312111820826">    </p>
+</li>
+<li><p>域名中标号规定<br>英文不区分大小写<br>  除字符-外不能有其他字符<br>  每个标号&lt;&#x3D;63个字符,多标号组成最长域名&lt;&#x3D;255<br>  级别最低域名写在最左边,级别最高的顶级域名写在最右边</p>
+</li>
+<li><p>域名类别分类</p>
+<ul>
+<li><p>顶级域名：.cn  .us  .uk 等，通用顶级域名：.com  .net  .org  .gov等，基础结构域名(反向域名)：arpa,用于反向解析域名</p>
+</li>
+<li><p>二级域名<br>…</p>
+<img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/889b7bfa8e1e1c58a2eb98cacd5b241a1788b1ab62e7222f9d077a2f720487c0aa3c5b9b0650c042732f269cb6d9803b?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312111932744.png&size=750" alt="image-20220312111932744" style="zoom:50%;" /></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>域名服务器</p>
+<ul>
+<li>特点：服务器所负责管辖的范围称为区；DNS使用的域名服务器以层次结构组织</li>
+</ul>
+</li>
+<li><p><strong>解析器（域名解析过程，要求这两种方法都会描述解析过程！）</strong></p>
+<ul>
+<li><p>递归查询</p>
+<img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/105649860e96c0bf6ce377d677e2621e667086d938e24ffe7421a6aef538f05cba6bb7977ed1a071ac386a75d2274f39?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312112128508.png&size=750" alt="image-20220312112128508" style="zoom: 50%;" />    
+</li>
+<li><p>迭代查询（递归与迭代相互查询）</p>
+<img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/6f4b87827666eb4fa3d279b4e46d68393b3e3b2e1b41f6475eef67e4c2095790641d19b02835c777d92786e78273c359?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312112205095.png&size=750" alt="image-20220312112205095" style="zoom:50%;" /></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>文件传输协议FTP</p>
+<ul>
+<li><p>特点</p>
+<ul>
+<li>提供不同种类主机系统之间的文件传输能力</li>
+<li>以用户权限管理的方式提供用户对远程FTP服务器上的文件管理能力</li>
+<li>以匿名FTP的方式提供公用文件共享的能力</li>
+<li>采用客户&#x2F;服务器的工作方式,使用TCP可靠传输</li>
+</ul>
+</li>
+<li><p>FTP服务器：FTP服务器必须在整个会话期间保留用户的状态信息</p>
+<ul>
+<li>主进程：用于接受新的请求</li>
+<li>从属进程：负责处理单个请求</li>
+</ul>
+</li>
+<li><p>工作流程</p>
+<ul>
+<li><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/6d78fa28b4339c1556f9275c106474f013b7b31b3dd84e73e8bf225ead864e280ce70ea52cad1ec1363cac0633393eab?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312110839291.png&size=750" alt="image-20220312110839291">        </li>
+<li>控制连接(FTP服务器的21端口)<ul>
+<li>FTP客户发出传送请求,通过控制连接发送给服务器端的控制进程</li>
+<li>不用来传送文件，在整个会话期间一直保持打开状态</li>
+</ul>
+</li>
+<li>数据连接(FTP服务器的20端口，此端口是可变的，但默认为20)<ul>
+<li>用来连接客户端和服务器端的数据传送进程</li>
+<li>是否使用TCP 20端口建立数据连接与传输模式有关<ul>
+<li>主动方式(PORT)用TCP20 端口—客户机”主动”</li>
+<li>被动方式(PASV)由服务器和客户端自行协商决定—客户机”被动”</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>传输模式：文本模式和二进制模式</p>
+</li>
+</ul>
+</li>
+<li><p>万维网和HTTP</p>
+<ul>
+<li><p>万维网www (采用C&#x2F;S方式)</p>
+<ul>
+<li>URL:负责标识万维网上的各种文档，具有唯一标识符URL<ul>
+<li>一般形式:&lt;协议&gt;:&#x2F;&#x2F;&lt;主机&gt;:&lt;端口&gt;&#x2F;&lt;路径&gt;</li>
+</ul>
+</li>
+<li>HTTP:应用层协议，使用TCP可靠传输<br>HTML:文档结构的标记语言</li>
+</ul>
+</li>
+<li><p>HTTP</p>
+<ul>
+<li><p>特点</p>
+<ul>
+<li>使用TCP协议,保证数据可靠传输</li>
+<li>HTTP本身是无连接的,虽然使用TCP,但通信双方在交换HTTP报文时不需要建立HTTP连接</li>
+<li>使用Cookie加数据库的方式跟踪客户活动,具有唯一的识别码</li>
+</ul>
+</li>
+<li><p>连接方式</p>
+<ul>
+<li>非持久连接(Close)<ul>
+<li>每个网页元素对象的传输都需要单独建立一个新的TCP连接,(第三次握手的报文段捎带了客户对万维网文档的请求)</li>
+<li>每次TCP连接都需要2个RTT+文档传输的时间</li>
+<li><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/8f8c772b7f28f8d094322a7b2c057cbb09aeaf25c25d0b3016b47d43b9774d7e20a43ee80a0e0bcd3832c6436ce5ad47?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312110434846.png&size=750" alt="image-20220312110434846" style="zoom:50%;" /></li>
+</ul>
+</li>
+<li>持久连接(Keep-alive)<ul>
+<li>非流水线(类似停止等待思想)<br>        客户在收到前一个响应后才能发出下一个请求<br>          服务器发送完一个对象后,TCP连接处于空闲阶段,浪费服务器资源</li>
+<li>流水线(HTTP1.1默认方式)<br>        可以逐个连续发出各个引用对象的请求<br>          若所有请求和响应都是连续发送的,那么所有引用的对象共经历一个RTT延迟<ul>
+<li><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/dea0962f2855b2941be28b730c5557ac976121516fe31de48ea2fb8dda7dfdb5f86d8f9e0dd5e743ba7bd58ee7b0b645?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312110518437.png&size=750" alt="image-20220312110518437" style="zoom:50%;" /></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>报文结构</p>
+<ul>
+<li><p>请求报文<br><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/3ec26936e8fe37f4049720be033503caae157edd4050c26f27b6edd7c21aa05ff16f9cf7b1b09c518d6691e98cef104a?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312110549139.png&size=750" alt="image-20220312110549139"></p>
+</li>
+<li><p>响应报文:每一行结束的地方都有”回车”和”换行”,整个首部运行结束后,还有一空行将首部行和主体分开<img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/37f56b16d507734cf1fdc9c1405fb3b76edaff27adfdebb14c63657b4af23cde4ab6b30668e937fc35d8f1ede82a7d4f?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312110600368.png&size=750" alt="image-20220312110600368"></p>
+</li>
+<li><p>【补充】请求方法</p>
+</li>
+<li><p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/130bbf8fa886b614674154a36c18dff16400cb11e56feeb45f8731223c2939cb0d1c828749e909e4a9f0f378c792dcc5?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312110622077.png&size=750" alt="image-20220312110622077"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>电子邮件</p>
+<ul>
+<li><p>组成结构</p>
+<ul>
+<li><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/79e771fb10409cde80b437c2b04e7299b2048e82bd88a63d31aa8b4e93e414d5ef6d04403bd17ca600cf3f1ef85feee0?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312111101325.png&size=750" alt="image-20220312111101325" style="zoom:50%;" />    </li>
+<li>用户代理<ul>
+<li>用户与电子邮件交互的接口，比如电子邮件客户端软件</li>
+<li>功能：撰写，显示，处理，通信</li>
+</ul>
+</li>
+<li>邮件服务器<ul>
+<li>功能：发送和接受邮件；向发信人报告邮件传送的情况<br>注意：SMTP客户和SMTP服务器</li>
+</ul>
+</li>
+<li>协议<ul>
+<li>邮件发送协议(SMTP)：用户代理向邮件服务器发送邮件,或者邮件服务器之间</li>
+<li>邮件接收协议(POP3、IMAP)：用户代理从邮件服务器读取邮件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>相关协议（结合组织结构进行理解）</p>
+<ul>
+<li><p>SMTP协议（简单邮件传输协议）</p>
+<ul>
+<li><p>特点：可靠且有效、采用客户&#x2F;服务器方式、采用TCP连接,端口号25</p>
+</li>
+<li><p>通信过程</p>
+<ul>
+<li><p>连接建立</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/a12e06f93d1acb02d6c083b4efd88898866fbc6b9ab1fe722a2557b7a374207de9f776249833c6e3ed151e0d751686e6?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312111520049.png&size=750" alt="image-20220312111520049">                    </p>
+</li>
+<li><p>邮件传送</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/5361cf423f35dfcbeaeb1f7ff7cea8f1552bbd5ae30a75b62a6ab7dab5f58a83d7fbe31889723c339fb8a0affc9d6047?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312111623491.png&size=750" alt="image-20220312111623491">    </p>
+</li>
+<li><p>连接释放</p>
+</li>
+</ul>
+</li>
+<li><p>缺点：只能传输7比特ASCII码内容、无法传送可执行文件及二进制对象</p>
+</li>
+</ul>
+</li>
+<li><p>POP3、IMAP协议</p>
+<ul>
+<li>POP：用户代理向邮件服务器发出请求,’拉’取用户邮箱中的邮件<ul>
+<li>特点：客户&#x2F;服务器、使用TCP,端口号110</li>
+<li>工作方式：下载并保留(邮件服务器)  or 下载并删除</li>
+</ul>
+</li>
+<li>IMAP：基于POP,另一特性运行用户代理只获取报文的某些部分</li>
+</ul>
+</li>
+<li><p>MIME协议：可支持图片,视频,声音,多种国家语言等,是基于SMTP之上</p>
+</li>
+</ul>
+</li>
+<li><p>基于万维网的电子邮件：用户浏览器与Hotmail或Gmail的邮件服务器之间的邮件发送或接收使用HTTP，但不同邮件服务器之间发送邮件就需要用到SMTP</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="三、常见的应用层协议"><a href="#三、常见的应用层协议" class="headerlink" title="三、常见的应用层协议"></a>三、常见的应用层协议</h2><p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/3e6c047eb8cd091017dcd67d1774aebe00026d34dd2cd843aa27e5c38cf783219e4f2ae4254a56c61a6f24dec16f59fe?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312105526415.png&size=750" alt="image-20220312105526415"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>chenbd03</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://chenbd03.github.io/2022/03/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E5%85%AD%E7%AB%A0-%E5%BA%94%E7%94%A8%E5%B1%82/">https://chenbd03.github.io/2022/03/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E5%85%AD%E7%AB%A0-%E5%BA%94%E7%94%A8%E5%B1%82/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span><strong>Do you believe in DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"># 计算机网络</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/03/11/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E6%80%BB%E7%BB%93/">排序算法-总结</a>
+            
+            
+            <a class="next" rel="next" href="/2022/03/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E4%BA%94%E7%AB%A0-%E4%BC%A0%E8%BE%93%E5%B1%82/">第五章-传输层</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <!--iframe class="music"  frameborder="no"   marginwidth="20" marginheight="0" width=420 height=42 src="//music.163.com/outchain/player?type=2&id=5179543&auto=1&height=32" ></iframe -->
+    <div class="copyright">
+        <span>© chenbd03 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+    
+</footer>
+
+    </div>
+</body>
+
+</html>

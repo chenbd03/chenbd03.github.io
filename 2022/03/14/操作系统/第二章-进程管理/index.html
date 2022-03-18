@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="chenbd03">
+
+
+
+
+
+<title>第二章-进程管理 | blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+    
+    <script>
+    !
+    function() {
+    function n(n, e, t) {
+    return n.getAttribute(e) || t
+    }
+    function e(n) {
+    return document.getElementsByTagName(n)
+    }
+    function t() {
+    var t = e("script"),
+    o = t.length,
+    i = t[o - 1];
+    return {
+    l: o,
+    z: n(i, "zIndex", -1), //置于主页面背后
+    o: n(i, "opacity", .5), //线条透明度
+    c: n(i, "color", "0,0,0"), //线条颜色
+    n: n(i, "count", 100) //线条数量
+    }
+    }
+    function o() {
+    a = m.width = window.innerWidth ||
+    document.documentElement.clientWidth || document.body.clientWidth,
+    c = m.height = window.innerHeight ||
+    document.documentElement.clientHeight || document.body.clientHeight
+    }
+    function i() {
+    r.clearRect(0, 0, a, c);
+    var n, e, t, o, m, l;
+    s.forEach(function(i, x) {
+    for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 :
+    1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1,
+    1), e = x + 1; e < u.length; e++) n = u[e],
+    null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l
+    = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o,
+    i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t /
+    2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y),
+    r.lineTo(n.x, n.y), r.stroke()))
+    }),
+    x(i)
+    }
+    var a, c, u, m = document.createElement("canvas"),
+    d = t(),
+    l = "c_n" + d.l,
+    r = m.getContext("2d"),
+    x = window.requestAnimationFrame || window.webkitRequestAnimationFrame
+    || window.mozRequestAnimationFrame || window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(n) {
+    window.setTimeout(n, 1e3 / 45)
+    },
+    w = Math.random,
+    y = {
+    x: null,
+    y: null,
+    max: 2e4
+    };
+    m.id = l,
+    m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z +
+    ";opacity:" + d.o,
+    e("body")[0].appendChild(m),
+    o(),
+    window.onresize = o,
+    window.onmousemove = function(n) {
+    n = n || window.event,
+    y.x = n.clientX,
+    y.y = n.clientY
+    },
+    window.onmouseout = function() {
+    y.x = null,
+    y.y = null
+    };
+    for (var s = [], f = 0; d.n > f; f++) {
+    var h = w() * a,
+    g = w() * c,
+    v = 2 * w() - 1,
+    p = 2 * w() - 1;
+    s.push({
+    x: h,
+    y: g,
+    xa: v,
+    ya: p,
+    max: 6e3
+    })
+    }
+    u = s.concat([y]),
+    setTimeout(function() {
+    i()
+    },
+    100)
+    } ();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Chenbd03&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Chenbd03&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">第二章-进程管理</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">chenbd03</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 14, 2022&nbsp;&nbsp;20:12:51</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="一、进程与线程问题"><a href="#一、进程与线程问题" class="headerlink" title="一、进程与线程问题"></a>一、进程与线程问题</h2><ul>
+<li><p>1、进程</p>
+<ul>
+<li><p>创建进程的实质，实则是创建进程实体（进程映像）的PCB（进程控制块），其中进程实体 包含PCB+程序段+相关数据段；</p>
+</li>
+<li><p>引入进程实体对进程定义：进程是进程实体的运行过程，<strong>是系统进行资源分配和调度的一个独立单位</strong></p>
+</li>
+<li><p>【注意】<strong>PCB是进程存在的唯一标志；</strong>其中，PCB通常包含的内容如下：</p>
+<p><img src="file:///C:\Users\ADMINI~1\AppData\Local\Temp\ksohtml\wpsFDC.tmp.jpg" alt="img">        </p>
+</li>
+<li><p>进程的特征：动态性（生命周期）、并发性、独立性、异步性、结构性</p>
+</li>
+<li><p>与程序之间的联系和区别：</p>
+<ul>
+<li><p>联系</p>
+<ul>
+<li>1、程序&#x3D;文件（静态的可执行文件）；进程&#x3D;执行中的程序&#x3D;程序+执行状态</li>
+<li>2、同一个程序的多次执行对应为不同的进程（比如开多个QQ）</li>
+<li>3、进程执行需要的资源：内存（保存代码和数据）+cpu（执行指令）</li>
+<li>4、一个进程只能对应一个程序，一个程序可以对应多个进程</li>
+</ul>
+</li>
+<li><p>区别</p>
+<ul>
+<li><p>1、从特点上：程序是静态的，进程是动态的</p>
+<p>（1）、程序是有序代码的集合</p>
+<p>（2）、进程是程序的执行，进程有内核状态、用户态。</p>
+</li>
+<li><p>2、从生命周期上：进程相对于程序的生命周期是短暂的，程序是永久的</p>
+</li>
+<li><p>3、从结构上：进程有PCB的数据结构</p>
+<p>（1）、程序 ：数据段+代码段</p>
+<p>（2）、进程 ：代码段+数据段+堆栈+PCB</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>2、线程</p>
+<ul>
+<li>OS中引入进程的目的是为了使多个程序并发执行，提高资源利用率和系统吞吐量，那么OS再引入线程，则为了减少程序在并发执行时所付出的时空开销，使OS具有更好的并发性。</li>
+<li>轻量级的进程，本质仍然是进程（创建线程使用的底层函数和进程是一样的，都是clone），也有自己的线程控制块（拥有自己的PCB），最小的执行单位，是进程的一个执行流）；线程也有自己的基本的生命周期；</li>
+<li><strong>线程是调度的基本单位，而进程变为资源分配的基本单位</strong></li>
+<li>与进程之间的关系：<ul>
+<li>子进程和父进程有不同的代码和数据空间，一个进程由一个或者多个线程组成，同一个进程内部的所有线程共享资源，不同的进程之间相互独立。</li>
+<li>进程和线程都可以并发执行；线程上下文切换比进程上下文切换要快得多</li>
+<li>同一进程的线程切换，不会引起进程切换</li>
+<li>【注意】线程之间通信不一定要系统调用、线程不可以创建进程；</li>
+</ul>
+</li>
+<li>线程实现方式<ul>
+<li>用户级线程<ul>
+<li><img src="file:///C:\Users\ADMINI~1\AppData\Local\Temp\ksohtml\wps3AF2.tmp.jpg" alt="img"></li>
+</ul>
+</li>
+<li>内核级线程<ul>
+<li><img src="file:///C:\Users\ADMINI~1\AppData\Local\Temp\ksohtml\wps5B2D.tmp.jpg" alt="img"></li>
+</ul>
+</li>
+<li>多线程模型：多对一（开销小效率高但一个线程阻塞则进程也会阻塞）、一对一（并发度高但开销大）、多对多模型（及两者之所长）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>3、进程的状态和转换</p>
+<ul>
+<li><p>五状态模型</p>
+<p><img src="file:///C:\Users\ADMINI~1\AppData\Local\Temp\ksohtml\wps98E9.tmp.jpg" alt="img">    </p>
+<p>进程阻塞事件：<strong>需等待系统分配某种资源（进程申请临界资源，但是没有申请到）</strong>、等待合作的其他进程完成工作（磁盘读数据）</p>
+<p>进程唤醒事件：等待的事件发生</p>
+<p>进程创建事件：用户登录、作业调度、提供服务、应用请求、启动程序执行</p>
+<p>进程终止事件：exit系统调用、整数除0、非法使用特权指令、外界干预杀掉进程</p>
+<p>引起进程切换事件(就绪态-&gt;运行态 or运行态-&gt;就绪态):进程时间片到、有更高优先级的进程到、当前进程主动阻塞、当前进程终止</p>
+<p>【注意】</p>
+<p>1、可以从就绪态&#x2F;阻塞态&#x2F;运行态–&gt;终止态</p>
+<p>2、阻塞和唤醒要成对出现</p>
+<p>3、只有运行态-&gt;阻塞态是进程自身决定的.</p>
+</li>
+</ul>
+</li>
+<li><p>4、进程通信：指进程之间的信息交换。PV操作是低级通信方式，存在效率低，通信对用户不透明等缺点，下面是高级通信的三种方法：共线存储、消息传递、管道通信</p>
+<ul>
+<li><p>共享存储：对一片共享空间进行写&#x2F;读操作来实现进程之间的信息交换</p>
+<ul>
+<li><p>低级方式的共享:基于数据结构的共享</p>
+</li>
+<li><p>高级方式的共享:基于存储区的共享</p>
+<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220315115042914.png" alt="image-20220315115042914"></p>
+</li>
+</ul>
+</li>
+<li><p>消息传递:进程之间数据交换以格式化的消息为单位,通信进程之间若不存在可直接访问的共享空间,则必须利用OS提供的消息传递方法实现进程之间通信</p>
+<ul>
+<li>直接通信方式：发送进程将消息直接放在接收进程，并将他挂在接收进程的消息缓冲队列上，接收进程直接从消息缓冲队列取得消息；</li>
+<li>间接通信方式：发送进程将消息放在某个中间实体（信箱），接收进程从中间实体（信箱）获得消息</li>
+</ul>
+</li>
+<li><p>管道通信：Pipe文件，用于连接一个读进程和一个写进程以实现它们之间的通信的一个共享文件；缓冲区只允许一遍写入、另一边读出；</p>
+<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220315115652402.png" alt="image-20220315115652402"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="二、处理机调度"><a href="#二、处理机调度" class="headerlink" title="二、处理机调度"></a>二、处理机调度</h2><ul>
+<li><p>为什么要进行处理机调度：从就绪队列中按照一定的算法（尽可能公平、高效）选择一个进程并将处理机分配给它运行，以实现进程并发地进行</p>
+</li>
+<li><p>调度的层次</p>
+<ul>
+<li><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>主要任务</strong></th>
+<th><strong>调度发生在</strong></th>
+<th><strong>发生频率</strong></th>
+<th><strong>进程状态</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>高级调度（作业调度）</strong></td>
+<td><strong>从后背队列中选择合适的作业调入内存，并为其创建进程。</strong></td>
+<td><strong>外存-&gt;内存</strong></td>
+<td><strong>最低</strong></td>
+<td><strong>无-&gt;创建态-&gt;就绪态</strong></td>
+</tr>
+<tr>
+<td><strong>中级调度（内存调度）</strong></td>
+<td><strong>从挂起队列中选择合适的进程将其数据调回内存</strong></td>
+<td><strong>外存-&gt;内存</strong></td>
+<td><strong>中等</strong></td>
+<td><strong>挂起态-&gt;就绪态(阻塞挂起-&gt;阻塞态)</strong></td>
+</tr>
+<tr>
+<td><strong>低级调度（进程调度）</strong></td>
+<td><strong>从就绪队列中选择一个进程为其分配处理机</strong></td>
+<td><strong>内存-&gt;CPU</strong></td>
+<td><strong>最高</strong></td>
+<td><strong>就绪态-&gt;运行态</strong></td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>注意：暂时调到外存等待的进程状态称为挂起态;七状态模型：加了就绪挂起和阻塞挂起</p>
+<img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpreview.queshao.com%2Fgif%2F2020%2F3%2F20%2F1066786%2F1066786_15.png&amp;refer=http%3A%2F%2Fpreview.queshao.com&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=auto?sec=1649914365&amp;t=8e777be6ae989fab3455d1eced8465ba" alt="img" style="zoom:50%;" /></li>
+</ul>
+</li>
+<li><p>调度的时机</p>
+<ul>
+<li><p>什么时候需要进行进程调度？</p>
+<ul>
+<li>主动放弃<ul>
+<li>1、进程正常终止</li>
+<li>2、运行过程中发送异常而终止</li>
+<li>3、主动阻塞（如等待I&#x2F;O）</li>
+</ul>
+</li>
+<li>被动放弃<ul>
+<li>1、进程时间片已用完</li>
+<li>2、有更加紧急的事件处理（如I&#x2F;O中断）</li>
+<li>3、有更高优先级的进程进入就绪队列</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>什么时候不能进行进程调度？</p>
+<ul>
+<li><p>1、处理中断过程中</p>
+</li>
+<li><p>2、进程在操作系统内核程序临界区中</p>
+</li>
+<li><p>3、原子操作过程中</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>经典的调度算法(务必结合课后习题进行巩固)</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>算法名称</th>
+<th>算法思想&amp;算法规则</th>
+<th>是否可抢占</th>
+<th>用于作业调度还是进程调度</th>
+<th>优点</th>
+<th>缺点</th>
+<th>是否会饥饿</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FCFS先来先服务</td>
+<td>“公平”角度,按作业&#x2F;进程到达的先后进行服务</td>
+<td>非抢占式</td>
+<td>作业调度✔进程调度✔</td>
+<td>公平,实现简单</td>
+<td>对长作业有利,短作业无利</td>
+<td>不会</td>
+</tr>
+<tr>
+<td>SJF&#x2F;SPF 短作业&#x2F;短进程优先</td>
+<td>（服务时间）最短的作业&#x2F;进程 线得到服务</td>
+<td>SJF&#x2F;SPF非抢占式;但也有抢占式算法</td>
+<td>作业调度✔进程调度✔</td>
+<td>最小的平均等待时间、平均周转时间</td>
+<td>对短作业有利,长作业无利</td>
+<td>会</td>
+</tr>
+<tr>
+<td>HRRN高响应比优先</td>
+<td>每次调度时计算各个作业&#x2F;进程的响应比,选择高的响应比优先服务</td>
+<td>非抢占式</td>
+<td>作业调度✔进程调度✔</td>
+<td>权衡上述两种算法,考虑到等待时间和运行时间</td>
+<td></td>
+<td>会</td>
+</tr>
+<tr>
+<td>RR时间片轮转</td>
+<td>根据就绪队列公平轮流让各个进程执行一个时间片</td>
+<td>非抢占式</td>
+<td>作业调度×进程调度✔</td>
+<td><strong>公平；响应快，适用于分时操作系统；</strong></td>
+<td>由于高频率的进程切换,有一定开销;不区分任务的紧急程度</td>
+<td>不会</td>
+</tr>
+<tr>
+<td>优先级调度算法</td>
+<td>每个作业&#x2F;进程有各自的优先级，调度时选择优先级最高的作业&#x2F;进程</td>
+<td>抢占式和非抢占式都有</td>
+<td>作业调度✔进程调度✔</td>
+<td><strong>区别优先级,适合实时操作系统</strong></td>
+<td>有可能导致饥饿</td>
+<td>会</td>
+</tr>
+<tr>
+<td>多级反馈队列调度算法</td>
+<td>对上述调度算法的折中</td>
+<td>抢占式</td>
+<td>作业调度×进程调度✔</td>
+<td>对各类型进程相对公平;每个新到达的进程都可以很快就得到响应；短进程只用较少的时间就可完成;不必实现估计进程的运行时间</td>
+<td>不讨论缺点,融合了上述的优点,有可能饥饿</td>
+<td>会</td>
+</tr>
+</tbody></table>
+<p>【注意】</p>
+</li>
+</ul>
+<ol>
+<li><p>RR时间片轮转中,对应时间片过大或过小有什么影响呢?</p>
+</li>
+<li><p>优先级调度算法中,如何动态&#x2F;静态优先级。各类型进程如何设置优先级?如何调整优先级？</p>
+<p>静态优先级：创建进程时就确定了；</p>
+<p>动态优先级：运行状态中动态调整；根据进程占有CPU时间长度以及就绪进程等待CPU时间长度进行调整。</p>
+<p>【注意】：系统进程&gt;用户进程;交互性进程&gt;非交互性进程;IO型进程&gt;计算型进程</p>
+</li>
+<li><p>多级反馈队列调度算法思想：</p>
+<ol>
+<li><p>设置多级就绪队列，各级队列优先级从高到低，时间片从小到大 </p>
+</li>
+<li><p>新进程到达时先进入第1级队列，按FCFS原则排队等待被分配时间片，若用完时间片进程还未结束，则进程进入下一级队列队尾。 如果此时已经是在最下级的队列，则重新放回该队列队尾</p>
+</li>
+<li><p>只有第 k 级队列为空时，才会为 k+1 级队头的进程分配时间片</p>
+</li>
+</ol>
+</li>
+<li><p>HRRN高响应比优先中, 响应比(≥1)&#x3D;（等待时间+要求服务时间）&#x2F; 要求服务时间 </p>
+</li>
+<li><p>SJF&#x2F;SPF题目未说明,默认是非抢占式</p>
+</li>
+<li><p>FCFS、SJF&#x2F;SPF、HRRN一般用于早期批处理系统，交互性差；而RR、优先级、多级反馈调度算法适合交互式系统</p>
+</li>
+<li><p>要会计算FCFS、SJF&#x2F;SPF、、HRRN、RR的调度算法的相关性能指标</p>
+</li>
+<li><p>相关性能计算：</p>
+<ul>
+<li>CPU利用率&#x3D;CPU忙碌时间&#x2F;总时间、</li>
+<li>系统吞吐量 &#x3D; 完成总作业数&#x2F;花费的总时间</li>
+<li>周转时间&#x3D;作业完成时间-作业提交时间(到达时间)</li>
+<li>平均周转时间 &#x3D; 各个作业周转时间之和&#x2F;总作业数</li>
+<li>带权周转时间&#x3D;作业周转时间-作业实际运行时间</li>
+<li>平均带权周转时间&#x3D;各个作业的带权周转时间之和&#x2F;总作业数</li>
+<li>等待时间&#x3D;进程&#x2F;作业 等待被服务的时间之和</li>
+</ul>
+</li>
+</ol>
+<h2 id="三、进程同步与互斥问题"><a href="#三、进程同步与互斥问题" class="headerlink" title="三、进程同步与互斥问题"></a>三、进程同步与互斥问题</h2><ul>
+<li><p>多道程序环境下，进程是并发执行的，不同进程之间存在着不同的相互制约的关系，为了协调进程之间的相互制约关系，引入了进程同步！</p>
+</li>
+<li><p>基本概念</p>
+<ul>
+<li>临界资源：一次仅允许一个进程使用的资源称为临界资源，比如打印机等；对于临界资源的访问，必须互斥进行，在每个进程中，访问临界资源的那段代码称为临界区；临界资源访问过程分为4个部分：进入区、临界区、退出区、剩余区</li>
+<li>同步：指为完成某种任务而建立的两个或多个进程，这些进程因为需要在某些位置上协调它们的工作次序而等待、传递信息所产生的制约关系。</li>
+<li>互斥：指当一个进程访问某临界资源时，另一个想要访问该临界资源的进程必须等待。当前访问临界资源的进程访问结束，释放该资源之后，另一个进程才能去访问临界资源。<ul>
+<li>需要遵循的原则<ul>
+<li>空闲让进：临界区空闲时，应允许一个进程访问</li>
+<li>忙则等待：临界区正被访问时，其他试图访问的进程需要等待</li>
+<li>有限等待：要在有限的时间内进入临界区，保证不会饥饿</li>
+<li>让权等待：进不了临界区的进程，要释放处理机，防止忙等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>实现临界区互斥的基本方法</p>
+<ul>
+<li><p>软件实现方法</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>算法思想原理</th>
+<th>优点</th>
+<th>缺点</th>
+<th>注意</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单标志法</td>
+<td>两个进程在访问完临界区后会把使用临界区的权限转交给另一个进程</td>
+<td>该算法可确保每次只允许一个进程进入临界区</td>
+<td>违背“空闲让进”原则，若某个进程不再进入临界区，则另一个进程也无法进入。</td>
+<td>可将turn理解为“谦让”，表示优先让哪个进程进入临界区</td>
+</tr>
+<tr>
+<td>双标志先检查法</td>
+<td>设置一个布尔型数组flag[],数组各个元素用来标记各进程想进入临界区的意愿</td>
+<td>不用交替进入,可连续使用</td>
+<td>违背”忙则等待”原则,即两个进程几乎同时都想进入临界区</td>
+<td>可将flag数组的各个元素理解为对应的各个进程想进入临界区的意愿</td>
+</tr>
+<tr>
+<td>双标志后检查法</td>
+<td>设置一个布尔型数组flag[],数组各个元素用来标记各进程想进入临界区的意愿</td>
+<td>不用交替进入,可连续使用</td>
+<td>违背”空闲让进”和”有限等待”原则,即若发现双方都想进入临界区,又互相谦让,有可能会导致饥饿现象</td>
+<td>可将flag数组的各个元素理解为对应的各个进程想进入临界区的意愿</td>
+</tr>
+<tr>
+<td>Peterson算法</td>
+<td>结合单标志法和双标志后检查法.</td>
+<td>利用flag解决临界资源互斥访问,利用turn解决”饥饿”现象</td>
+<td>违背”让权等待”原则,进程出现忙等待</td>
+<td>可将turn和flag分别理解为谦让和表示自己想进入临界区意愿</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>硬件实现方法</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>算法思想</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>中断屏蔽方法</td>
+<td>通过”开&#x2F;关中断指令”实现</td>
+<td>简单高效</td>
+<td>不适用于多处理机,只适用于操作系统内核程序,不适用于用户程序</td>
+</tr>
+<tr>
+<td>TestAndSet指令（TS&#x2F;TSL指令）</td>
+<td>TSL指令将检查和上锁操作用硬件方式变成了原子操作.old记录是否已上锁,再将lock设为true,最后检查临界区是否被上锁(若已上锁,重复上面操作)</td>
+<td>实现简单,适用于多处理机环境</td>
+<td>违背”让权等待”原则</td>
+</tr>
+<tr>
+<td>Swap指令(XCHG指令)</td>
+<td>逻辑同上</td>
+<td>实现简单,适用于多处理机环境</td>
+<td>违背”让权等待”原则</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>【注意】对于各个方法，会通过伪代码进行分析其临界区互斥的过程</p>
+</li>
+</ul>
+</li>
+<li><p>信号量机制与经典同步互斥问题</p>
+<ul>
+<li><p>信号量机制：</p>
+<ul>
+<li>信号量：实则是一个变量，可用一个信号量表示系统中某种资源；信号量的值代表系统某种资源的数量。</li>
+<li>它只能被两个标准原语操作，wait(S) signal(S),可以记为P(S)和V(S)操作；<ul>
+<li>P(S):申请一个资源，如果资源不够就阻塞等待</li>
+<li>V(S):释放一个资源，如果有进程在等待该资源，则唤醒一个进程</li>
+</ul>
+</li>
+<li>它可分为整型信号量和记录型信号量<ul>
+<li>整型信号量:”检查”和”上锁”一气呵成，避免了并发和异步导致的问题。但未遵循“让权等待”原则，让进程处于忙等状态</li>
+<li>记录型信号量：遵循“让权等待”原则，可实现系统资源的申请和释放，也可实现进程同步和互斥</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>经典同步互斥问题</p>
+<ul>
+<li><p><strong>一、分析步骤（逆向解决问题）：</strong> </p>
+<ol>
+<li><p><strong>有哪几类进程？——每类进程对应一个函数</strong> </p>
+</li>
+<li><p><strong>用中文描述每一类进程的动作顺序 (打草稿)</strong></p>
+</li>
+<li><p><strong>检查每一个动作之前，思考是否需要P操作，如果P了，那么记得补上配套的V（同步：哪些动作必须保证“一前一后”关系？ 互斥：注意隐含的互斥条件，通常是缓冲区、或某种独占资源）</strong> </p>
+</li>
+<li><p><strong>所有PV都写完之后，再逆向的定义各种信号量。</strong> </p>
+</li>
+<li><p><strong>检查多个P操作在一起的地方，有没有可能产生死锁（产生死锁的必要条件：保持和请求，可用极端情况分析），产生死锁需调整P位置</strong></p>
+</li>
+</ol>
+<p><strong>【注意】，对于5，1个P通常不会死锁，而两个连P，一般死锁的P在包含在同步的P里面是不会死锁的，而同步的P包含在互斥的P的里面，就有可能出现死锁问题。</strong></p>
+</li>
+<li><p>一、生产者消费者问题（套各种马甲）</p>
+<p>例题1：某工厂有两个生产车间和一个装配车间，两个生产车间分别生产A、B两种零件，装配车间的任务是把A、B 两种零件组装成产品。两个生产车间每生产一个零件后，都要分别把它们送到装配车间的货架F1、F2上。 F1存放零件A，F2存放零件B，F1和F2的容量均可存放10个零件。装配工人每次从货架上取一个零件A和一 个零件B后组装成产品。请用P、V操作进行正确管理。</p>
+<p>【分析】：</p>
+<p>步骤一：两个生产车间分别生产A、B，那么将生产车间看成两个进程，记为PA(),PB(),装配车间任务将A、B组装成产品，则装配车间看出一个进程C()</p>
+<p>步骤二：</p>
+<p>PA(){<br>    生产A;<br>    把A零件放入F1货架；<br>}</p>
+<p>PB(){<br>   生产B;<br>   把B零件放入F2货架;<br> }    </p>
+<p>C(){<br>    取零件A;<br>    取零件B;<br>    将A、B组装成产品；<br> }</p>
+<p>步骤三：</p>
+<p>PA(){<br>    while(1){<br>            生产A;<br>            P(empty1);  &#x2F;&#x2F;① F1货架上的空位<br>            P(mutex1);  &#x2F;&#x2F;②对于货架,箱子什么之类的,可看作缓冲区,因此加一对互斥信号量<br>            把A零件放入F1货架;<br>            V(mutex1);  &#x2F;&#x2F; ②<br>            V(full1);   &#x2F;&#x2F;⑥ 表示F1货架上有几个A零件<br>    }<br>}</p>
+<p>PB(){</p>
+<p>​        while(1){</p>
+<p>​                生产B;</p>
+<p>​                P(empty2);  &#x2F;&#x2F;③F2货架上的空位</p>
+<p>​                P(mutex2);  &#x2F;&#x2F; ④缓冲区访问,需要互斥信号量</p>
+<p>​                把B零件放入F2货架</p>
+<p>​                V(mutex2);</p>
+<p>​                V(full2);        &#x2F;&#x2F;full2表示F2货架上有多少个B零件</p>
+<p>​        }</p>
+<p>}</p>
+<p>PC(){</p>
+<p>​        while(1){</p>
+<p>​                P(full1);  &#x2F;&#x2F;⑤ full1表示F1货架上有几个A零件</p>
+<p>​                P(mutex1);  &#x2F;&#x2F; 互斥访问缓冲区货架</p>
+<p>​                从F1取零件A;</p>
+<p>​                V(mutex1);</p>
+<p>​                V（empty1）;</p>
+<p>​                P(full2)  &#x2F;&#x2F; ⑦full2表示F2货架上有多少个B零件</p>
+<p>​                P(mutex2);  &#x2F;&#x2F;⑧</p>
+<p>​                从F2取零件B;</p>
+<p>​                V(mutex2);  &#x2F;&#x2F; ⑨</p>
+<p>​                V(empty2);</p>
+<p>​                将A、B组装成产品；</p>
+<p>​        }</p>
+<p>}</p>
+<p>步骤四:</p>
+<p>semaphore empty1 &#x3D; 10;  &#x2F;&#x2F;F1货架的容量</p>
+<p>semaphore empty2 &#x3D; 10;  &#x2F;&#x2F;F2货架的容量</p>
+<p>semaphore mutex1 &#x3D; 1;  &#x2F;&#x2F;访问F1货架的互斥信号量</p>
+<p>semaphore mutex2 &#x3D; 1;  &#x2F;&#x2F;访问F2货架的互斥信号量</p>
+<p>semaphore full1 &#x3D; 0;   &#x2F;&#x2F;初始时F1货架有0个A零件</p>
+<p>semaphore full2 &#x3D; 0;   &#x2F;&#x2F;初始时F2货架有0个B零件</p>
+<p>步骤五:检查多个P在一起时,有没有可能产生死锁?(保持和请求)</p>
+<p>二、理发师问题（<strong>涉及取号叫号类似题型、忙则跑路</strong>）核心是<strong>叫号过程</strong></p>
+<p>总结:一对多的叫号取号进程,通过增加对叫号取号的信号量的设定</p>
+<p>多对多的叫号取号进程,通过设定取号i和叫号j,满足i&gt;j就可以服务</p>
+<p>例题2:(多对多的取号叫号)</p>
+<p>面包店有很多面包，由n个销售人员推销。每个顾客进店后取一个号，并且等待叫号，当一个销售人员空闲下来时，就叫下一个号。试设计一个使销售人员和顾客同步的算法。</p>
+<p>步骤一：</p>
+<p>多个销售人员，记为salesman()进程，顾客记为customers()进程</p>
+<p>步骤二：</p>
+<p>salesman(){</p>
+<p>​        while(1){</p>
+<p>​                叫号;</p>
+<p>​                推销面包;</p>
+<p>​        }</p>
+<p>}</p>
+<p>customers(){</p>
+<p>​        while(1){</p>
+<p>​                进店取号;</p>
+<p>​                等待叫号;</p>
+<p>​                买面包;</p>
+<p>​        }</p>
+<p>}</p>
+<p>步骤三:</p>
+<p>salesman(){</p>
+<p>​        while(1){</p>
+<p>​                P(mutex_j);</p>
+<p>​                if (i&gt;j){  &#x2F;&#x2F;i&gt;j,证明有顾客在等待</p>
+<p>​                        叫号j;</p>
+<p>​                        j++;</p>
+<p>​                        V(mutex_j);</p>
+<p>​                        推销面包;</p>
+<p>​                }</p>
+<p>​                else{  &#x2F;&#x2F; 否则没有顾客</p>
+<p>​                        V(mutex_j);</p>
+<p>​                        休息;</p>
+<p>​                }</p>
+<p>​        }</p>
+<p>}</p>
+<p>customers(){</p>
+<p>​        while(1){</p>
+<p>​                P(mutex_i);  &#x2F;&#x2F; 互斥取号</p>
+<p>​                进店取号i;</p>
+<p>​                i++;</p>
+<p>​                V(mutex_i);</p>
+<p>​                等待叫号i,并买面包;</p>
+<p>​        }</p>
+<p>}</p>
+<p>步骤四:</p>
+<p>int i &#x3D; 0;  &#x2F;&#x2F;顾客取号的号码</p>
+<p>int j&#x3D;0;  &#x2F;&#x2F;销售员叫号的号码</p>
+<p>semaphore mutex_i &#x3D; 1;  &#x2F;&#x2F;取号互斥信号量</p>
+<p>semaphore mutex_j &#x3D; 1;  &#x2F;&#x2F;叫号互斥信号量</p>
+<p>步骤五:无死锁</p>
+<p>三、读者写者问题–<strong>同类不互斥,异类互斥-&gt;引入count计时器解决</strong>问题 13、18</p>
+<p>读者写者问题主要是解决互斥，他的访问关系分为两种类型，一 种是可以同时访问（读和读），另一种是必须互斥访问（写和读，写和写），因为多种关系，所以引入了计数器count</p>
+<p>核心问题:count数量！<strong>第一个读者负责上锁,最后一个读者负责解锁</strong>；几类读者？</p>
+<p>例题1、</p>
+<p>【分析】从2)3)看出,对于播放同一种录像片时,相同进程是不互斥的,而不同进程是互斥的,故可归结于读者-写者问题,”<strong>同类不互斥,异类互斥</strong>”</p>
+<p>步骤一:</p>
+<p>三种不同的录像片可看出三个不一样的进程，分别记为P1(), P2(), P3()</p>
+<p>步骤二:</p>
+<p>P1(){</p>
+<p>​    while(1){</p>
+<p>​        第一个观众进来观看录像片;</p>
+<p>​        持续播放录像片;</p>
+<p>​        最后一个观众主动离开,结束录像片;</p>
+<p>​        }</p>
+<p>}</p>
+<p>P2(){</p>
+<p>​    while(1){</p>
+<p>​        第一个观众进来观看录像片;</p>
+<p>​        持续播放录像片;</p>
+<p>​        最后一个观众主动离开,结束录像片;</p>
+<p>​    }</p>
+<p>}</p>
+<p>P3(){</p>
+<p>​    while(1){</p>
+<p>​        第一个观众进来观看录像片;</p>
+<p>​        持续播放录像片;</p>
+<p>​        最后一个观众主动离开,结束录像片;</p>
+<p>​    }</p>
+<p>}</p>
+<p>步骤三:</p>
+<p>P1(){</p>
+<p>​    while(1){</p>
+<p>​        P(mutex1);</p>
+<p>​        if (count1&#x3D;&#x3D;0){    &#x2F;&#x2F;第一个观众进来观看录像片1;</p>
+<p>​            P(room);        &#x2F;&#x2F;对于放映厅只能有一部录像片播放</p>
+<p>​        }</p>
+<p>​        count1++;</p>
+<p>​        V(mutex1);</p>
+<p>​        持续播放录像片;</p>
+<p>​        P(mutex1);</p>
+<p>​        count–;       &#x2F;&#x2F; 有人中途离开</p>
+<p>​        if count1&#x3D;&#x3D; 0{        &#x2F;&#x2F;最后一个观众主动离开,结束录像片1;</p>
+<p>​            V(room);</p>
+<p>​        }</p>
+<p>​        V(mutex1);</p>
+<p>​    }</p>
+<p>}</p>
+<p>P2(){</p>
+<p>​    while(1){</p>
+<p>​        P(mutex2);</p>
+<p>​        if (count2&#x3D;&#x3D;0){    &#x2F;&#x2F;第一个观众进来观看录像片2;</p>
+<p>​            P(room);</p>
+<p>​        }</p>
+<p>​        count2++;</p>
+<p>​        V(mutex2);</p>
+<p>​        持续播放录像片;</p>
+<p>​        P(mutex2);</p>
+<p>​        count2–;       &#x2F;&#x2F; 有人中途离开</p>
+<p>​        if count2&#x3D;&#x3D; 0{        &#x2F;&#x2F;最后一个观众主动离开,结束录像片2;</p>
+<p>​            V(room);</p>
+<p>​        }</p>
+<p>​        V(mutex2);</p>
+<p>​    }</p>
+<p>}</p>
+<p>P3(){</p>
+<p>​    while(1){</p>
+<p>​        P(mutex3);</p>
+<p>​        if (count3&#x3D;&#x3D;0){    &#x2F;&#x2F;第一个观众进来观看录像片3,上锁</p>
+<p>​            P(room);</p>
+<p>​        }</p>
+<p>​        count3++;</p>
+<p>​        V(mutex3);</p>
+<p>​        持续播放录像片;</p>
+<p>​        P(mutex3);</p>
+<p>​        count3–;       &#x2F;&#x2F; 有人中途离开</p>
+<p>​        if count3&#x3D;&#x3D; 0{        &#x2F;&#x2F;最后一个观众主动离开,结束录像片3,解锁</p>
+<p>​            V(room);</p>
+<p>​        }</p>
+<p>​        V(mutex3);</p>
+<p>​    }</p>
+<p>}</p>
+<p>步骤四:</p>
+<p>int count1 &#x3D; 0;        &#x2F;&#x2F;计时器1,统计观看录影片1的人数</p>
+<p>int count2 &#x3D; 0;        &#x2F;&#x2F;计时器2,统计观看录影片2的人数</p>
+<p>int count3 &#x3D; 0;        &#x2F;&#x2F;计时器3,统计观看录影片3的人数</p>
+<p>semaphore room &#x3D; 1;     &#x2F;&#x2F;放映厅是一种独占资源,应互斥访问</p>
+<p>semaphore mutex1 &#x3D; 1;  &#x2F;&#x2F;互斥访问计时器1</p>
+<p>semaphore mutex2 &#x3D; 1;         &#x2F;&#x2F;互斥访问计时器2</p>
+<p>semaphore mutex3 &#x3D; 1;        &#x2F;&#x2F;互斥访问计时器3</p>
+<p>步骤五:无死锁</p>
+<p>四、哲学家进餐问题</p>
+<p>哲学家问题关键点是限制并行，主要是三种思路 </p>
+<p>• 1.限制申请条件（对应破坏死锁循环等待条件）解法一不通用 </p>
+<p>比如规定单号哲学家先取左筷子，双号先取右筷子 </p>
+<p>• 2.信号量限制并行数（解法二通用，参考2.4小题第8题确定最大 </p>
+<p>进程数） 如p89代码就是同一时间只能有一个哲学家就餐（禁止并行） </p>
+<p>• 3.限制哲学家只有能够取得两个筷子的时候才会就餐（对应破坏 </p>
+<p>死锁条件）（解放三很通用，暴力美学，P(Lock)；if(检查是全否 </p>
+<p>满足)；V(Lock)）</p>
+<p>【注意】：哲学家问题的初始化</p>
+<p>semaphore chopstick[n];</p>
+<p>​    for(int i&#x3D;0;i&lt;n;i++){</p>
+<p>​        chopstick[i] &#x3D; 1;</p>
+<p>​    }    </p>
+<p>五、单纯同步问题</p>
+<p>画出多个同步关系即可,比如实现前驱关系等.</p>
+<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220315142531937.png" alt="image-20220315142531937" style="zoom:50%;" /></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>管程的定义</p>
+<ul>
+<li><p>为什么要引入管程：解决信号量机制编程麻烦、易出错等问题</p>
+</li>
+<li><p>管程的组成</p>
+<ul>
+<li>管程名称</li>
+<li>局部于管程内部的共享数据结构说明</li>
+<li>对该数据结构进行操作的一组过程</li>
+<li>对局部于管程内部的共享数据设置初始值的语句</li>
+</ul>
+</li>
+<li><p>基本特征</p>
+<ul>
+<li>各外部进程&#x2F;线程只能通过管程提供的特定”入口”才能访问共享数据</li>
+<li>每次仅允许一个进程在管程内执行某个内部过程</li>
+</ul>
+<p>【注意】各进程必须互斥访问管程的特性是由编译器实现的；可在管程中设置条件变量及等待&#x2F;唤醒操作以解决同步问题</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="四、死锁问题"><a href="#四、死锁问题" class="headerlink" title="四、死锁问题"></a>四、死锁问题</h2><ul>
+<li><p>为什么会产生死锁?</p>
+<ul>
+<li>死锁，是指多个进程因竞争资源而造成的一种僵局（互相等待），若无外力作用，这些进程都将无法向前推进；</li>
+</ul>
+</li>
+<li><p>产生死锁的4个必要条件?</p>
+<ul>
+<li>互斥条件：对必须互斥使用的资源的争抢才能导致死锁</li>
+<li>不剥夺条件：进程保持的资源只能主动释放，不可强行剥夺</li>
+<li>请求和保持条件：保持着某些资源不放，请求别的资源</li>
+<li>循环等待条件：存在一条进程资源的循环等待链；<strong>可知死锁发送至少有两个进程</strong></li>
+</ul>
+</li>
+<li><p>解决死锁问题的方法</p>
+<ul>
+<li><p>预防死锁：破坏死锁的4个必要条件之一</p>
+<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220315151517877.png" alt="image-20220315151517877" style="zoom:50%;" />    
+</li>
+<li><p>避免死锁：用某种方法防止系统进入不安全状态，从而避免死锁（经典的银行家算法）</p>
+<ul>
+<li><p>安全序列和银行家算法</p>
+<ul>
+<li><p>银行家算法步骤： </p>
+<p>①检查此次申请是否超过了之前声明的最大需求数 </p>
+<p>②检查此时系统剩余的可用资源是否还能满足这次请求 </p>
+<p>③试探着分配，更改各数据结构 </p>
+<p>④用安全性算法检查此次分配是否会导致系统进入不安全状态 </p>
+<p>安全性算法步骤： </p>
+<p>检查当前的剩余可用资源是否能满足某个进程的最大需求，如果可以，就把该进程加入安全序列， </p>
+<p>并把该进程持有的资源全部回收。 </p>
+<p>不断重复上述过程，看最终是否能让所有进程都加入安全序列</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>死锁的检测和解除：允许死锁发送，系统负责检测出死锁并解除</p>
+<ul>
+<li><p><strong>资源分配图和死锁定理–注意请求边（进程-&gt;资源,表示进程申请一个资源）和分配边(资源-&gt;进程,表示该类资源已有一个分配给进程)</strong></p>
+</li>
+<li><p>死锁的检测</p>
+<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220315153128999.png" alt="image-20220315153128999" style="zoom:50%;" />    
+</li>
+<li><p>死锁的解除</p>
+<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220315153208508.png" alt="image-20220315153208508" style="zoom:50%;" /></li>
+</ul>
+<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220315150917640.png" alt="image-20220315150917640"></p>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>chenbd03</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://chenbd03.github.io/2022/03/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">https://chenbd03.github.io/2022/03/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span><strong>Do you believe in DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"># 操作系统</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/03/16/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AC%AC%E4%B8%89%E7%AB%A0-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">第三章-内存管理</a>
+            
+            
+            <a class="next" rel="next" href="/2022/03/14/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B1%82%E5%80%BC/">逆波兰表达式求值</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <!--iframe class="music"  frameborder="no"   marginwidth="20" marginheight="0" width=420 height=42 src="//music.163.com/outchain/player?type=2&id=5179543&auto=1&height=32" ></iframe -->
+    <div class="copyright">
+        <span>© chenbd03 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+    
+</footer>
+
+    </div>
+</body>
+
+</html>

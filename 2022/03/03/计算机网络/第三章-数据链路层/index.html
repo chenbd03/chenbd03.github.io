@@ -13,7 +13,7 @@
 
 
 
-<title>第三章-数据链路层 | blog</title>
+<title>blog</title>
 
 
 
@@ -287,7 +287,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">第三章-数据链路层</h1>
+            <h1 class="post-title"></h1>
             
                 <div class="post-meta">
                     
@@ -300,19 +300,403 @@
                         </span>
                     
                     
-                        <span class="post-category">
-                    Category:
-                            
-                                <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
-                            
-                        </span>
-                    
                 </div>
             
         </header>
 
         <div class="post-content">
-            <h2 id="第一章、"><a href="#第一章、" class="headerlink" title="第一章、"></a>第一章、</h2>
+            <p>title: 第三章-数据链路层<br>date: 2022-03-03 17:05:20<br>tags: 计算机网络<br>categories: 计算机网络</p>
+<h2 id="一、数据链路层概述和功能"><a href="#一、数据链路层概述和功能" class="headerlink" title="一、数据链路层概述和功能"></a>一、数据链路层概述和功能</h2><ul>
+<li><p>概述：在物理层提供的服务的基础上向网络层提供服务，将物理层提供的可能出错的物理连接改造为逻辑上无差错的数据链路</p>
+</li>
+<li><p>功能：为网络层提供服务、组帧、差错控制、流量控制与可靠传输机制、链路管理</p>
+<p>【注意】下面章节围绕着其功能进行展开</p>
+</li>
+</ul>
+<h2 id="二、组帧"><a href="#二、组帧" class="headerlink" title="二、组帧"></a>二、组帧</h2><ul>
+<li><p>目的：了出错时只重发出错的帧，而不必重发所有的数据，它主要解决了帧定界、帧同步、透明传输的问题</p>
+</li>
+<li><p>组帧方式：字符计数法、字符（节）填充法、零比特填充法、违规编码法</p>
+<ul>
+<li><p>字符计数法：在帧头部使用一个计数字段来表明帧内字符数；缺点：若计数字段出错，双方将失去同步<img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg-blog.csdnimg.cn%2F20201230155416519.png%3Fx-oss-process%3Dimage%2Fwatermark%2Ctype_ZmFuZ3poZW5naGVpdGk%2Cshadow_10%2Ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTg0NDgzNg%3D%3D%2Csize_16%2Ccolor_FFFFFF%2Ct_70&refer=http%3A%2F%2Fimg-blog.csdnimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1648970713&t=39b748df1e9762c3adc5c83591e9f5f5" alt="img"></p>
+</li>
+<li><p>字符（节）填充法：使用特定的的字符来定界一帧的SOH开始和结束EOT</p>
+<p>【注意】若信息位中出现的特殊字符不被误判为首尾定界符，可在特殊字符前填充一个转义字符（ESC）加以区分<img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg2020.cnblogs.com%2Fblog%2F1458243%2F202005%2F1458243-20200524044058768-1217021609.jpg&refer=http%3A%2F%2Fimg2020.cnblogs.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1648970871&t=121cc658ffd5ec909bea849be6b7181e" alt="img"></p>
+</li>
+<li><p>零比特填充法：“5110”原则</p>
+</li>
+<li><p>违规编码法</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="三、差错控制"><a href="#三、差错控制" class="headerlink" title="三、差错控制"></a>三、差错控制</h2><ul>
+<li><p>检错编码：奇偶校验码和循环冗余码</p>
+<ul>
+<li><p>奇偶校验码：由n-1位信息元和1位校验元组成</p>
+<ul>
+<li><p>奇校验码：码长为n位中’1‘的个数为奇数</p>
+</li>
+<li><p>偶校验码：码长为n位中’1‘的个数为偶数</p>
+<p>【注意】只能检查出奇数个比特错误，检错能力为50%</p>
+</li>
+</ul>
+</li>
+<li><p>循环冗余码CRC</p>
+<p>计算方式：1、准备待传的有效数据d位 （每d位称为一组）</p>
+<p>2、每组都加上冗余码构成帧（d+r位FCS）再发送，同时双发商定生成多项式or除数（r+1位）；其计算方式：d位+r位0 &#x2F; 生成多项式 &#x3D; 商…r位FCS, 即r位FCS同d位数据相拼接</p>
+<ol start="3">
+<li>接收方检验: d+r位数据 &#x2F; 生成多项式, 若余数位0, 则正确接收, 不为0则丢弃</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>纠错编码：海明码: <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg-blog.csdnimg.cn%2F20201005140544342.png%3Fx-oss-process%3Dimage%2Fwatermark%2Ctype_ZmFuZ3poZW5naGVpdGk%2Cshadow_10%2Ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0NTc0MzMz%2Csize_16%2Ccolor_FFFFFF%2Ct_70%23pic_center&amp;refer=http%3A%2F%2Fimg-blog.csdnimg.cn&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=jpeg?sec=1648973860&amp;t=b89805324393149cae5550887353b410" alt="img" style="zoom:50%;" /></p>
+</li>
+<li><p>【注意】海明码纠错d位，需要码距2d+1，而”检错“d位，则码距d+1</p>
+</li>
+</ul>
+<h2 id="四、流量控制和可靠传输-（重点）"><a href="#四、流量控制和可靠传输-（重点）" class="headerlink" title="四、流量控制和可靠传输 （重点）"></a>四、流量控制和可靠传输 （重点）</h2><p>流量控制主要是接收方控制发送方发送数据的速率；数据链路层的可靠传输通常使用捎带确认和超时重传机制来完成；</p>
+<p>这里要掌握的主要有三种协议：停止-等待协议、后退N帧协议（GBN）、选择重传协议（SR），后两者是滑动窗口协议，实则停止等待协议也可以看作是一种特殊的滑动窗口</p>
+<ul>
+<li><p><strong>停止等待协议</strong></p>
+<ul>
+<li>原理：<ul>
+<li>源站发送单个帧后必须等待确认，目的站接收每个帧时必须发送一个应答信号，信号未到达源站时，源站不能发送数据；</li>
+</ul>
+</li>
+<li><strong>特点</strong>：<ul>
+<li>1、为了超时重发和判定重复帧的需要，发送方和接收方都需要设置一个帧缓冲区；发送方在发完数据时，需发送到缓冲区保留该数据帧的副本</li>
+<li>2、从滑动窗口机制来说，相当于发送窗口大小&#x3D;接收窗口大小&#x3D;1， 所以说它是可看作是一种特殊的滑动窗口</li>
+<li>3、信道利用率低</li>
+</ul>
+</li>
+<li>停止-等待协议常见3种出错方式：<ul>
+<li>数据帧丢失或检测到帧错误、ACK丢失、ACK迟到</li>
+<li><img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.51wendang.com%2Fpic%2F97215599e1db7c29799e1e6f%2F2-365-png_6_0_0_0_0_0_0_893.25_1263.375-893-0-0-893.jpg&amp;refer=http%3A%2F%2Fwww.51wendang.com&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=jpeg?sec=1649296177&amp;t=c6fb3d32102db1c2fe902c902a8d10d2" alt="img" style="zoom: 67%;" /></li>
+</ul>
+</li>
+<li><strong>信道利用率的计算</strong><ul>
+<li>（L&#x2F;C）&#x2F;T，其中T为发送周期,通常由(L&#x2F;C)发送数据的时间+RTT+Ta(确认帧发送时延)，L指这个周期内工发送L比特数据，C为发送方的数据传输速率</li>
+<li><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/8a0453cdb87fe88cefcaf339fef8385e086d671bd3bc9c5dd9c72e4a1ca6c46b1dcad75f47178691c4bf3a4df12db8ae?pictype=scale&amp;from=30113&amp;version=3.3.3.3&amp;uin=1784776200&amp;fname=%E5%81%9C%E6%AD%A2-%E7%AD%89%E5%BE%85%E5%8D%8F%E8%AE%AE.png&amp;size=750" alt="img" style="zoom:50%;" /></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>后退N帧协议（GBN）</strong></p>
+<ul>
+<li>发送方：<ul>
+<li><strong>1.上层的调用:上层要发送数据先检查窗口,若未满则产生一个帧并将其发送;若满,发送方只将数据返回上层</strong></li>
+<li><strong>2.收到了一个ACK:GBN协议中,对n号帧的确认采用累计确定的方式,标明接收方已收到n帧和之前的全部帧</strong></li>
+<li><strong>3.超时事件:若出现超时,发送方重传所有已发送但未被确认的帧</strong></li>
+</ul>
+</li>
+<li>接收方：<ul>
+<li>若正确收到n号帧且有序,则接收方为n帧发送一个ACK,并将该帧中的数据部分交付给上层,其余情况都丢弃帧,并未最近按序接收的帧重新发送ACK</li>
+</ul>
+</li>
+<li>特点：<ul>
+<li>发送窗口＞1,接收窗口&#x3D;1</li>
+<li>接收到的帧采用加以捎带的确认(累计确认)方式,即ACKn表明<strong>前面n个帧已正确收到</strong>，期望收到第n+1个帧</li>
+<li>采用n比特对帧编号,发送窗口的尺寸W应满足1≤W≤$ 2^n $-1</li>
+<li>接收方只按顺序接收帧，不按序的帧丢弃</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>选择重传协议（SR）</strong></p>
+<ul>
+<li><p>接收方:</p>
+<ul>
+<li>“来者不拒”(窗口内的帧)，即SR接收方将确定一个正确接收的帧而不管其是否按序,失序的帧将被缓存,并返回给发送方一个该帧的确认.直到所有的帧皆被收到为止.这时将一批帧交付给上层,然后向前移动滑动窗口</li>
+</ul>
+</li>
+<li><p>特点</p>
+<ul>
+<li>发送窗口＞1,接收窗口＞1</li>
+<li>对数据帧逐一确认,收一个确认一个</li>
+<li><strong>只重传出错帧</strong></li>
+<li>接收方有缓存</li>
+<li>采用n比特对帧编号,接收窗口Wr+发送窗口的Wt≤$2^n$-1；若仍采用累计确认机制,并且接收窗口Wr不应超过发送窗口Wt,即Wr≤$2^(n-1)$ ，接收窗口Wtmax&#x3D;Wrmax&#x3D;$2^(n-1)$</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="五、介质访问控制（MAC）"><a href="#五、介质访问控制（MAC）" class="headerlink" title="五、介质访问控制（MAC）"></a>五、介质访问控制（MAC）</h2><p>常见介质访问控制方法可划分为静态划分信道和动态划分信道</p>
+<ul>
+<li><p>静态划分信道：信号划分介质访问控制，可分为以下4种； 【补充】多路复用技术:把多个信号组合在一条物理信道上进行传输,使多个计算机或终端设备共享信道资源,提高信道利用率</p>
+<ul>
+<li><p>频分多路复用FDM</p>
+</li>
+<li><p>时分多路复用TDM：将一条物理信道划分为若干个时间片,轮流分配给多个信号使用;每一个用户在每个TMD帧占用固定序号的时序STDM,异步时分多路复用,也称统计时分多路复用;动态分配时序</p>
+</li>
+<li><p>波分多路复用WDM</p>
+</li>
+<li><p><strong>码分多路复用CDM</strong>：采用不同的编码来区分各路原始信号;既共享时间,也共享信道频率采用码分多址CMDA,每个时间再划分成m个短的时间槽,称为码片，</p>
+<p>原理：例子:假设m(码片)&#x3D;8,每个向量8bit</p>
+<p>A站发送数据1:码片向量<strong>S</strong>为(-1,-1,-1,+1,+1,-1,+1,+1)</p>
+<p>B站发送数据0:码片向量<strong>T</strong>为(+1,+1,-1,+1,-1,-1,-1,+1)</p>
+<p><strong>S-T</strong> &#x3D; (0,0,-2,2,0,-2,0,2)  (线性相加)</p>
+<p>若想接收A站数据,则(<strong>S·S-T</strong>)&#x2F;向量个数 &#x3D; 1  –&gt;比特1</p>
+<p>若想接收B站数据,则(<strong>T·S-T</strong>)&#x2F;向量个数 &#x3D; -1     –&gt;比特0</p>
+</li>
+</ul>
+</li>
+<li><p>动态划分信道：<strong>随机访问介质访问控制、</strong>轮询访问介质访问控制</p>
+<ul>
+<li><p><strong>随机访问介质访问控制</strong> ： ALOHA协议、CSMA协议、CSMA&#x2F;CD协议、 CSMA&#x2F;CA协议</p>
+<ul>
+<li><p>ALOHA协议</p>
+<ul>
+<li>不监听信道，不按时间槽发送，随机重发（想发就发）</li>
+<li>会发送信号冲突，ALOHA协议采用重传策略是让各站等待一段随机时间再进行重发</li>
+<li>缺点：网络的吞吐量低</li>
+<li>【拓展】时隙ALOHA协议：设置时隙，每个时隙开始时才能发送一帧；碰撞情况：在一个时隙内≥2个帧到达，下一时隙将会产生碰撞</li>
+</ul>
+</li>
+<li><p>CSMA<strong>（载波侦听多路访问）</strong>协议</p>
+<table>
+<thead>
+<tr>
+<th>信道状态</th>
+<th>1-坚持</th>
+<th>非坚持</th>
+<th>p-坚持</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>空闲</td>
+<td>立即发送数据</td>
+<td>立即发送数据</td>
+<td>以概率p发送数据，以概率1-p推迟到下一时隙</td>
+</tr>
+<tr>
+<td>忙</td>
+<td>继续侦听</td>
+<td>放弃侦听，等待一个随机的时间后再侦听</td>
+<td>持续侦听，直到信道空闲，再以概率p发送</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>CSMA&#x2F;CD**(载波侦听多路访问&#x2F;碰撞检测)**协议</p>
+<ul>
+<li><p>工作流程:先听后发,边听边发,冲突停发,随机重发</p>
+</li>
+<li><p>特点: </p>
+<ul>
+<li>CSMA&#x2F;CD检测到的帧有没有发送碰撞:根据发送帧经过至多2ε的时间(端到端传播时延的2倍,即争用期)，至少是ε，即在中间的阶段两个帧碰撞了</li>
+<li><strong>最小帧长公式 &#x3D; 总线传播时延x数据传输速率x2</strong></li>
+<li>以太网(有线局域网)规定最短帧长为64B,若小于64B,则需要填充该字段</li>
+<li>CSMA&#x2F;CD采用<strong>二进制指数规避算法</strong>来解决碰撞问题<br>1.确定规避时间,一般是两倍总线端到端传播时延2τ<br>  2.定义参数k&#x3D;重传次数,k要≤10,即吗k&#x3D;min{重传次数,10}<br>  3.从[0,1,2,…,$2^k$-1]随机取一个数,重传规避时间为2rτ<br>  4.重传超过16次仍不能成功,说明网络拥挤,应抛弃该帧并向高层报告</li>
+</ul>
+<img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/a6fb1fd60cbb376b93a894162deb9a67e6aa3445c1c37f93a912d036e2d0c4e9ede067424dcf6374b73b3dec966ef1e9?pictype=scale&amp;from=30113&amp;version=3.3.3.3&amp;uin=1784776200&amp;fname=CSMA-CD.png&amp;size=750" alt="img" style="zoom:50%;" /></li>
+</ul>
+</li>
+<li><p>CSMA&#x2F;CA((载波侦听多路访问&#x2F;碰撞避免))协议</p>
+<ul>
+<li><p>工作原理</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/9ae420433f8d1e77d01e3b7d6e65b0bebb2f1e030f715c1a33499c308e6d85dc53b5863fb4d9cdaa2e9830529e497514?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=CSMA-CA%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.png&size=750" alt="img"></p>
+</li>
+<li><p>广泛应用无线局域网IEEE802.11.其规定,所有站发完数据要等待一段时间,该时间称为时间间隔(IFS)，分为下面三种：</p>
+<ul>
+<li>SIFS：最短IFS,其帧类型:ACK帧,CTS帧,分片后的数据帧,所有回答AP探询的帧</li>
+<li>PIFS：用于PCF操作</li>
+<li>DIFS：用于异步帧竞争访问时延</li>
+</ul>
+</li>
+<li><p>隐蔽站问题:  A,B检测到信道空闲时,都向AP发送数据,导致碰撞发送  （RTS和CTS控制帧）</p>
+<ul>
+<li>解决机制:在发送数据之前先对信道进行预约.即源站要发送数据帧前先广播一个短请求发送RTS控制帧,AP收到后,广播一个CTS控制帧，CTS控制帧作用:1.给源站明确的发送许可 2.指示其他站点在预约期内不要发送</li>
+<li>RTS和CTS三种形式<ul>
+<li>使用RTS和CTS控制帧</li>
+<li>数据帧长度超过某一阈值才使用RTS和CTS控制帧</li>
+<li>不使用RTS和CTS控制帧</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>【补充】CSMA&#x2F;CD和CSMA&#x2F;CA区别</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/57dd525d355504554620570df94928561c23e1b4ffaa0e508a987eb257e533715b881d728b2dced9e124a2a6927c82da?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=%E5%8C%BA%E5%88%AB.png&size=750" alt="img"></p>
+</li>
+</ul>
+</li>
+<li><p>轮询访问介质访问控制：</p>
+<ul>
+<li>令牌传递协议,主要用在令牌环局域网中</li>
+<li>令牌传递网络中,传输介质的物理拓扑为星形拓扑,而逻辑上是环形拓扑</li>
+<li>既不共享时间,而不共享空间,它不会发送冲突</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="六-、局域网、以太网802-3、无线局域网802-11"><a href="#六-、局域网、以太网802-3、无线局域网802-11" class="headerlink" title="六 、局域网、以太网802.3、无线局域网802.11"></a>六 、局域网、以太网802.3、无线局域网802.11</h2><p>局域网：</p>
+<ul>
+<li><p>特性</p>
+<ul>
+<li>地理范围和站点数目有限</li>
+<li>各站平等，且共享较高的总带宽</li>
+<li>能进行广播和组播</li>
+<li>较低的时延和较低的误码率</li>
+</ul>
+</li>
+<li><p>拓扑结构：星形结构、环形结构、总线形结构、树形结构</p>
+</li>
+<li><p>传输介质</p>
+<ul>
+<li>有线局域网 ：双绞线、铜缆、光纤等</li>
+<li>无线局域网：电磁波</li>
+<li>介质访问控制方式：CSMA&#x2F;CD、令牌总线、令牌环</li>
+</ul>
+</li>
+<li><p>五种特殊的局域网拓扑</p>
+<ul>
+<li><p>以太网IEEE802.3<br>    逻辑拓扑是总线形，物理拓扑是星形<br>    使用CSMA&#x2F;CD的介质访问控制方法,符合IEEE802.3规范标准</p>
+</li>
+<li><p>令牌环网(IEEE802.5)<br>    逻辑拓扑是环形，物理拓扑是星形</p>
+</li>
+<li><p>FDDI(IEEE802.8)<br>    逻辑拓扑是环形，物理拓扑是双环形</p>
+</li>
+<li><p>ATM网</p>
+</li>
+<li><p>无线局域网(WLAN)IEEE802.11</p>
+<ul>
+<li>IEEE802标准定义的局域网对应OSI的数据链路层和物理层,将数据链路层拆分为两个子层:LLC(逻辑链路控制，针对网络层)和MAC(媒体接入控制， 针对物理层)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>以太网IEEE802.3(无连接,不可靠服务,采用曼彻斯特编码)</p>
+<ul>
+<li><p>以太网的传输介质</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/c713b3f983f26ff35078bcc7453cb96c39b2c87b3bb9120e77da1c42b3ce12ec9935404cc82e08bafb73dbefb1ec9136?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220310103330884.png&size=750" alt="image-20220310103330884"></p>
+</li>
+<li><p>以太网的MAC帧</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/6b42f2b4edefada7fb109ff6a67f045ead6eae13e24d6cc873959bc4c6b553aed18d53b7c8ab6a1654ff58eeb2fcb6e3?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220310103340272.png&size=750" alt="image-20220310103340272"></p>
+<ul>
+<li>前导码:8B,使接收端与发送端时钟同步、数据:46~1500B,最小满足64B,不够需要字节填充、校验码FCS:4B,校验以太网MAC帧,不包含前导码；注意：对于CSMA&#x2F;CD算法,的以太网的最短帧长为64B,但MAC帧减去目的地址6B,源地址6B,类型2B,即数据字段最短为64-18&#x3D;46B</li>
+</ul>
+</li>
+<li><p>高速以太网:速率≥100Mb&#x2F;s的以太网</p>
+<ul>
+<li><p>100BASE-T以太网<br>    双绞线<br>    星形拓扑结构以太网<br>    支持全双工和半双工：全双工不使用CSMA&#x2F;CD协议</p>
+</li>
+<li><p>吉比特以太网<br>    光纤或双绞线<br>    支持全双工和半双工，全双工不使用CSMA&#x2F;CD协议</p>
+</li>
+<li><p>10吉比特以太网<br>    光纤，只支持全双工,且不使用CSMA&#x2F;CD协议</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>无线局域网IEEE802.11</p>
+<ul>
+<li><p>802.11MAC帧头格式</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/fbceb00528ae5b498168c93e0c308051499185dbf4c4a20d9769bc825a70474923c33e23bf4b56282a74707d7772ea4f?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220310103630570.png&size=750" alt="image-20220310103630570"></p>
+<p>Address1:RA接收端、Address2:TA发送端、Address3:DA目的地址、Address4:SA源地址</p>
+</li>
+<li><p>有固定基础设施无线局域网</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/b4e0b16bb976475a7bf3d4d986cc24e3da317d342d805488ecaec056f4b8afcdd883c54311462cef0f4c03a67476d798?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220310103738175.png&size=750" alt="image-20220310103738175"></p>
+<ul>
+<li>采用星形拓扑,在MAC层使用CSMA&#x2F;CA协议，门桥作用为无线用户提供有线连接的以太网的接入，无固定基础设施移动自组织网络(自组网络)</li>
+</ul>
+</li>
+</ul>
+<h2 id="七、数据链路层设备"><a href="#七、数据链路层设备" class="headerlink" title="七、数据链路层设备"></a>七、数据链路层设备</h2><ul>
+<li><p>网桥</p>
+<ul>
+<li>基本原理:根据MAC帧的目的地址对帧进行转发和处理</li>
+<li>特点:工作在链路层的MAC子层种,处理数据的对象是帧;具有路由选择的功能</li>
+<li>根据路径选择算法不同,可分透明网桥(选择的不是最佳路由)和源路由网桥选择的是最佳路由</li>
+</ul>
+</li>
+<li><p>以太网交换机</p>
+<ul>
+<li><p>特点</p>
+<ul>
+<li>全双工方式,即插即用设备</li>
+<li>采用自学习算法</li>
+<li>独占传输媒体的带宽,</li>
+<li>N个端口,交换机的总容量就有Nx10Mb&#x2F;s</li>
+</ul>
+</li>
+<li><p>原理：检测以太网端口的数据帧的源和目的地的MAC地址,然后与系统内部的动态查找表进行比较.</p>
+</li>
+<li><p>交换模式</p>
+<ul>
+<li>直通式交换机：只检查帧的目的地址(6B)</li>
+<li>存储转发式交换机：支持不同速率端口的转换</li>
+</ul>
+</li>
+<li><p><strong>冲突域和广播域问题：</strong>    </p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>能否隔离冲突域</th>
+<th>能否隔离广播域</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>中继器、集线器</td>
+<td>×</td>
+<td>×</td>
+</tr>
+<tr>
+<td>网桥、交换机</td>
+<td>✔</td>
+<td>×</td>
+</tr>
+<tr>
+<td>VLAN（虚拟局域网）</td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr>
+<td>路由器</td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+</tbody></table>
+<p>补充：VLAN工作在OSI参考模型的第2层和第3层，一个VLAN就是一个广播域，VLAN之间的通信是通过第3层的路由器来完成</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="八、广域网"><a href="#八、广域网" class="headerlink" title="八、广域网"></a>八、广域网</h2><p>PPP（点对点）协议和HDLC协议（408删除，可参考学习）</p>
+<p>PPP（点对点）协议</p>
+<ul>
+<li><p>组成：</p>
+<ul>
+<li>LCP链路控制协议：用于建立、测试、配置和管理数据链路，比如身份验证</li>
+<li>NCP网络控制协议：为网络层协议建立和配置逻辑连接</li>
+<li>一个将IP数据报封装到串行链路的方法：受MTU限制</li>
+</ul>
+</li>
+<li><p>帧格式：</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/981209a033d285dc4049db70dafef3c19b2ed4922f28723626ca50f46545676079cf60d13da1417fbc4eada9808c672d?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=wps7DB2.tmp.jpg&size=750" alt="img"> </p>
+<p>【注意】面向字节的，因此PPP帧的长度都是整数个字节.</p>
+</li>
+<li><p>特点：    </p>
+<ul>
+<li><p>1、只保证无差错接收，不可靠的协议，不使用序号和确认机制</p>
+</li>
+<li><p>2、仅支持点对点、不支持多点，不是总线形，无须采用CSMA&#x2F;CD,自然没有最短帧长的限制,故为0~1500B</p>
+</li>
+<li><p>3、只支持全双工</p>
+</li>
+<li><p>4、面向字节，当信息字段和标志字段一致时：采用异步线路，字节填充法；采用同步线路，用硬件完成比特填充</p>
+</li>
+<li><p>【补充：广域网和局域网的区别和联系】</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/d9e3a2fca142fe82d1ac743c7fc8815f13fb6635d695e3eff309073a6117221ff58586e42889bb97d9b05a64c46c44ba?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=wps7DC2.tmp.jpg&size=750" alt="img"></p>
+</li>
+</ul>
+</li>
+</ul>
+
         </div>
 
         
@@ -349,10 +733,6 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
-                    
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"># 计算机网络</a>
-                    
-                        
                 </span>
             </div>
             <div>
@@ -362,6 +742,8 @@
             </div>
         </section>
         <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/03/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E7%BD%91%E7%BB%9C%E5%B1%82/">第四章-网络层</a>
             
             
             <a class="next" rel="next" href="/2022/03/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E7%89%A9%E7%90%86%E5%B1%82/">第二章-物理层</a>

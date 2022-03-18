@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="chenbd03">
+
+
+
+
+
+<title>栈和队列基础知识 | blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+    
+    <script>
+    !
+    function() {
+    function n(n, e, t) {
+    return n.getAttribute(e) || t
+    }
+    function e(n) {
+    return document.getElementsByTagName(n)
+    }
+    function t() {
+    var t = e("script"),
+    o = t.length,
+    i = t[o - 1];
+    return {
+    l: o,
+    z: n(i, "zIndex", -1), //置于主页面背后
+    o: n(i, "opacity", .5), //线条透明度
+    c: n(i, "color", "0,0,0"), //线条颜色
+    n: n(i, "count", 100) //线条数量
+    }
+    }
+    function o() {
+    a = m.width = window.innerWidth ||
+    document.documentElement.clientWidth || document.body.clientWidth,
+    c = m.height = window.innerHeight ||
+    document.documentElement.clientHeight || document.body.clientHeight
+    }
+    function i() {
+    r.clearRect(0, 0, a, c);
+    var n, e, t, o, m, l;
+    s.forEach(function(i, x) {
+    for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 :
+    1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1,
+    1), e = x + 1; e < u.length; e++) n = u[e],
+    null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l
+    = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o,
+    i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t /
+    2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y),
+    r.lineTo(n.x, n.y), r.stroke()))
+    }),
+    x(i)
+    }
+    var a, c, u, m = document.createElement("canvas"),
+    d = t(),
+    l = "c_n" + d.l,
+    r = m.getContext("2d"),
+    x = window.requestAnimationFrame || window.webkitRequestAnimationFrame
+    || window.mozRequestAnimationFrame || window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(n) {
+    window.setTimeout(n, 1e3 / 45)
+    },
+    w = Math.random,
+    y = {
+    x: null,
+    y: null,
+    max: 2e4
+    };
+    m.id = l,
+    m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z +
+    ";opacity:" + d.o,
+    e("body")[0].appendChild(m),
+    o(),
+    window.onresize = o,
+    window.onmousemove = function(n) {
+    n = n || window.event,
+    y.x = n.clientX,
+    y.y = n.clientY
+    },
+    window.onmouseout = function() {
+    y.x = null,
+    y.y = null
+    };
+    for (var s = [], f = 0; d.n > f; f++) {
+    var h = w() * a,
+    g = w() * c,
+    v = 2 * w() - 1,
+    p = 2 * w() - 1;
+    s.push({
+    x: h,
+    y: g,
+    xa: v,
+    ya: p,
+    max: 6e3
+    })
+    }
+    u = s.concat([y]),
+    setTimeout(function() {
+    i()
+    },
+    100)
+    } ();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Chenbd03&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Chenbd03&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">栈和队列基础知识</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">chenbd03</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 14, 2022&nbsp;&nbsp;11:47:03</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="一、栈"><a href="#一、栈" class="headerlink" title="一、栈"></a>一、栈</h2><p>定义：只允许在一端进行插入或删除操作的线性表。元素入栈出栈规则：先进后出原则</p>
+<p>栈的数学定义：n个不同元素进程，出栈元素不同排列的个数为 :    </p>
+<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220315200913823.png" alt="image-20220315200913823">                </p>
+<p>栈的存储结构: 顺序存储结构和链式存储结构</p>
+<ul>
+<li><p>顺序存储结构</p>
+</li>
+<li><p>&#96;&#96;&#96;C<br>&#x2F;&#x2F;栈的顺序存储类型</p>
+<h1 id="define-MaxSize-10"><a href="#define-MaxSize-10" class="headerlink" title="define MaxSize 10"></a>define MaxSize 10</h1><p>typedef struct{<br>int data[MaxSize];<br>int top;<br>}SqStack;</p>
+<p>&#x2F;&#x2F; 初始化<br>void InitStack(SqStack &amp;s){<br>s.top &#x3D; -1;<br>}<br>&#x2F;&#x2F; 栈空判断<br>bool StackEmpty(SqStack s){<br>if (s.top &#x3D;&#x3D; -1){<br>    return true<br>}<br>return false;<br>}<br>&#x2F;&#x2F; 栈满判断<br>bool StackFlow(SqStack &amp;s){<br>if (s.top &#x3D;&#x3D; MaxSize-1){<br>    return true;<br>}<br>return false;<br>}<br>&#x2F;&#x2F; 进栈操作<br>void Push(SqStack &amp;s, int x){<br>if (StackFlow(s)){<br>    printf(“栈满,无法进栈\n”);<br>    return;<br>}<br>s.data[++(s.top)] &#x3D; x;<br>}<br>&#x2F;&#x2F; 出栈操作<br>void Pop(SqStack &amp;s, int &amp;x){<br>if (StackEmpty(s)){<br>    printf(“栈空,出栈失败!\n”);<br>    return;<br>}<br>x &#x3D; s.data[(s.top)–];<br>}<br>&#x2F;&#x2F;获得栈顶元素<br>void getTop(SqStack &amp;s, int &amp;x){<br>if (StackEmpty(s)){<br>    printf(“栈空,获得栈顶元素失败!”);<br>    return;<br>}<br>x &#x3D; s.data[s.top];<br>}</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 链式存储结构</span><br><span class="line"></span><br><span class="line">- ```C</span><br><span class="line">  // stack.h头文件</span><br><span class="line">  #ifndef __STACK_H_</span><br><span class="line">  #define __STACK_H_</span><br><span class="line">  typedef int elementype;</span><br><span class="line">  //定义一个节点</span><br><span class="line">  typedef struct Node</span><br><span class="line">  &#123;</span><br><span class="line">  	elementype data;</span><br><span class="line">  	struct Node *pNext;</span><br><span class="line">  &#125;NODE,*PNODE;//</span><br><span class="line">  //构造一个栈</span><br><span class="line">  typedef struct stack</span><br><span class="line">  &#123;</span><br><span class="line">  	PNODE pTop; //栈顶指针</span><br><span class="line">  	PNODE pBottom;//栈底指针</span><br><span class="line">  &#125;STACK,*PSTACK;</span><br><span class="line">  //函数声明区</span><br><span class="line">  void Create_Stack(PSTACK S);</span><br><span class="line">  void Push_Stack(PSTACK S,int val);</span><br><span class="line">  bool Pop_Stack(PSTACK S,int *val);</span><br><span class="line">  void Traverse_Stack(PSTACK S);</span><br><span class="line">  void Clear_Stack(PSTACK S);</span><br><span class="line">  #endif</span><br><span class="line">  </span><br><span class="line">  // stack.c文件</span><br><span class="line">  #include&lt;stdio.h&gt;</span><br><span class="line">  #include&lt;stdlib.h&gt;</span><br><span class="line">  #include&quot;stack.h&quot;</span><br><span class="line">  //创建一个空栈，里面没有任何有效数据；</span><br><span class="line">  void Create_Stack(PSTACK S)</span><br><span class="line">  &#123;</span><br><span class="line">  	S-&gt;pBottom=(struct Node *)malloc(sizeof(struct Node));</span><br><span class="line">  	if(NULL==S-&gt;pBottom)</span><br><span class="line">  	&#123;</span><br><span class="line">  		printf(&quot;Memory allocation failure&quot;);</span><br><span class="line">  		exit(-1);</span><br><span class="line">  	&#125;</span><br><span class="line">  	S-&gt;pTop=S-&gt;pBottom;</span><br><span class="line">  	S-&gt;pTop-&gt;data=0;</span><br><span class="line">  	S-&gt;pTop-&gt;pNext=NULL;  //防止出现野指针</span><br><span class="line">  &#125;</span><br><span class="line">  //进栈</span><br><span class="line">  void Push_Stack(PSTACK S,int val)</span><br><span class="line">  &#123;</span><br><span class="line">  	PNODE p=(struct Node *)malloc(sizeof(struct Node));</span><br><span class="line">  	if(NULL==p)</span><br><span class="line">  	&#123;</span><br><span class="line">  		printf(&quot;Memory allocation failure&quot;);</span><br><span class="line">  		exit(-1);</span><br><span class="line">  	&#125;</span><br><span class="line">  	p-&gt;data=val;</span><br><span class="line">  	p-&gt;pNext=S-&gt;pTop;  //让p的指针域指向上一个节点</span><br><span class="line">  	S-&gt;pTop=p;        //让pTop指针指向栈顶元素</span><br><span class="line">  &#125;</span><br><span class="line">  //打印出栈里面的元素</span><br><span class="line">  void Traverse_Stack(PSTACK S)</span><br><span class="line">  &#123;</span><br><span class="line">  	PNODE p=S-&gt;pTop;</span><br><span class="line">  	printf(&quot;栈中的元素是：\n&quot;);</span><br><span class="line">  	while(p!=S-&gt;pBottom)</span><br><span class="line">  	&#123;</span><br><span class="line">  		printf(&quot;%d &quot;,p-&gt;data);</span><br><span class="line">  		p=p-&gt;pNext;</span><br><span class="line">  	&#125;</span><br><span class="line">  	printf(&quot;\n&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  bool Is_Empty(PSTACK pS)</span><br><span class="line">  &#123;</span><br><span class="line">  	if (pS-&gt;pTop == pS-&gt;pBottom)</span><br><span class="line">  		return true;</span><br><span class="line">  	else</span><br><span class="line">  		return false;</span><br><span class="line">  &#125;</span><br><span class="line">  bool Pop_Stack(PSTACK S,int *val)</span><br><span class="line">  &#123;</span><br><span class="line">  	if(Is_Empty(S))</span><br><span class="line">  		return false;</span><br><span class="line">  	else</span><br><span class="line">  	&#123;</span><br><span class="line">  	    PNODE p=S-&gt;pTop;</span><br><span class="line">  		*val=S-&gt;pTop-&gt;data;</span><br><span class="line">  		S-&gt;pTop=S-&gt;pTop-&gt;pNext;  //使pTop指针指向栈顶元素；</span><br><span class="line">  		free(p);  //释放p指针所指向的那个节点的内存；</span><br><span class="line">  		p=NULL;   //要养成好的习惯；</span><br><span class="line">  		return true;</span><br><span class="line">  	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  void Clear_Stack(PSTACK S)</span><br><span class="line">  &#123;</span><br><span class="line">  	if(Is_Empty(S))</span><br><span class="line">  		return;</span><br><span class="line">  	else</span><br><span class="line">  	&#123;</span><br><span class="line">  		PNODE p=NULL;  //养成一好习惯，定义指针记得初始化；</span><br><span class="line">  		while(S-&gt;pTop!=S-&gt;pBottom)</span><br><span class="line">  		&#123;</span><br><span class="line">  			p=S-&gt;pTop;</span><br><span class="line">  			S-&gt;pTop=S-&gt;pTop-&gt;pNext;</span><br><span class="line">  			free(p);</span><br><span class="line">  			p=NULL;</span><br><span class="line">  		&#125;</span><br><span class="line">   </span><br><span class="line">  	&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>对于栈的经典题目：括号匹配、共享栈、逆波兰表达式求值、</p>
+<h2 id="二、队列"><a href="#二、队列" class="headerlink" title="二、队列"></a>二、队列</h2><p>队列，是一种操作受限的线性表，只允许在表的一端进行插入（入队），而在表的另一端进行删除（出队）；元素入队出队规则：先进先出原则；通常队头，允许删除的一端；而队尾，允许插入的一端。</p>
+<p>队列的顺序存储和链式储存结构</p>
+<ul>
+<li><p>顺序存储结构（以循环队列为例）</p>
+</li>
+<li><p>&#96;&#96;&#96;C</p>
+<h1 id="define-MaxSize-10-1"><a href="#define-MaxSize-10-1" class="headerlink" title="define MaxSize 10"></a>define MaxSize 10</h1><p>typedef struct{<br>int data[MaxSize];<br>int front, rear;<br>}SqQueue;</p>
+<p>&#x2F;&#x2F; 初始化队列<br>void InitQueue(SqQueue &amp;Q){<br>Q.rear &#x3D; Q.front &#x3D; 0;<br>}<br>&#x2F;&#x2F; 队列判空<br>bool isEmpty(SqQueue &amp;Q){<br>if (Q.rear &#x3D;&#x3D; Q.front){<br>    return true;<br>}<br>return false;<br>}<br>&#x2F;&#x2F; 队列判满<br>bool QueueFlow(SeQueue &amp;Q){<br>&#x2F;&#x2F;牺牲一个位置,进而判断队列满,不然就和队列判空一样的.<br>if ((Q.rear+1) % MaxSize &#x3D;&#x3D; Q.front){<br>    return true;<br>}<br>return false;<br>}<br>&#x2F;&#x2F; 入队<br>bool EnQueue(SeQueue &amp;Q, int x){<br>if (QueueFlow(Q)){<br>    printf(“队已满,入队失败!\n”);<br>    return false;<br>}<br>Q.data[Q.rear] &#x3D; x;<br>Q.rear &#x3D; (Q.rear+1)%MaxSize;<br>return true;<br>}<br>&#x2F;&#x2F; 出队<br>bool DeQueue(SeQueue &amp;Q, int &amp;x){<br>if (isEmpty(Q)){<br>    printf(“队空,出队失败!\n”);<br>    return false;<br>}<br>x &#x3D; Q.data[Q.front];<br>Q.front &#x3D; (Q.front+1)%MaxSize;<br>return true;<br>}<br>int LengthQueue(SeQueue Q){<br>return (Q.rear + MaxSize - Q.front)%MaxSize;<br>}</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 链式存储结构</span><br><span class="line"></span><br><span class="line">- ```C</span><br><span class="line">  // 默认有头节点的队列</span><br><span class="line">  typedef struct&#123;</span><br><span class="line">      int data;</span><br><span class="line">      struct LinkNode *node;</span><br><span class="line">  &#125;LinkNode;</span><br><span class="line">  typedef struct&#123;</span><br><span class="line">      LinkNode *front, *rear;</span><br><span class="line">  &#125;LinkQueue;</span><br><span class="line">  </span><br><span class="line">  // 初始化</span><br><span class="line">  void InitQueue(LinkQueue &amp;Q)&#123;</span><br><span class="line">      Q.rear = Q.front = (LinkNode *)malloc(sizeof(LinkNode));</span><br><span class="line">      Q.front-&gt;next = NULL;</span><br><span class="line">  &#125;</span><br><span class="line">  // 判空</span><br><span class="line">  bool isEmpty(LinkQueue &amp;Q)&#123;</span><br><span class="line">      if (Q.front == Q.rear)&#123;</span><br><span class="line">          return true;</span><br><span class="line">      &#125;</span><br><span class="line">      return false;</span><br><span class="line">  &#125;</span><br><span class="line">  // 入队</span><br><span class="line">  void EnQueue(LinkQueue &amp;Q, int x)&#123;</span><br><span class="line">      LinkNode * s = (LinkNode *)malloc(sizeof(LinkNode));</span><br><span class="line">      s-&gt;data = x;</span><br><span class="line">      s-&gt;next = NULL;</span><br><span class="line">      Q.rear-&gt;next=s;</span><br><span class="line">      Q.rear = s;</span><br><span class="line">  &#125;</span><br><span class="line">  // 出队</span><br><span class="line">  bool DeQueue(LinkQueue &amp;Q, int &amp;x)&#123;</span><br><span class="line">      if(isEmpty(Q))&#123;</span><br><span class="line">          return false;</span><br><span class="line">      &#125;</span><br><span class="line">      LinkNode *p = Q.front-&gt;next;</span><br><span class="line">      x = p-&gt;data;</span><br><span class="line">      Q.front-&gt;next = p-&gt;next;</span><br><span class="line">      if (Q.rear == p)&#123; //若只有一个元素,则删除一个元素后为空</span><br><span class="line">          Q.rear=Q.front;</span><br><span class="line">      &#125;</span><br><span class="line">      free(p);</span><br><span class="line">      return true;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>队列的经典应用: 双端队列;滑动窗口最大值;前k个高频元素</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>chenbd03</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://chenbd03.github.io/2022/03/14/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">https://chenbd03.github.io/2022/03/14/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span><strong>Do you believe in DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/"># 栈和队列</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/03/14/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B1%82%E5%80%BC/">逆波兰表达式求值</a>
+            
+            
+            <a class="next" rel="next" href="/2022/03/14/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/">有效的括号</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <!--iframe class="music"  frameborder="no"   marginwidth="20" marginheight="0" width=420 height=42 src="//music.163.com/outchain/player?type=2&id=5179543&auto=1&height=32" ></iframe -->
+    <div class="copyright">
+        <span>© chenbd03 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+    
+</footer>
+
+    </div>
+</body>
+
+</html>

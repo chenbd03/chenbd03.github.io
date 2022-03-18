@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="chenbd03">
+
+
+
+
+
+<title>yolov3笔记 | blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+    
+    <script>
+    !
+    function() {
+    function n(n, e, t) {
+    return n.getAttribute(e) || t
+    }
+    function e(n) {
+    return document.getElementsByTagName(n)
+    }
+    function t() {
+    var t = e("script"),
+    o = t.length,
+    i = t[o - 1];
+    return {
+    l: o,
+    z: n(i, "zIndex", -1), //置于主页面背后
+    o: n(i, "opacity", .5), //线条透明度
+    c: n(i, "color", "0,0,0"), //线条颜色
+    n: n(i, "count", 100) //线条数量
+    }
+    }
+    function o() {
+    a = m.width = window.innerWidth ||
+    document.documentElement.clientWidth || document.body.clientWidth,
+    c = m.height = window.innerHeight ||
+    document.documentElement.clientHeight || document.body.clientHeight
+    }
+    function i() {
+    r.clearRect(0, 0, a, c);
+    var n, e, t, o, m, l;
+    s.forEach(function(i, x) {
+    for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 :
+    1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1,
+    1), e = x + 1; e < u.length; e++) n = u[e],
+    null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l
+    = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o,
+    i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t /
+    2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y),
+    r.lineTo(n.x, n.y), r.stroke()))
+    }),
+    x(i)
+    }
+    var a, c, u, m = document.createElement("canvas"),
+    d = t(),
+    l = "c_n" + d.l,
+    r = m.getContext("2d"),
+    x = window.requestAnimationFrame || window.webkitRequestAnimationFrame
+    || window.mozRequestAnimationFrame || window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(n) {
+    window.setTimeout(n, 1e3 / 45)
+    },
+    w = Math.random,
+    y = {
+    x: null,
+    y: null,
+    max: 2e4
+    };
+    m.id = l,
+    m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z +
+    ";opacity:" + d.o,
+    e("body")[0].appendChild(m),
+    o(),
+    window.onresize = o,
+    window.onmousemove = function(n) {
+    n = n || window.event,
+    y.x = n.clientX,
+    y.y = n.clientY
+    },
+    window.onmouseout = function() {
+    y.x = null,
+    y.y = null
+    };
+    for (var s = [], f = 0; d.n > f; f++) {
+    var h = w() * a,
+    g = w() * c,
+    v = 2 * w() - 1,
+    p = 2 * w() - 1;
+    s.push({
+    x: h,
+    y: g,
+    xa: v,
+    ya: p,
+    max: 6e3
+    })
+    }
+    u = s.concat([y]),
+    setTimeout(function() {
+    i()
+    },
+    100)
+    } ();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Chenbd03&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Chenbd03&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">yolov3笔记</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">chenbd03</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 17, 2022&nbsp;&nbsp;15:27:49</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>一、引言</p>
+<p>为什么学目标分类简单，但是学到目标检测，会一脸懵逼？</p>
+<p>我们先来说说目标分类，如下图所示：</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/6483e4363d26715c3440ba23fd3f03918b681802fdc378d6dc2d8ee0c8d63850c837edb1c2b983fcba9f278a0bcdce92?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220317155145825.png&size=750" alt="image-20220317155145825">    </p>
+<p>通常，我们目标分类（以黑白数据图像为例），图像通过卷积后，再通过全连接层后结合softmax分类函数得到预测值predict，再和target进行计算损失后通过反向传播，通过优化器进行迭代优化，最终，预测的值距离target越小，则预测的更加准确。</p>
+<p>那么针对上述目标分类的思想，能不能迁移到目标检测呢？如下例子</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/75e04891d8d7262a7887da7da7d325adce6c98bcdf934e7b7ba817a6945fd6c3d4fefa660e95bce3b3824f977d4d0f63?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220317162309988.png&size=750" alt="image-20220317162309988">    </p>
+<p>是否同类似目标分类的一样？预测的时候将对应的x，y，w，h，class进行反向传播等操作？答案是：不可以的！</p>
+<p>因为，试着想一下，若有多个目标，比如：人、车、头盔等，此时target要多出车和头盔的数据，此时predict也需要车和头盔的数据，然而，这种基于目标分类思想的目标检测是无法实现的，且对于神经网络，输入和输出必须是固定，不是说图片上有一个框就回归一组数，有两个框就回归两组数，这个目标分类是无法做到的！</p>
+<p>那么如何进行改进？</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/63baab1ef84b02ec4d0d54c7509cb43df2fb66d6e6967d6ef403d747a5785e31cb660ccd56341cb93bca9fef52254c9f?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220317164011769.png&size=750" alt="image-20220317164011769"></p>
+<p>​    将预测输出更改为5x4的多维度输出，因此引入全卷积模块</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/6796321b29ac6c76443742f4580da10c59ac77b43adfa2fb3aefc7e5d0e92c35692a7d951abe57a4903dd37c0dc40ce3?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220317164311985.png&size=750" alt="image-20220317164311985"></p>
+<p>二、yolov3算法的核心思想 </p>
+<p>视频具体链接：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV12y4y1v7L6?p=2">https://www.bilibili.com/video/BV12y4y1v7L6?p=2</a></p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/35b3317ea8b0343c9fc1e68a088a163116c807c5d771faeeb66431fc32f75425a4a9b9d5661c076ca3f78a99557a38ba?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220317171048690.png&size=750" alt="image-20220317171048690"></p>
+<p>上述一张416x416x3的彩色图片，被划分为13x13个格子，每个格子的像素均为32x32；其蓝色框为warrior目标，信息为x：5.86970，y：7.12876，w：1.41818，h：2.13766，class: warrior 类别；坐标值也就是占了多少个格子，以x为例，占了5个格子+0.87个格子左右；右边的则是真实值的编码，对于有目标框而已，都被标为蓝色，其余的都为空白（为0），真实值编码的输出为13x13x(5+3)；而下面的结果输出为bs x (5+3) x 13 x 13 ；其次，针对xywh的损失计算可通过回归的方式进去预测；而类别的损失可以通过多分类的损失函数进行求解；那么如何去回归xy？回归wh？</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/d14678ea1e2e4cfd1bd88a7332488bdbb0a2f8d1ab48d6a94d5ed274e094c531c23075e6d4be7f0b9c5809f7958f4ab6?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220317171145759.png&size=750" alt="image-20220317171145759"></p>
+<p>回归xy，yolov3针对x，y的损失计算，采用上述的方式，bx，by分别对应真实框的x，y，而Cx和Cy分别对应目标在第几个格子中，而σx，σy则是我们要回归的值，也就是网络的输出！为什么要加上sigmoid函数呢？原因就是将其输入空间的结果映射到（0，1）之间的数，防止出现数值错误！还有为什么不直接预测目标的中心点呢？答：试想一下，如果让你猜一个数，没告诉你范围，以及告诉了（0，1）的范围猜一个数，是不是相比较而言范围缩小了呢？</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/fce33d611f6a68b1aaa887cda6e686048ceca49274ce7974e97b986b2cffe193b06b95ffe71e8dd3b71fb8e2253f74ff?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220317171403490.png&size=750" alt="image-20220317171403490"></p>
+<p>针对真实框的wh回归，实则wh的回归是需要引入锚框的；如上图所示，原始图片被划分为13x13个网络，实则对应有13x13组锚框，每组锚框对应三种不同的尺度矩形框，上面的以每个格子的左上角作为锚框的中心，不同尺度的锚框（先验框）和真实框进行对应的IOU的计算，大于我们设定的阈值那么我们就将其信息进行补充，其余的都为0；针对如上图所示，bh和bw分别表示真实框的hw，Ph和Pw表示锚框（先验框）的hw，而th和tw是要进行回归的值，也就是输出的值（这里输出的用指数进行输出）</p>
+<p>【补充】那么问题来了，yolov3不是有9组锚框坐标吗？怎么才3组？ 实则上图只是网络的一小部分，由于yolov3通过上采用后有26x26和52x52的网络分割，因此各自有对应三组；其次锚框长宽的设定通过k-means聚类的方式获得！</p>
+<p>通过上述的讲解，网络最终输出的大小为bs x （5+3）x 3 x 13 x13 ，这里乘3是因为有三个锚框（先验框）</p>
+<p>其次，把图像划分成网格，图像经过卷积网络筛选和融合特征后的特征图中的每个单元对应原图每个网格单元，给每个特征单元用1x1卷积替代全连接做回归预测，就能知道原图对应网格可能是什么东西在哪个位置，划分网格和anchor都是一种限制或者说叫经验排除一些不可能的因素，这会缩小变化空间，从而提升回归预测的准确率，最后利用nms（非极大值抑制）筛选结果。</p>
+<p>【补充】为什么作者要用26x26和52x52的划分呢？ 实际上是为了小目标的目标；针对13x13，一个网格的感受野较大，较大的目标针对感受野较大的更容易检测到，而小目标却不易被检测到；因此引入26x26和52x52的网格划分，每个网络的感受野变小，较小的目标也很容易被检测到；</p>
+<p>【这里再补充一点】上述笔记参考了b站up主-比飞鸟贵重的多_HKL，可看他yolov3的论文讲解视频，个人觉得全网算是讲的比较清晰的！（解决了我之前的一些疑惑！）</p>
+<p>理解了上述之后，来看看yolov3网络结构和整体的框架，</p>
+<p><img src="https://pic2.zhimg.com/v2-7444392920c5b0ed53e95ef409ee30e5_r.jpg" alt="preview"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2709767-9b28d0f1c682b80a.png" alt="img"></p>
+<p>Darknet53结构和yolov3结构</p>
+<p><img src="https://img-blog.csdn.net/20180726102742325?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQxMDk3/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="img"></p>
+<p><img src="https://img-blog.csdnimg.cn/2019040211084050.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQxMDk3,size_16,color_FFFFFF,t_70" alt="img"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>chenbd03</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://chenbd03.github.io/2022/03/17/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/yolov3%E7%AC%94%E8%AE%B0/">https://chenbd03.github.io/2022/03/17/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/yolov3%E7%AC%94%E8%AE%B0/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span><strong>Do you believe in DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/"># 目标检测</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2022/03/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91/%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/">树与二叉树的理论基础</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <!--iframe class="music"  frameborder="no"   marginwidth="20" marginheight="0" width=420 height=42 src="//music.163.com/outchain/player?type=2&id=5179543&auto=1&height=32" ></iframe -->
+    <div class="copyright">
+        <span>© chenbd03 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+    
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="chenbd03">
+
+
+
+
+
+<title>排序算法-总结 | blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+    
+    <script>
+    !
+    function() {
+    function n(n, e, t) {
+    return n.getAttribute(e) || t
+    }
+    function e(n) {
+    return document.getElementsByTagName(n)
+    }
+    function t() {
+    var t = e("script"),
+    o = t.length,
+    i = t[o - 1];
+    return {
+    l: o,
+    z: n(i, "zIndex", -1), //置于主页面背后
+    o: n(i, "opacity", .5), //线条透明度
+    c: n(i, "color", "0,0,0"), //线条颜色
+    n: n(i, "count", 100) //线条数量
+    }
+    }
+    function o() {
+    a = m.width = window.innerWidth ||
+    document.documentElement.clientWidth || document.body.clientWidth,
+    c = m.height = window.innerHeight ||
+    document.documentElement.clientHeight || document.body.clientHeight
+    }
+    function i() {
+    r.clearRect(0, 0, a, c);
+    var n, e, t, o, m, l;
+    s.forEach(function(i, x) {
+    for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 :
+    1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1,
+    1), e = x + 1; e < u.length; e++) n = u[e],
+    null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l
+    = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o,
+    i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t /
+    2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y),
+    r.lineTo(n.x, n.y), r.stroke()))
+    }),
+    x(i)
+    }
+    var a, c, u, m = document.createElement("canvas"),
+    d = t(),
+    l = "c_n" + d.l,
+    r = m.getContext("2d"),
+    x = window.requestAnimationFrame || window.webkitRequestAnimationFrame
+    || window.mozRequestAnimationFrame || window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(n) {
+    window.setTimeout(n, 1e3 / 45)
+    },
+    w = Math.random,
+    y = {
+    x: null,
+    y: null,
+    max: 2e4
+    };
+    m.id = l,
+    m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z +
+    ";opacity:" + d.o,
+    e("body")[0].appendChild(m),
+    o(),
+    window.onresize = o,
+    window.onmousemove = function(n) {
+    n = n || window.event,
+    y.x = n.clientX,
+    y.y = n.clientY
+    },
+    window.onmouseout = function() {
+    y.x = null,
+    y.y = null
+    };
+    for (var s = [], f = 0; d.n > f; f++) {
+    var h = w() * a,
+    g = w() * c,
+    v = 2 * w() - 1,
+    p = 2 * w() - 1;
+    s.push({
+    x: h,
+    y: g,
+    xa: v,
+    ya: p,
+    max: 6e3
+    })
+    }
+    u = s.concat([y]),
+    setTimeout(function() {
+    i()
+    },
+    100)
+    } ();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Chenbd03&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Chenbd03&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">排序算法-总结</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">chenbd03</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 11, 2022&nbsp;&nbsp;21:43:52</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/">排序算法总结</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="一、排序基本概念"><a href="#一、排序基本概念" class="headerlink" title="一、排序基本概念"></a>一、排序基本概念</h2><p>针对排序，更重要理解排序的思想，时空复杂度，稳定性以及各种排序的适应场景；重点理解快排，归并，堆排；下面排序算法默认排序后均为从小到大</p>
+<h2 id="二、插入排序"><a href="#二、插入排序" class="headerlink" title="二、插入排序"></a>二、插入排序</h2><ul>
+<li><p>直接插入排序</p>
+<ul>
+<li><p>核心思想：在序列L[1…n]中，将元素L[i]插入到已有序的子序列中[1…i-1]，其中2≤i≤n，具体做法：</p>
+<ul>
+<li>1、找出在L[1…i-1]中的插入位置k</li>
+<li>2、将L[k…i-1]的位置全部往后挪动一个位置</li>
+<li>3、将元素L[i]插入位置k中</li>
+</ul>
+</li>
+<li><p>时空分析：时间复杂度O($n^2$)， 空间复杂度O(1)</p>
+</li>
+<li><p>稳定性：稳定</p>
+</li>
+<li><p>代码实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> arr[<span class="number">6</span>] = &#123;<span class="number">5</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">9</span>,<span class="number">8</span>&#125;;</span><br><span class="line">	<span class="type">int</span> i,j;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;<span class="number">6</span>;i++)&#123;</span><br><span class="line">		<span class="type">int</span> temp = arr[i];</span><br><span class="line">		<span class="keyword">for</span>(j=i<span class="number">-1</span>;arr[j] &gt; temp;j--)&#123;</span><br><span class="line">			<span class="comment">// 若前者比后者大,则前者往后移动一位 </span></span><br><span class="line">			arr[j+<span class="number">1</span>] = arr[j];</span><br><span class="line">		&#125;</span><br><span class="line">		arr[j+<span class="number">1</span>] = temp; </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>折半插入排序</p>
+<ul>
+<li><p>核心思想：</p>
+<ul>
+<li>1、从前面有序子表L[0…i]中查找出待插入元素的插入位置k–显然是二分查找的操作</li>
+<li>2、将有序子表中L[k…i]整体往后移一位，再将元素插入</li>
+</ul>
+</li>
+<li><p>时空分析:元素的移动次数未改变，依赖于初始状态， 时间复杂度O($n^2$)， 空间复杂度O(1)</p>
+</li>
+<li><p>稳定性:稳定</p>
+</li>
+<li><p>代码实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">print_arr</span><span class="params">(<span class="type">int</span> *arr, <span class="type">int</span> n)</span>&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, arr[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> arr[<span class="number">5</span>] = &#123;<span class="number">3</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>&#125;;</span><br><span class="line">	<span class="type">int</span> left, right;</span><br><span class="line">	<span class="type">int</span> i, j;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">		left = <span class="number">0</span>;</span><br><span class="line">		right= i;</span><br><span class="line">		<span class="comment">//由于下面二分查找中,查找的子序列是有序的(默认从小到大)</span></span><br><span class="line">		<span class="comment">// 因此待插入元素(有序序列的后一个元素)比有序序列的最大元素还大,无需排序 </span></span><br><span class="line">		<span class="keyword">if</span> (arr[i] &gt; arr[i<span class="number">-1</span>])&#123;</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 这里待插入的元素为arr[i]</span></span><br><span class="line">		<span class="type">int</span> insert_elem = arr[i];</span><br><span class="line">		<span class="keyword">while</span>( left &lt;= right)&#123;</span><br><span class="line">			<span class="type">int</span> mid = (left + right) / <span class="number">2</span>;</span><br><span class="line">			<span class="keyword">if</span> (insert_elem &lt; arr[mid])&#123;</span><br><span class="line">				right = mid <span class="number">-1</span>;</span><br><span class="line">				</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				left = mid + <span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 在有序子序列L[right+1..i-1]整体元素往后移一位,</span></span><br><span class="line">		<span class="keyword">for</span>(j=i<span class="number">-1</span>;j&gt;=right+<span class="number">1</span>;j--)&#123;</span><br><span class="line">			arr[j+<span class="number">1</span>] = arr[j];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 待插入元素插入到L[right+1]</span></span><br><span class="line">		arr[right+<span class="number">1</span>] = insert_elem;</span><br><span class="line">	&#125; </span><br><span class="line">	print_arr(arr, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>希尔排序</p>
+<ul>
+<li><p>核心思想：将相隔某个“增量”的记录组成一个子表，对各个子表分贝进行直接插入排序，当整个子表元素“基本有序”时，整体再做一次直接插入排序，通过这个增量每次选择总体的一半，最后使得这个增量&#x3D;1</p>
+</li>
+<li><p>时空分析：时间复杂度约为O(n^1.3^ )，最坏时间复杂度O($n^2$)， 空间复杂度O(1)</p>
+</li>
+<li><p>稳定性：不稳定</p>
+</li>
+<li><p>代码实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *arr, <span class="type">int</span> i, <span class="type">int</span> j)</span>&#123;</span><br><span class="line">	<span class="type">int</span> temp = arr[i];</span><br><span class="line">	arr[i] = arr[j];</span><br><span class="line">	arr[j] = temp; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">print_arr</span><span class="params">(<span class="type">int</span> *arr, <span class="type">int</span> n)</span>&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, arr[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> n = <span class="number">10</span>;</span><br><span class="line">	<span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">49</span>,<span class="number">38</span>,<span class="number">65</span>,<span class="number">97</span>,<span class="number">76</span>,<span class="number">13</span>,<span class="number">127</span>,<span class="number">49</span>,<span class="number">55</span>,<span class="number">4</span>&#125;;</span><br><span class="line">	<span class="type">int</span> i,j;</span><br><span class="line">	<span class="type">int</span> d;</span><br><span class="line">	<span class="keyword">for</span>(d = n/<span class="number">2</span>; d&gt;<span class="number">0</span>;d=d/<span class="number">2</span>)&#123;</span><br><span class="line">		<span class="keyword">for</span>(i=d;i&lt;=n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">			<span class="keyword">if</span> (arr[i] &lt; arr[i-d])&#123;</span><br><span class="line">				<span class="type">int</span> temp = arr[i];</span><br><span class="line">				<span class="keyword">for</span>(j=i-d;j&gt;=<span class="number">0</span>&amp;&amp;temp&lt; arr[j];j-=d)&#123;</span><br><span class="line">					arr[j+d] = arr[j];</span><br><span class="line">				&#125;</span><br><span class="line">				arr[j+d] = temp;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	print_arr(arr, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="三、交换排序"><a href="#三、交换排序" class="headerlink" title="三、交换排序"></a>三、交换排序</h2><ul>
+<li><p>冒泡排序</p>
+<ul>
+<li><p>核心思想：从后往前（或从前往后）两两比较相邻元素，若为逆序，则交换，每次冒泡，都能确定一个元素位置；</p>
+</li>
+<li><p>时空分析：时间复杂度O($n^2$)， 空间复杂度O(1)</p>
+</li>
+<li><p>稳定性：稳定</p>
+</li>
+<li><p>代码实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *arr, <span class="type">int</span> i, <span class="type">int</span> j)</span>&#123;</span><br><span class="line">	<span class="type">int</span> temp = arr[i];</span><br><span class="line">	arr[i] = arr[j];</span><br><span class="line">	arr[j] = temp; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">print_arr</span><span class="params">(<span class="type">int</span> *arr, <span class="type">int</span> n)</span>&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, arr[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> arr[<span class="number">6</span>] = &#123;<span class="number">5</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">9</span>,<span class="number">8</span>&#125;;</span><br><span class="line">	<span class="type">int</span> i,j;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;<span class="number">6</span>;i++)&#123;</span><br><span class="line">		<span class="comment">// 因为每次冒泡后都能确定一个元素位置, 因此,若arr[i]大于arr[i-1].表明前面已经有序,无需下面操作 </span></span><br><span class="line">		<span class="keyword">if</span> (arr[i] &gt; arr[i<span class="number">-1</span>])&#123;</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>(j=i<span class="number">-1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">			<span class="comment">// 若前者比后者大,则交换位置  </span></span><br><span class="line">			<span class="keyword">if</span> (arr[j] &gt; arr[j+<span class="number">1</span>])&#123;   </span><br><span class="line">				swap(arr, j+<span class="number">1</span>, j);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	print_arr(arr, <span class="number">6</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>快速排序</strong></p>
+<ul>
+<li><p>核心思想：在待排序表L[1..n]中任取一个元素pivot作为基准元素，通过一趟排序（一次划分）后将待排序表划分为独立的两部分L[1…k-1]和L[k+1…n]，使得L[1…k-1]的所有元素小于pivot， L[k+1…n]中的所有元素大于等于pivot；然后分别递归两个子表重复上述工作；</p>
+</li>
+<li><p>时空分析：平均时间复杂度O(nlogn)，平均空间复杂度O(logn)；最坏情况：时间复杂度O($n^2$)， 空间复杂度O(n)-&gt;栈的深度</p>
+</li>
+<li><p>稳定性：不稳定</p>
+</li>
+<li><p>代码实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">print_arr</span><span class="params">(<span class="type">int</span> *arr, <span class="type">int</span> n)</span>&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, arr[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">partition</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> low, <span class="type">int</span> high)</span>&#123;</span><br><span class="line">	<span class="type">int</span> pivot = arr[low];  <span class="comment">// 基准元素</span></span><br><span class="line">	<span class="keyword">while</span> (low &lt; high)&#123;  </span><br><span class="line">		<span class="keyword">while</span> (low &lt; high &amp;&amp; arr[high] &gt;= pivot )&#123;   <span class="comment">// 从后往前同pivot比较, ≥pivot, 往前挪移 </span></span><br><span class="line">			high--;</span><br><span class="line">		&#125;</span><br><span class="line">		arr[low] = arr[high];  <span class="comment">// 否则就将小于pivot移到前面</span></span><br><span class="line">		<span class="keyword">while</span> (low &lt; high &amp;&amp;arr[low] &lt;= pivot)&#123;  <span class="comment">// 从前往后同pivot比较, 小于等于pivot, 往后挪移 </span></span><br><span class="line">			low++;</span><br><span class="line">		&#125;</span><br><span class="line">		arr[high] = arr[low];  <span class="comment">// 否则就将大于pivot移到前面</span></span><br><span class="line">	&#125;</span><br><span class="line">	arr[low] = pivot;    <span class="comment">// 注意这里要将基准元素填进去</span></span><br><span class="line">	<span class="keyword">return</span> low;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">QuickSort</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> low, <span class="type">int</span> high)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (low &lt; high)&#123;</span><br><span class="line">		<span class="type">int</span> pivotpos = partition(arr, low, high);</span><br><span class="line">		QuickSort(arr, low, pivotpos<span class="number">-1</span>);  <span class="comment">// 左序列递归划分</span></span><br><span class="line">		QuickSort(arr, pivotpos+<span class="number">1</span>, high);  <span class="comment">//右序列递归划分</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> n = <span class="number">10</span>;</span><br><span class="line">	<span class="type">int</span> arr[] = &#123;<span class="number">49</span>,<span class="number">38</span>,<span class="number">65</span>,<span class="number">97</span>,<span class="number">76</span>,<span class="number">13</span>,<span class="number">127</span>,<span class="number">49</span>,<span class="number">55</span>,<span class="number">4</span>&#125;;</span><br><span class="line">	QuickSort(arr, <span class="number">0</span>, n<span class="number">-1</span>);</span><br><span class="line">	print_arr(arr, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="四、选择排序"><a href="#四、选择排序" class="headerlink" title="四、选择排序"></a>四、选择排序</h2><ul>
+<li><p>简单选择排序</p>
+<ul>
+<li><p>核心思想：第i趟中，从序列中L[i+1..n]挑选比L[i]还小的元素,同L[i]交换;即每次挑选最小的元素同前面的互换,可见每次选择后都可以确定一个元素位置</p>
+</li>
+<li><p>时空分析：时间复杂度O($n^2$)， 空间复杂度O(1)</p>
+</li>
+<li><p>稳定性：不稳定</p>
+</li>
+<li><p>代码实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *arr, <span class="type">int</span> i, <span class="type">int</span> j)</span>&#123;</span><br><span class="line">	<span class="type">int</span> temp = arr[i];</span><br><span class="line">	arr[i] = arr[j];</span><br><span class="line">	arr[j] = temp; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">print_arr</span><span class="params">(<span class="type">int</span> *arr, <span class="type">int</span> n)</span>&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, arr[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> n = <span class="number">6</span>;</span><br><span class="line">	<span class="type">int</span> arr[] = &#123;<span class="number">5</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">9</span>,<span class="number">8</span>&#125;;</span><br><span class="line">	<span class="type">int</span> i,j;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">		<span class="type">int</span> min_index = i;  <span class="comment">//最小元素的索引</span></span><br><span class="line">		<span class="keyword">for</span>(j = i+<span class="number">1</span>;j&lt;n;j++)&#123;</span><br><span class="line">			<span class="keyword">if</span> (arr[j] &lt; arr[min_index])&#123; <span class="comment">//后续序列中,若比arr[min_index]还小, 则将索引值赋给min_index</span></span><br><span class="line">				min_index = j;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (min_index != i)&#123;</span><br><span class="line">			swap(arr, i, min_index);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	print_arr(arr, n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>堆排序</strong></p>
+<ul>
+<li><p>核心思想：序列当且仅当满足 L(i) ≥ L(2i) and  L(i) ≥ L(2i + 1)  【大根堆】  或者  L(i) ≤ L(2i) and  L(i) ≤ L(2i + 1)  【小根堆】， 其中i∈[1, i&#x2F;2], 实则可将其看成一棵完全二叉树；这里以大根堆为例（小根堆则相反），其特点：大根堆最大元素是存放在根结点的， 即对于完全二叉树来说， 任意一棵子树，其根节点必须≥其儿子结点；针对其排序，其过程大致如下：</p>
+<ul>
+<li><p>1、将无序序列初始化成大根堆</p>
+<img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/45eaf09fb2b8a17f9a77aa218df3cc9c1fdf575a011f62a88ae79ec6766e6ca93540696d37bee95a1c4986dd5772b70c?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220313122713435.png&size=750" alt="image-20220313122713435" style="zoom:50%;" />    
+</li>
+<li><p>2、将堆顶元素同序列最后一个元素交换，然后将剩下元素重新调整成大根堆；</p>
+</li>
+<li><p>重复进行，直到堆中剩下一个没被交换的元素为止</p>
+</li>
+</ul>
+</li>
+<li><p>时空分析：时间复杂度O(nlogn)，空间复杂度O(1)</p>
+</li>
+<li><p>稳定性：不稳定</p>
+</li>
+<li><p>代码实现</p>
+<ul>
+<li><p>&#96;&#96;&#96;c<br>&#x2F;&#x2F; 数组从1开始, 便于理解完全二叉树中父与子的结点关系<br>#include &lt;stdio.h&gt;<br>#include &lt;stdlib.h&gt;</p>
+<p>void print_arr(int *arr, int n){<br>int i;<br>for(i&#x3D;0;i&lt;n;i++){<br>    printf(“%d “, arr[i]);<br>}<br>} </p>
+<p>void swap(int *arr, int i, int j){<br>int temp &#x3D; arr[i];<br>arr[i] &#x3D; arr[j];<br>arr[j] &#x3D; temp;<br>} </p>
+<p>void  HeapAdjust(int arr[], int k, int n){<br>&#x2F;&#x2F; 数组0位置存放根节点<br>arr[0] &#x3D; arr[k];<br>int i;<br>for(i&#x3D;2*k;i&lt;&#x3D;n;i*&#x3D;2){<br>    &#x2F;&#x2F; k为父节点, i和i+1为其儿子结点<br>    if (i &lt; n &amp;&amp; arr[i] &lt; arr[i+1]){  &#x2F;&#x2F; 儿子结点进行比较,挑选较大的儿子结点<br>        i++;<br>    }<br>    if (arr[0] &gt;&#x3D; arr[i]){    &#x2F;&#x2F;若原本根节点就大,则直接退出<br>        break;<br>    }else{ &#x2F;&#x2F; 否则, i结点跟父结点<br>        arr[k] &#x3D; arr[i];<br>        k &#x3D; i;<br>    }<br>}<br>arr[k] &#x3D; arr[0];<br>}</p>
+<p>void BuildMaxHeap(int arr[], int n){<br>int i;<br>&#x2F;&#x2F;由于数组从1开始, 因此2i和2i+1为其儿子结点, 因此对于一颗完全二叉树,i&lt;&#x3D; n&#x2F;2, 均为分支结点<br>for(i&#x3D;n&#x2F;2;i&gt;0;i–){<br>    HeapAdjust(arr, i ,n);<br>}<br>} </p>
+<p>void HeapSort(int arr[], int n){<br>&#x2F;&#x2F;初始化大根堆<br>BuildMaxHeap(arr, n);<br>int i;<br>for(i&#x3D;n;i&gt;1;i–){<br>    swap(arr, i, 1);<br>    HeapAdjust(arr, 1, i-1);  &#x2F;&#x2F;将剩余的i-1个元素重新调整<br>}<br>}</p>
+<p>int main(){<br>int n &#x3D; 6;<br>int arr[] &#x3D; {-1, 5,1,7,4,3};<br>HeapSort(arr,n-1);<br>print_arr(arr, 6);<br>}</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">      </span><br><span class="line"></span><br><span class="line">## 五、归并排序、基数排序、计数排序</span><br><span class="line"></span><br><span class="line">- **归并排序**</span><br><span class="line"></span><br><span class="line">  - 核心思想：将两个或两个以上的有序表组合成一个新的有序表；因此会有 k路归并排序的说法；这里以2路归并排序为例</span><br><span class="line"></span><br><span class="line">    ![image-20220313130358336](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220313130358336.png)	</span><br><span class="line"></span><br><span class="line">    归并过程：将n个元素的序列分成个含 n/2 个元素的子表，然后采用2路归并排序算法对这两个子表递归进行排序</span><br><span class="line"></span><br><span class="line">    ![image-20220313130751378](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220313130751378.png)	</span><br><span class="line"></span><br><span class="line">  - 时空分析：时间复杂度O(nlogn)，空间复杂度O(n)</span><br><span class="line"></span><br><span class="line">  - 稳定性：稳定，</span><br><span class="line"></span><br><span class="line">  - 代码实现</span><br><span class="line"></span><br><span class="line">    - ```c</span><br><span class="line">      #include &lt;stdio.h&gt;</span><br><span class="line">      #include &lt;stdlib.h&gt;</span><br><span class="line">      # define N 7</span><br><span class="line">      </span><br><span class="line">      void print_arr(int *arr, int n)&#123;</span><br><span class="line">      	int i;</span><br><span class="line">      	for(i=0;i&lt;n;i++)&#123;</span><br><span class="line">      		printf(&quot;%d &quot;, arr[i]);</span><br><span class="line">      	&#125;</span><br><span class="line">      &#125; </span><br><span class="line">      </span><br><span class="line">      void Merge(int arr[], int temp[], int low, int mid, int high)&#123;</span><br><span class="line">      	int i,j,k;</span><br><span class="line">      	for(k=low;k&lt;=high;k++)&#123;  //将arr元素复制一份到temp中</span><br><span class="line">      		temp[k] = arr[k];</span><br><span class="line">      	&#125;</span><br><span class="line">          //两个子表进行逐一对比, 较小的赋值给arr数组对应的位置</span><br><span class="line">      	for(i=low, j=mid+1, k=i; i&lt;=mid &amp;&amp; j&lt;=high;k++)&#123;</span><br><span class="line">      		if (temp[i] &lt;= temp[j])&#123;  </span><br><span class="line">      			arr[k] = temp[i++];</span><br><span class="line">      		&#125;else&#123;</span><br><span class="line">      			arr[k] = temp[j++];</span><br><span class="line">      		&#125;</span><br><span class="line">      	&#125;</span><br><span class="line">          // 考虑到有的子表有剩余元素,因此将剩余元素赋给arr</span><br><span class="line">      	while(i&lt;=mid)&#123;  //若第一个表为检测完,复制</span><br><span class="line">      		arr[k++] = temp[i++];</span><br><span class="line">      	&#125;</span><br><span class="line">      	while(j&lt;=high)&#123;  //若第二个表为检测完,复制</span><br><span class="line">      		arr[k++] = temp[j++];</span><br><span class="line">      	&#125;</span><br><span class="line">      &#125;	</span><br><span class="line">      </span><br><span class="line">      void MergeSort(int arr[], int temp[], int low, int high)&#123;</span><br><span class="line">      	if (low &lt; high)&#123;</span><br><span class="line">      		int mid = (low + high) / 2;  //分为两个子表</span><br><span class="line">      		MergeSort(arr, temp, low, mid);  //左进行递归合并</span><br><span class="line">      		MergeSort(arr, temp, mid+1, high);  //右子表进行递归合并</span><br><span class="line">      		Merge(arr, temp, low, mid, high);  // 子表合并</span><br><span class="line">      	&#125;</span><br><span class="line">      &#125; </span><br><span class="line">      </span><br><span class="line">      int main()&#123;</span><br><span class="line">      	int arr[] = &#123;49,38,65,97,76,13,27&#125;;</span><br><span class="line">      	int *temp = (int *) malloc(sizeof(int)*N);   //辅助数组</span><br><span class="line">      	MergeSort(arr, temp, 0, N-1);</span><br><span class="line">      	print_arr(arr, N);</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>基数排序</p>
+<ul>
+<li>核心思想：不基于比较和移动进行排序，而基于关键字各位的大小进行排序；</li>
+<li>时空分析：时间复杂度：O(d(n+r))， d表示需要进行d趟分配和收集，r为r个队列；空间复杂度O(r)</li>
+<li>稳定性：稳定， 与序列的初始状态有关</li>
+<li>代码实现：【参考】<a target="_blank" rel="noopener" href="https://blog.csdn.net/hitwhylz/article/details/9970451">https://blog.csdn.net/hitwhylz/article/details/9970451</a></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="keyword">define</span> Max_ 10      <span class="comment">//数组个数</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> RADIX_10 10    <span class="comment">//整形排序</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEYNUM_31 10     <span class="comment">//关键字个数，这里为整形位数</span></span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 打印结果</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Show</span><span class="params">(<span class="type">int</span>  arr[], <span class="type">int</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> ( i=<span class="number">0</span>; i&lt;n; i++ )</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d  &quot;</span>, arr[i]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 找到num的从低到高的第pos位的数据</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">GetNumInPos</span><span class="params">(<span class="type">int</span> num,<span class="type">int</span> pos)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> temp = <span class="number">1</span>;</span><br><span class="line">	<span class="type">int</span> i; </span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; pos - <span class="number">1</span>; i++)</span><br><span class="line">		temp *= <span class="number">10</span>;</span><br><span class="line">    </span><br><span class="line">	<span class="keyword">return</span> (num / temp) % <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment">//基数排序  pDataArray 无序数组；iDataNum为无序数据个数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RadixSort</span><span class="params">(<span class="type">int</span>* pDataArray, <span class="type">int</span> iDataNum)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> *radixArrays[RADIX_10];    <span class="comment">//分别为0~9的序列空间</span></span><br><span class="line">	<span class="type">int</span> i, pos,j,k;</span><br><span class="line">	<span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		radixArrays[i] = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>) * (iDataNum + <span class="number">1</span>));</span><br><span class="line">		radixArrays[i][<span class="number">0</span>] = <span class="number">0</span>;    <span class="comment">//index为0处记录这组数据的个数</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> ( pos = <span class="number">1</span>; pos &lt;= KEYNUM_31; pos++)    <span class="comment">//从个位开始到31位</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; iDataNum; i++)    <span class="comment">//分配过程</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="type">int</span> num = GetNumInPos(pDataArray[i], pos);</span><br><span class="line">			<span class="type">int</span> index = ++radixArrays[num][<span class="number">0</span>];</span><br><span class="line">			radixArrays[num][index] = pDataArray[i];</span><br><span class="line">		&#125;</span><br><span class="line">        </span><br><span class="line">		<span class="keyword">for</span> ( i = <span class="number">0</span>, j =<span class="number">0</span>; i &lt; RADIX_10; i++)    <span class="comment">//收集</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">for</span> ( k = <span class="number">1</span>; k &lt;= radixArrays[i][<span class="number">0</span>]; k++)</span><br><span class="line">				pDataArray[j++] = radixArrays[i][k];</span><br><span class="line">			radixArrays[i][<span class="number">0</span>] = <span class="number">0</span>;    <span class="comment">//复位</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;   <span class="comment">//测试数据</span></span><br><span class="line">    <span class="type">int</span> arr_test[Max_] = &#123; <span class="number">8</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">0</span>, <span class="number">7</span> &#125;;</span><br><span class="line">    <span class="comment">//排序前数组序列</span></span><br><span class="line">    Show( arr_test, Max_ );</span><br><span class="line">    RadixSort( arr_test, Max_);</span><br><span class="line">    <span class="comment">//排序后数组序列</span></span><br><span class="line">    Show( arr_test, Max_ );</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="六、各种内部排序方法的比较与讨论"><a href="#六、各种内部排序方法的比较与讨论" class="headerlink" title="六、各种内部排序方法的比较与讨论"></a>六、各种内部排序方法的比较与讨论</h2><p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/280d9459eaba5f7c4bcfedd0a31f4d3ff8c4657d74494c7007f37091b1cf669f198c7c8121243f06767a5cf9f646f793?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=%E5%90%84%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.jpg&size=750" alt="img"></p>
+<h2 id="七、外部排序算法-后续更新"><a href="#七、外部排序算法-后续更新" class="headerlink" title="七、外部排序算法 (后续更新)"></a>七、外部排序算法 (后续更新)</h2><p>1、多路平衡归并与败者树</p>
+<p>2、置换-选择排序（生成初始归并段）</p>
+<p>3、最佳归并树</p>
+<p>【补充】计数排序</p>
+<ul>
+<li><p>总体概述：计数排序是一个非基于比较的排序算法。它的优势在于在对<strong>一定范围内的整数排序</strong>时，它的复杂度为Ο(n+k)（其中k是整数的范围），快于任何比较排序算法。当然这是一种牺牲空间换取时间的做法。时空复杂度均为O(n)，是一种稳定的算法</p>
+</li>
+<li><p>代码实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span> </span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">print_arr</span><span class="params">(<span class="type">int</span> *arr, <span class="type">int</span> n)</span>&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, arr[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">CountSort</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> n)</span>&#123;</span><br><span class="line">	<span class="type">int</span> max_value = arr[<span class="number">0</span>], min_value = arr[<span class="number">0</span>];</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">		max_value = arr[i] &gt; max_value?arr[i]:max_value;</span><br><span class="line">		min_value = arr[i] &lt; min_value?arr[i]:min_value;</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="comment">// 根据最大最小值开辟数组</span></span><br><span class="line">	<span class="type">int</span> count_n = max_value-min_value+<span class="number">1</span>;</span><br><span class="line">	<span class="type">int</span> *count = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*count_n);</span><br><span class="line">	<span class="comment">//开辟的新数组赋初值 </span></span><br><span class="line">	<span class="built_in">memset</span>(count,<span class="number">0</span>,<span class="keyword">sizeof</span>(<span class="type">int</span> ) * count_n);</span><br><span class="line">	<span class="comment">// 计数,在给定的arr中， 统计min_value ~ max_value（其中min_value，max_value均在arr里）中的元素出现的次数 </span></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">		count[arr[i]-min_value]++;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="type">int</span> j = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;count_n;i++)&#123;</span><br><span class="line">		<span class="keyword">while</span>(count[i] != <span class="number">0</span>)&#123;  <span class="comment">//若count[i]等于0, 则表示没有这个数,跳过, </span></span><br><span class="line">			arr[j++] = i+min_value;  </span><br><span class="line">			count[i]--;  <span class="comment">//次数减一 </span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">int</span> arr[] = &#123;<span class="number">7</span>,<span class="number">3</span>,<span class="number">0</span>,<span class="number">9</span>,<span class="number">4</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">24</span>,<span class="number">16</span>, <span class="number">9</span>, <span class="number">10</span>&#125;;</span><br><span class="line">	CountSort(arr,<span class="number">11</span>);</span><br><span class="line">	print_arr(arr, <span class="number">11</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>最后，分享一个学习算法的网站（贼好用）：<a target="_blank" rel="noopener" href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html">https://www.cs.usfca.edu/~galles/visualization/Algorithms.html</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>chenbd03</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://chenbd03.github.io/2022/03/11/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E6%80%BB%E7%BB%93/">https://chenbd03.github.io/2022/03/11/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E6%80%BB%E7%BB%93/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span><strong>Do you believe in DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"># 排序算法</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/03/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AC%AC%E4%B8%80%E7%AB%A0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E9%87%8D%E7%82%B9%E7%9F%A5%E8%AF%86%E6%A6%82%E8%BF%B0/">第一章-计算机系统概述</a>
+            
+            
+            <a class="next" rel="next" href="/2022/03/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%AC%AC%E5%85%AD%E7%AB%A0-%E5%BA%94%E7%94%A8%E5%B1%82/">第六章-应用层</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <!--iframe class="music"  frameborder="no"   marginwidth="20" marginheight="0" width=420 height=42 src="//music.163.com/outchain/player?type=2&id=5179543&auto=1&height=32" ></iframe -->
+    <div class="copyright">
+        <span>© chenbd03 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+    
+</footer>
+
+    </div>
+</body>
+
+</html>

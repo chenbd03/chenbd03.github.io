@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="chenbd03">
+
+
+
+
+
+<title>树与二叉树的理论基础 | blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+    
+    <script>
+    !
+    function() {
+    function n(n, e, t) {
+    return n.getAttribute(e) || t
+    }
+    function e(n) {
+    return document.getElementsByTagName(n)
+    }
+    function t() {
+    var t = e("script"),
+    o = t.length,
+    i = t[o - 1];
+    return {
+    l: o,
+    z: n(i, "zIndex", -1), //置于主页面背后
+    o: n(i, "opacity", .5), //线条透明度
+    c: n(i, "color", "0,0,0"), //线条颜色
+    n: n(i, "count", 100) //线条数量
+    }
+    }
+    function o() {
+    a = m.width = window.innerWidth ||
+    document.documentElement.clientWidth || document.body.clientWidth,
+    c = m.height = window.innerHeight ||
+    document.documentElement.clientHeight || document.body.clientHeight
+    }
+    function i() {
+    r.clearRect(0, 0, a, c);
+    var n, e, t, o, m, l;
+    s.forEach(function(i, x) {
+    for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 :
+    1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1,
+    1), e = x + 1; e < u.length; e++) n = u[e],
+    null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l
+    = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o,
+    i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t /
+    2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y),
+    r.lineTo(n.x, n.y), r.stroke()))
+    }),
+    x(i)
+    }
+    var a, c, u, m = document.createElement("canvas"),
+    d = t(),
+    l = "c_n" + d.l,
+    r = m.getContext("2d"),
+    x = window.requestAnimationFrame || window.webkitRequestAnimationFrame
+    || window.mozRequestAnimationFrame || window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(n) {
+    window.setTimeout(n, 1e3 / 45)
+    },
+    w = Math.random,
+    y = {
+    x: null,
+    y: null,
+    max: 2e4
+    };
+    m.id = l,
+    m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z +
+    ";opacity:" + d.o,
+    e("body")[0].appendChild(m),
+    o(),
+    window.onresize = o,
+    window.onmousemove = function(n) {
+    n = n || window.event,
+    y.x = n.clientX,
+    y.y = n.clientY
+    },
+    window.onmouseout = function() {
+    y.x = null,
+    y.y = null
+    };
+    for (var s = [], f = 0; d.n > f; f++) {
+    var h = w() * a,
+    g = w() * c,
+    v = 2 * w() - 1,
+    p = 2 * w() - 1;
+    s.push({
+    x: h,
+    y: g,
+    xa: v,
+    ya: p,
+    max: 6e3
+    })
+    }
+    u = s.concat([y]),
+    setTimeout(function() {
+    i()
+    },
+    100)
+    } ();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Chenbd03&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Chenbd03&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">树与二叉树的理论基础</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">chenbd03</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 16, 2022&nbsp;&nbsp;13:12:39</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91/">树与二叉树</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="一、树的性质⭐"><a href="#一、树的性质⭐" class="headerlink" title="一、树的性质⭐"></a>一、树的性质⭐</h2><ul>
+<li><p>【注意】基本术语</p>
+<p><img src="https://api2.mubu.com/v3/document_image/f11bb343-2068-4757-b3b8-04ddd2493a4f-12780533.jpg" alt="img">    </p>
+<ul>
+<li>1、结点总数n &#x3D; 结点总度数+1 &#x3D; 边数+1</li>
+<li>2、边数e&#x3D;n-1，即n-1条分支，实则是结点总度数</li>
+<li>3、m叉树中第i层最多有m^(i-1)个结点</li>
+<li>4、高度为h的m叉树至多结点数：m^h-1 &#x2F; m-1，至少有h个结点</li>
+<li>5、高度为h，度为m的树至少有h+m-1个结点；相反，给定n个结点，度为m的树的高度至多为n+m-1</li>
+<li>6、n个结点的m叉树最小高度以m为底的log(n(m-1)+1)向上取整</li>
+</ul>
+</li>
+</ul>
+<h2 id="二、-二叉树与完全二叉树的性质⭐⭐"><a href="#二、-二叉树与完全二叉树的性质⭐⭐" class="headerlink" title="二、 二叉树与完全二叉树的性质⭐⭐"></a>二、 二叉树与完全二叉树的性质⭐⭐</h2><ul>
+<li><p>二叉树性质（只列出核心性质，其余可以现场推）</p>
+<ul>
+<li>n0 &#x3D; n2 +1； 非空二叉树中度为0的结点数&#x3D;度为2的结点数 + 1</li>
+</ul>
+</li>
+<li><p>完全二叉树的性质（通常和满二叉树结合考）</p>
+<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220316142805574.png" alt="image-20220316142805574" style="zoom:50%;" />    
+
+<ul>
+<li><p>【注意】完全二叉树也符合n0 &#x3D; n2 +1的性质</p>
+</li>
+<li><p>常考点：给一颗完全二叉树，有n个结点，推出度为0，度为1，度为2的结点个数</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="三、二叉树的遍历⭐⭐⭐"><a href="#三、二叉树的遍历⭐⭐⭐" class="headerlink" title="三、二叉树的遍历⭐⭐⭐"></a>三、二叉树的遍历⭐⭐⭐</h2><ul>
+<li><p>前序遍历、中序遍历、后序遍历、层次遍历</p>
+</li>
+<li><p>【注意】</p>
+<ul>
+<li><p>1、前、中、后、层次遍历的代码会写，会求树的高度，求叶子结点个数</p>
+</li>
+<li><p>2、注意会分析，3种遍历都是先遍历左子树，再遍历右子树<img src="https://api2.mubu.com/v3/document_image/155620f9-6c18-4c10-89c2-01534b436131-12780533.jpg" alt="img"></p>
+</li>
+<li><p><strong>3、前序和后序不能唯一确定一颗二叉树，但可以确定二叉树中结点的祖先关系；当两个结点的前序序列为XY，后序为YX时，则X为Y的祖先</strong></p>
+</li>
+<li><p><strong>4、对于树的先序序列，相当于栈的入栈顺序，而树的中序序列就是出栈的顺序</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//二叉树的构造</span></span><br><span class="line"><span class="keyword">typedef</span> strict BiTnode&#123;</span><br><span class="line">    <span class="type">int</span> data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">BiTnode</span> *<span class="title">lchild</span>, *<span class="title">rchild</span>;</span></span><br><span class="line">&#125;BiTnode,*BiTree;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="四、二叉排序树与二叉平衡树-⭐⭐⭐-待补充"><a href="#四、二叉排序树与二叉平衡树-⭐⭐⭐-待补充" class="headerlink" title="四、二叉排序树与二叉平衡树 ⭐⭐⭐(待补充)"></a>四、二叉排序树与二叉平衡树 ⭐⭐⭐(待补充)</h2><ul>
+<li><p>二叉排序树</p>
+<ul>
+<li><p>性质：三条性质</p>
+</li>
+<li><p>插入：easy</p>
+</li>
+<li><p>删除 ：如何删除有三种情况：删除叶结点、删除的结点仅有左子树或者右子树、删除的结点既有左子树又有右子树</p>
+</li>
+</ul>
+</li>
+<li><p>二叉平衡树</p>
+<ul>
+<li><p>性质：1、任意结点的左子树和右子树高度差 （平衡因子）的绝对值不超过1；2、每次调整都是调整“最小不平衡子树”<br>最小不平衡子树：在插入路径上离插入结点最近的平衡因子的绝对值大于1的结点作为根的子树</p>
+</li>
+<li><p>插入后调整：easy，插入规则同BST一样，注意插入后有没有导致不平衡，若导致不平衡，需要找到最小不平衡子树进行调整</p>
+<ul>
+<li>插入后调整有四种情形：LL型、RR型、LR型、RL型（自行查看笔记，需要掌握）</li>
+</ul>
+</li>
+<li><p>查找特点(套公式)</p>
+<ul>
+<li>Nh &#x3D; Nh-1 + Nh-2 + 1, 其中N0&#x3D;0,N1&#x3D;1,N2&#x3D;2; Nh表示深度为h的AVL中含有的最少结点数,(或者说是所有非叶子结点的平衡因子为1或者说 n个结点的AVL的最大高度, 或是给定结点数的AVL的查找所需最多比较次数)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>BST和AVL的ASL成功和失败的计算：两者计算规则都一样的。查看笔记即可。</p>
+</li>
+</ul>
+<h2 id="五、树、二叉树、森林的转换⭐⭐"><a href="#五、树、二叉树、森林的转换⭐⭐" class="headerlink" title="五、树、二叉树、森林的转换⭐⭐"></a>五、树、二叉树、森林的转换⭐⭐</h2><ul>
+<li><p>树与二叉树的转换</p>
+<ul>
+<li>转换规则：“左孩子右兄弟”，孩子兄弟表示法。因为根节点没有兄弟，因此转换的二叉树的根节点是没有右子树<br>每个结点的左指针指向其原有的左孩子，右指针指向自己相邻的兄弟结点</li>
+</ul>
+</li>
+<li><p>森林与二叉树的转换</p>
+<ul>
+<li><p>森林转换为二叉树</p>
+<ul>
+<li><p>转换规则：每棵树都转换为对应的二叉树(左孩子右兄弟)，再将每棵树的根视为兄弟关系连接起来</p>
+</li>
+<li><p>森林转换为二叉树中，即在转换的二叉树中，若a是b的父节点有两种情况：</p>
+<ul>
+<li><p>b是a的左孩子，那么在原森林中b是a的左孩子</p>
+</li>
+<li><p>b是a的右孩子，那么在原森林中b和a是兄弟关系</p>
+</li>
+</ul>
+</li>
+<li><p>如下图：<img src="https://api2.mubu.com/v3/document_image/517f5195-6249-4539-9a4c-6c971008df97-12780533.jpg" alt="img"></p>
+</li>
+<li><p>【分析】u是v的父节点的父节点，那么在森林中就有4四种对应情况了，自己分析，答案选B</p>
+</li>
+</ul>
+</li>
+<li><p>二叉树转换为森林</p>
+<ul>
+<li>转换规则：从根结点出发，根节点的左孩子就是其左孩子，右孩子变为根节点的兄弟结点，去掉连线，即同根节点是同个双亲</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>树、二叉树、森林的遍历<img src="https://api2.mubu.com/v3/document_image/6b3d86a9-3fcb-4a29-aa0a-5c991724e8f6-12780533.jpg" alt="img"></p>
+</li>
+<li><p>相应错题练习:<img src="https://api2.mubu.com/v3/document_image/e27b7cb9-1f90-438d-b5e5-960111408f92-12780533.jpg" alt="img"></p>
+</li>
+<li><p>对于上述题中,森林转换为二叉树,要用到左孩子右兄弟,因此,对于森林F中,叶结点肯定没有孩子,但有可能兄弟,因此,转换为二叉树,该结点可能有右孩子,但是左孩子一定为空,因此,选C</p>
+</li>
+</ul>
+<h2 id="六、线索二叉树的基本概念和构造⭐"><a href="#六、线索二叉树的基本概念和构造⭐" class="headerlink" title="六、线索二叉树的基本概念和构造⭐"></a>六、线索二叉树的基本概念和构造⭐</h2><ul>
+<li><p>二叉树的线索化，是将二叉链表中的空指针域改为前驱或后继的线索。而前驱或后继的信息只有在遍历时才能得到。因此其实质为遍历一次二叉树<img src="https://api2.mubu.com/v3/document_image/68e37c1d-8aeb-4eee-90d4-8533bd63178f-12780533.jpg" alt="img" style="zoom:50%;" />    <img src="https://api2.mubu.com/v3/document_image/20d20f6e-4f77-4e07-bc6c-919ae2eddfff-12780533.jpg" alt="img" style="zoom:50%;" /></p>
+</li>
+<li><p>【注意】n个结点的二叉树其空的指针域有n+1个；其次，要依托于二叉树的遍历；线索化后，记得对应的标志域进行修改；其次，在线索二叉树中，有没有左孩子或者右孩子的判断条件是：P-&gt;ltag是否为0或者P-&gt;rtag是否为1</p>
+</li>
+<li><p>做题步骤：</p>
+<ul>
+<li><p>确定线索二叉树类型-中序？先序？后序？</p>
+</li>
+<li><p>按照遍历规则确定各个结点的访问顺序</p>
+</li>
+<li><p>根据遍历序列，对各个结点的空链域连上前驱、后继。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="七、哈夫曼树和哈夫曼编码⭐⭐⭐（完成）"><a href="#七、哈夫曼树和哈夫曼编码⭐⭐⭐（完成）" class="headerlink" title="七、哈夫曼树和哈夫曼编码⭐⭐⭐（完成）"></a>七、哈夫曼树和哈夫曼编码⭐⭐⭐（完成）</h2><ul>
+<li><p>哈夫曼树</p>
+<ul>
+<li><p>特点<img src="https://api2.mubu.com/v3/document_image/bfa9b7e1-7796-43ce-9db3-a4d38eafab4a-12780533.jpg" alt="img"></p>
+</li>
+<li><p>【考点】大题和选择题</p>
+<ul>
+<li><p>选择题：二叉哈夫曼树的构造以及WPL的计算，和 多叉哈夫曼树的构造（最佳归并树，外部排序）</p>
+<ul>
+<li><p>多叉哈夫曼树的构造（最佳归并树，外部排序）</p>
+</li>
+<li><p>规则：对于多叉哈夫曼树的构造，如果叶结点的数量不能刚好凑成一棵严格多叉哈夫曼树，则要补充权值为0的虚叶结点（虚段），</p>
+</li>
+<li><p>计算：(n0-1) % (k-1) &#x3D; u ，u是否为0，若为0则不需要补充权值为0的虚叶结点，否则补充k-1-u个虚叶结点（虚段），n0为初始叶结点（初始归并段数量），k为k叉树</p>
+</li>
+</ul>
+</li>
+<li><p>大题：哈夫曼树的特点，构造过程的描述。</p>
+</li>
+<li><p>【求带权路径长度的哈夫曼树的一个重要结论】除了平常计算外，还有一种方法就是求该树所有非叶结点的权值和！</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>哈夫曼编码</p>
+<ul>
+<li>【注意】其实跟构造哈夫曼树同样的道理。将每个待编码元素看成一个独立的叶子结点。<img src="https://api2.mubu.com/v3/document_image/68c34c32-1e18-430b-b88b-2f625369043f-12780533.jpg" alt="img"></li>
+</ul>
+</li>
+</ul>
+<p>补充：代码随想录中树与二叉树的习题框架</p>
+<p><img src="https://img-blog.csdnimg.cn/20210219190809451.png" alt="二叉树大纲">    </p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>chenbd03</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://chenbd03.github.io/2022/03/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91/%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/">https://chenbd03.github.io/2022/03/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91/%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span><strong>Do you believe in DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91/"># 树与二叉树</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/03/17/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/yolov3%E7%AC%94%E8%AE%B0/">yolov3笔记</a>
+            
+            
+            <a class="next" rel="next" href="/2022/03/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/">回溯算法理论基础</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <!--iframe class="music"  frameborder="no"   marginwidth="20" marginheight="0" width=420 height=42 src="//music.163.com/outchain/player?type=2&id=5179543&auto=1&height=32" ></iframe -->
+    <div class="copyright">
+        <span>© chenbd03 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+    
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="chenbd03">
+
+
+
+
+
+<title>第一章-计算机系统概述 | blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+    
+    <script>
+    !
+    function() {
+    function n(n, e, t) {
+    return n.getAttribute(e) || t
+    }
+    function e(n) {
+    return document.getElementsByTagName(n)
+    }
+    function t() {
+    var t = e("script"),
+    o = t.length,
+    i = t[o - 1];
+    return {
+    l: o,
+    z: n(i, "zIndex", -1), //置于主页面背后
+    o: n(i, "opacity", .5), //线条透明度
+    c: n(i, "color", "0,0,0"), //线条颜色
+    n: n(i, "count", 100) //线条数量
+    }
+    }
+    function o() {
+    a = m.width = window.innerWidth ||
+    document.documentElement.clientWidth || document.body.clientWidth,
+    c = m.height = window.innerHeight ||
+    document.documentElement.clientHeight || document.body.clientHeight
+    }
+    function i() {
+    r.clearRect(0, 0, a, c);
+    var n, e, t, o, m, l;
+    s.forEach(function(i, x) {
+    for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 :
+    1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1,
+    1), e = x + 1; e < u.length; e++) n = u[e],
+    null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l
+    = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o,
+    i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t /
+    2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y),
+    r.lineTo(n.x, n.y), r.stroke()))
+    }),
+    x(i)
+    }
+    var a, c, u, m = document.createElement("canvas"),
+    d = t(),
+    l = "c_n" + d.l,
+    r = m.getContext("2d"),
+    x = window.requestAnimationFrame || window.webkitRequestAnimationFrame
+    || window.mozRequestAnimationFrame || window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(n) {
+    window.setTimeout(n, 1e3 / 45)
+    },
+    w = Math.random,
+    y = {
+    x: null,
+    y: null,
+    max: 2e4
+    };
+    m.id = l,
+    m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z +
+    ";opacity:" + d.o,
+    e("body")[0].appendChild(m),
+    o(),
+    window.onresize = o,
+    window.onmousemove = function(n) {
+    n = n || window.event,
+    y.x = n.clientX,
+    y.y = n.clientY
+    },
+    window.onmouseout = function() {
+    y.x = null,
+    y.y = null
+    };
+    for (var s = [], f = 0; d.n > f; f++) {
+    var h = w() * a,
+    g = w() * c,
+    v = 2 * w() - 1,
+    p = 2 * w() - 1;
+    s.push({
+    x: h,
+    y: g,
+    xa: v,
+    ya: p,
+    max: 6e3
+    })
+    }
+    u = s.concat([y]),
+    setTimeout(function() {
+    i()
+    },
+    100)
+    } ();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Chenbd03&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Chenbd03&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">第一章-计算机系统概述</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">chenbd03</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 13, 2022&nbsp;&nbsp;15:13:57</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="一、OS的特征和功能"><a href="#一、OS的特征和功能" class="headerlink" title="一、OS的特征和功能"></a>一、OS的特征和功能</h2><p>特征：并发、共享、虚拟、异步</p>
+<ul>
+<li>注意<ul>
+<li>并发：指计算机系统中同时存在多个运行的程序，具有处理和调度多个程序同时执行的能力；多道程序环境下<ul>
+<li>【注意一点】并发注意与并行的区别</li>
+<li>并发：两个或多个事件在同一时间间隔内发生。（多道程序环境下），宏观上同时，微观上“交替”。</li>
+<li>并行：指两个或多个事件在<strong>同一时刻</strong>同时发生（多流水线和多处理机环境）</li>
+</ul>
+</li>
+<li>共享<ul>
+<li>互斥共享：规定一段时间内只允许一个进程访问该资源，例如打印机，磁带机</li>
+<li>同时访问：磁盘设备</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>功能</p>
+<ul>
+<li>1、操作系统作为计算机系统资源的管理者： 处理机管理、存储器管理、文件管理、设备管理</li>
+<li>2、作为用户与计算机硬件系统的接口<ul>
+<li>命令接口<ul>
+<li>联机命令接口（交互式）</li>
+<li>脱机命令接口（批处理）</li>
+</ul>
+</li>
+<li>程序接口：由一组系统调用（亦称广义命令）组成。是应用程序请求操作系统服务的唯一方式，例如：最为流行的是图形用户界面（GUI），图形接口</li>
+</ul>
+</li>
+<li>3、操作系统用作扩充机器</li>
+</ul>
+<h2 id="三、操作系统的发展与分类（每一阶段解决了什么问题，自身有什么问题）"><a href="#三、操作系统的发展与分类（每一阶段解决了什么问题，自身有什么问题）" class="headerlink" title="三、操作系统的发展与分类（每一阶段解决了什么问题，自身有什么问题）"></a>三、操作系统的发展与分类（每一阶段解决了什么问题，自身有什么问题）</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>分阶段</th>
+<th><strong>缺点</strong></th>
+<th><strong>优点</strong></th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>手工操作阶段（无操作系统）</td>
+<td></td>
+<td>用户独占全机，资源利用率低，CPU利用不充分</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>批处理阶段（操作系统开始出现）</td>
+<td>单道批处理系统</td>
+<td>每次主机内存只能有一道作业.CPU有大量时间在空闲等待I&#x2F;O完成；</td>
+<td>对作业成批处理，但内存中始终保持一道作业；引入脱机输入&#x2F;输出技术,并由监督程序负责控制作业的输入输出</td>
+<td></td>
+</tr>
+<tr>
+<td>多道批处理系统</td>
+<td>不提供人机交互能力</td>
+<td>允许多个程序同时进入内容并允许它们在CPU交替允许,多个程序共享系统软硬件资源；资源利用率高,系统吞吐量大,CPU和其他资源保持”忙碌状态”;IO设备利用率高</td>
+<td>多道,宏观上并行,微观上串行</td>
+<td></td>
+</tr>
+<tr>
+<td>分时操作系统</td>
+<td></td>
+<td>不能优先处理一些紧急信号，引入实时操作系统</td>
+<td>把处理器的运行时间分成很短的时间片,按时间片轮转把处理机分配给各联机作业使用；解决了人机交互问题</td>
+<td>同时性交互性独立性及时性</td>
+</tr>
+<tr>
+<td>实时操作系统</td>
+<td>硬实时系统：系统必须满足任务对截止时间的要求</td>
+<td></td>
+<td>为了能在某个时间限制内完成某些紧急任务而不需要时间片排队</td>
+<td><strong>及时性和可靠性</strong></td>
+</tr>
+<tr>
+<td>软实时系统：能够接收偶尔违反时间规定且不会引起任何永久性的损害</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="四、内核态和用户态"><a href="#四、内核态和用户态" class="headerlink" title="四、内核态和用户态"></a>四、内核态和用户态</h2><p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/15be42e6c772cf87fe5b9b75c0459afcc8055dc3bcfe0ede77763f46af8ee6fd9f36c98614f888fead45cc886a4b6407?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=wpsED2C.tmp.jpg&size=750" alt="img"> </p>
+<table>
+<thead>
+<tr>
+<th>内核程序：内核态执行（核心态，管态）-&gt;<strong>特权指令</strong></th>
+<th>应用程序：用户态执行-&gt;<strong>非特权指令</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>I&#x2F;O指令（输入&#x2F;输出指令）、置中断指令、存储用于内存保护的寄存器、送PSW到PSW寄存器指令、写时钟指令（置中断指令、设置定时器初值）、开，关中断指令</strong></td>
+<td>取数指令、存数指令、读时钟指令、加减乘除等算数运算指令、寄存器清零指令、压栈&#x2F;弹栈指令、跳转指令（转移指令）、trap指令、数据传送指令、设置断点指令</td>
+</tr>
+</tbody></table>
+<h2 id="五、中断-外中断-和异常-内中断"><a href="#五、中断-外中断-和异常-内中断" class="headerlink" title="五、中断(外中断)和异常(内中断)"></a>五、中断(外中断)和异常(内中断)</h2><p>中断的作用:操作系统内核强行夺回CPU使用权;CPU从用户态-&gt;核心态</p>
+<p>中断分类：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>内中断（异常）</th>
+<th>外中断（中断）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>事件</td>
+<td>陷阱、陷入:系统调用故障:缺页故障终止:整数除0，非法使用特权指令、地址越界，算术溢出</td>
+<td>时钟中断I&#x2F;O中断请求(外设请求)</td>
+</tr>
+<tr>
+<td>信号来源</td>
+<td>CPU内部</td>
+<td>CPU外部</td>
+</tr>
+<tr>
+<td>与当前执行的指令</td>
+<td>有关</td>
+<td>无关</td>
+</tr>
+</tbody></table>
+<p>​        </p>
+<p>中断处理过程：</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/a1ea669fef1fd7a73b5232ccd6142e3d41c48926fcbafe785e84ceddd2aec62b6a9167a2a4b9ee4fa45891a769b5c8c6?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=wpsED3C.tmp.jpg&size=750" alt="img"> </p>
+<h2 id="六、系统调用"><a href="#六、系统调用" class="headerlink" title="六、系统调用"></a>六、系统调用</h2><p>用户程序向操作系统提出服务请求,都需要系统调用</p>
+<p><strong>【核心点】陷入指令（trap指令&#x2F;陷阱指令&#x2F;访管指令）(为非特权指令)是在用户态执行的,执行陷入指令后立即引发内中断,cpu进入核心态；发出系统调用请求是用户态,对(执行)系统调用的相应处理是核心态</strong></p>
+<p>系统调用的过程:</p>
+<p><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/d7398085dbd1098a3460d74f2af655ab2c6a3c1a63e44ecbec77517a20bdbcf20006ef538e4217dc4c9cf8b43682cb91?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=wpsED3D.tmp.jpg&size=750" alt="img"> </p>
+<h2 id="七、操作系统的体系结构"><a href="#七、操作系统的体系结构" class="headerlink" title="七、操作系统的体系结构"></a>七、操作系统的体系结构</h2><ul>
+<li>大内核：将操作系统主要功能模块都作为内核，运行在核心态<ul>
+<li>优点：性能高</li>
+<li>缺点：代码庞大，结构混乱</li>
+</ul>
+</li>
+<li>微内核：只把最基本的功能（如进程管理等）保留在内核<ul>
+<li>优点：内核功能少，结构清晰，方便维护</li>
+<li>缺点：需频繁切换核心态和用户态，性能低</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>chenbd03</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://chenbd03.github.io/2022/03/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AC%AC%E4%B8%80%E7%AB%A0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E9%87%8D%E7%82%B9%E7%9F%A5%E8%AF%86%E6%A6%82%E8%BF%B0/">https://chenbd03.github.io/2022/03/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AC%AC%E4%B8%80%E7%AB%A0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E9%87%8D%E7%82%B9%E7%9F%A5%E8%AF%86%E6%A6%82%E8%BF%B0/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span><strong>Do you believe in DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"># 操作系统</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/03/14/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/">有效的括号</a>
+            
+            
+            <a class="next" rel="next" href="/2022/03/11/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E6%80%BB%E7%BB%93/">排序算法-总结</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <!--iframe class="music"  frameborder="no"   marginwidth="20" marginheight="0" width=420 height=42 src="//music.163.com/outchain/player?type=2&id=5179543&auto=1&height=32" ></iframe -->
+    <div class="copyright">
+        <span>© chenbd03 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+    
+</footer>
+
+    </div>
+</body>
+
+</html>
