@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="chenbd03">
+
+
+
+
+
+<title>blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+    
+    <script>
+    !
+    function() {
+    function n(n, e, t) {
+    return n.getAttribute(e) || t
+    }
+    function e(n) {
+    return document.getElementsByTagName(n)
+    }
+    function t() {
+    var t = e("script"),
+    o = t.length,
+    i = t[o - 1];
+    return {
+    l: o,
+    z: n(i, "zIndex", -1), //置于主页面背后
+    o: n(i, "opacity", .5), //线条透明度
+    c: n(i, "color", "0,0,0"), //线条颜色
+    n: n(i, "count", 100) //线条数量
+    }
+    }
+    function o() {
+    a = m.width = window.innerWidth ||
+    document.documentElement.clientWidth || document.body.clientWidth,
+    c = m.height = window.innerHeight ||
+    document.documentElement.clientHeight || document.body.clientHeight
+    }
+    function i() {
+    r.clearRect(0, 0, a, c);
+    var n, e, t, o, m, l;
+    s.forEach(function(i, x) {
+    for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 :
+    1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1,
+    1), e = x + 1; e < u.length; e++) n = u[e],
+    null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l
+    = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o,
+    i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t /
+    2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y),
+    r.lineTo(n.x, n.y), r.stroke()))
+    }),
+    x(i)
+    }
+    var a, c, u, m = document.createElement("canvas"),
+    d = t(),
+    l = "c_n" + d.l,
+    r = m.getContext("2d"),
+    x = window.requestAnimationFrame || window.webkitRequestAnimationFrame
+    || window.mozRequestAnimationFrame || window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(n) {
+    window.setTimeout(n, 1e3 / 45)
+    },
+    w = Math.random,
+    y = {
+    x: null,
+    y: null,
+    max: 2e4
+    };
+    m.id = l,
+    m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z +
+    ";opacity:" + d.o,
+    e("body")[0].appendChild(m),
+    o(),
+    window.onresize = o,
+    window.onmousemove = function(n) {
+    n = n || window.event,
+    y.x = n.clientX,
+    y.y = n.clientY
+    },
+    window.onmouseout = function() {
+    y.x = null,
+    y.y = null
+    };
+    for (var s = [], f = 0; d.n > f; f++) {
+    var h = w() * a,
+    g = w() * c,
+    v = 2 * w() - 1,
+    p = 2 * w() - 1;
+    s.push({
+    x: h,
+    y: g,
+    xa: v,
+    ya: p,
+    max: 6e3
+    })
+    }
+    u = s.concat([y]),
+    setTimeout(function() {
+    i()
+    },
+    100)
+    } ();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Chenbd03&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Chenbd03&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title"></h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">chenbd03</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 16, 2022&nbsp;&nbsp;10:16:14</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="一、IO子系统层次结构"><a href="#一、IO子系统层次结构" class="headerlink" title="一、IO子系统层次结构"></a>一、IO子系统层次结构</h2><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/382aaaa3543bd0d7db130189a024191c1bf67113812f280c2788011265ebd95a9ea4e37fb9e680129f7ffad871021999?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220320181439810.png&size=750" alt="image-20220320181439810" style="zoom:50%;" />    
+
+<ul>
+<li>用户层软件<br>实现用户交互的接口<br>    用户层软件必须通过系统调用来请求操作系服务</li>
+<li>设备独立性(设备无关性)软件<br>作用<br>    用于实现用户程序与设备驱动器的统一接口、设备命令、设备保护及设备分配与释放等<br>功能<br>    ①向上层提供统一的调用接口（如 read&#x2F;write 系统调用）；<br>    ②设备的保护；③差错处理；④设备的分配与回收；⑤数据缓冲区管理；<br>    ⑥建立逻辑设备名(逻辑设备表LUT)到物理设备名的映射关系；根据设备类型选择调用相应的驱动程序<br>注意<br>    没有涉及硬件的、对各种设备都需要进行的管理工作都是在设备独立性软件层完成的</li>
+<li>设备驱动程序<br>注意<br>    直接涉及到硬件具体细节、且与中断无关的操作肯定是在设备驱动程序层完成的<br>与硬件直接相关,负责具体实现系统对设备发出的操作指令</li>
+<li>中断处理程序<br>进程上下文切换,读取设备状态和修改进程状态等</li>
+<li>硬件<br>I&#x2F;O设备通常包括一个机械部件和电子部件(设备控制器)</li>
+</ul>
+<h2 id="二、I-x2F-O控制方式"><a href="#二、I-x2F-O控制方式" class="headerlink" title="二、I&#x2F;O控制方式"></a>二、I&#x2F;O控制方式</h2><ul>
+<li><p>程序直接控制方式</p>
+<img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/6473808aeda033c35d0d56b69cddc3c02ee9eb68b5440c53e59d30ed97de92a055d5e41d3e90dd91854a3641931529a6?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220320191637618.png&size=750" alt="image-20220320191637618" style="zoom: 67%;" />    
+
+<ul>
+<li>1、完成一次读&#x2F;写操作的流程，关键字:轮询</li>
+<li>2、CPU干预的频率：很频繁,在等待I&#x2F;O完成的过程不断循环检查外设状态</li>
+<li>3、数据传送的单位：每次读&#x2F;写一个字</li>
+<li>4、数据的流向<br>读 (数据输入)：IO设备-&gt;CPU-&gt;内存<br>写(数据输出)：内存-&gt;CPU-&gt;IO设备</li>
+<li>5、I&#x2F;O控制方式主要优缺点<br>优点：实现简单<br>缺点：CPU和IO设备只能串行工作、CPU一直轮询检查,长期处于”忙等”状态CPU利用率低</li>
+</ul>
+</li>
+<li><p>中断驱动方式（CPU会在每个指令周期的末尾检查中断；）</p>
+<ul>
+<li><p>1、完成一次读&#x2F;写操作的流程</p>
+<img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/a4df54893a01d34c5b7f47a356be64a651030e34baac19ed0b3e24606a1542c2fcd5b3d6a25b13ee00e4ea5ff802df92?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220320193419307.png&size=750" alt="image-20220320193419307" style="zoom:67%;" />    
+
+<ul>
+<li>CPU发出读&#x2F;写命 令后，可将等待I&#x2F;O的进程阻塞，先切换到别的进程执行。当I&#x2F;O 完成后，控制器会向CPU发出一个中断信号，CPU检测到中断信 号后，会保存当前进程的运行环境信息，转去执行中断处理程序 处理该中断。CPU从I&#x2F;O控制器读一个字的数 据传送到CPU寄存器，再写入主存。接着，CPU恢复等待I&#x2F;O的进 程（或其他进程）的运行环境，然后继续执行.</li>
+</ul>
+</li>
+<li><p>2、CPU干预的频率<br>每次I&#x2F;O操作开始之前、完成之后需要CPU介入。<br>等待I&#x2F;O完成的过程中CPU可以切换到别的进程执行</p>
+</li>
+<li><p>3、数据传送的单位：每次读&#x2F;写一个字</p>
+</li>
+<li><p>4、数据的流向    </p>
+<ul>
+<li>读 (数据输入)：IO设备-&gt;CPU-&gt;内存</li>
+<li>写(数据输出)：内存-&gt;CPU-&gt;IO设备</li>
+</ul>
+</li>
+<li><p>5、I&#x2F;O控制方式主要优缺点<br>优点<br>    I&#x2F;O控制器会通过中断信号主动报告I&#x2F;O已完成，CPU不再需要不停地轮询<br>    CPU和I&#x2F;O设备可并行工作<br>缺点<br>    每个字在I&#x2F;O设备与内存之间的传输，都需要经过CPU。而频繁的中断处理会消耗较多的CPU时间</p>
+</li>
+</ul>
+</li>
+<li><p>DMA方式</p>
+<img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/770b621cc717b96488332384b7392017e255f10e8e7b44d1508ab633547a6fabd36ff708eec167b4ae095e002335755a?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220320193510957.png&size=750" alt="image-20220320193510957" style="zoom:50%;" />    
+
+<ul>
+<li>1、完成一次读&#x2F;写操作的流程<br>CPU接收到I&#x2F;O设备的DMA请求后,它给I&#x2F;O控制器发送命令启动DMA控制器.之后CPU把系统总线的权限交给DMA控制器;DMA控制器直接与存储器交互,传送整个数据块,每次传送一个字,此过程不需要CPU参与.传送完成后,DMA控制器发送一个中断信号给CPU.<br>2、CPU干预的频率<br>仅在传送一个或多个数据块的开始和结束时，才需要CPU干预<br>3、数据传送的单位<br>每次读&#x2F;写一个或多个块（注意：每次读写的只能是连续的多个块，且这些块读入内存后在内存中也必须是连续的）<br>4、数据的流向(不再需要经过CPU)<br>读 (数据输入)<br>    IO设备-&gt;内存<br>写(数据输出)<br>    内存-&gt;IO设备<br>5、I&#x2F;O控制方式主要优缺点<br>优点<br>    数据传输以“块”为单位，CPU介入频率进一步降低。<br>    CPU和I&#x2F;O设备的并行性得到提升。<br>缺点<br>    CPU每发出一条I&#x2F;O指令，只能读&#x2F;写一个或多个连续的数据块。<br>    如果要读&#x2F;写多个离散存储的数据块CPU要分别发出多条I&#x2F;O指令，进行多次中断处理才能完成<br>注意<br>CPU只有在数据块的传送开始和传送结束时才参与</li>
+</ul>
+</li>
+<li><p>通道控制方式</p>
+<img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/5dd483ef38ca4b509042f4d2119fd10445699a77209ea1adc52eae15ff870b43f824b92fe0db0b0ab770c60f05cd7620?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220320193533781.png&size=750" alt="image-20220320193533781" style="zoom:50%;" />    
+
+<ul>
+<li>1、完成一次读&#x2F;写操作的流程</li>
+<li>2、CPU干预的频率<br>极低，通道会根据CPU的指示执行相应的通道程序，只有完成一组数据块的读&#x2F;写后才需要发出中断信号，请求CPU干预</li>
+<li>3、数据传送的单位<br>每次读&#x2F;写一组数据块</li>
+<li>4、数据的流向（在通道的控制下进行）<br>读 (数据输入)<br>    IO设备-&gt;内存<br>写(数据输出)<br>    内存-&gt;IO设备</li>
+<li>5、I&#x2F;O控制方式主要优缺点<br>优点<br>    CPU、通道、I&#x2F;O设备可并行工作，资源利用率很高。<br>缺点<br>    实现复杂，需要专门的通道硬件支持</li>
+<li>注意<br>通道，是一种硬件，可理解为”弱鸡版的CPU“<br>通道与处理机区别<br>    通道指令类型单一,没有自己的内存,通道所执行的程序时在主机内存的<br>通道与DMA区别<br>    DMA方式需要CPU控制数据块的大小,而通道方式是由通道控制的<br>    每个通道可控制多个设备控制器,每个设备控制可控制多个设备</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>chenbd03</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://chenbd03.github.io/2022/03/16/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AC%AC%E4%BA%94%E7%AB%A0-IO%E7%AE%A1%E7%90%86/">https://chenbd03.github.io/2022/03/16/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AC%AC%E4%BA%94%E7%AB%A0-IO%E7%AE%A1%E7%90%86/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span><strong>Do you believe in DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"># 操作系统</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/03/16/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/"></a>
+            
+            
+            <a class="next" rel="next" href="/2022/03/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">第二章-进程管理</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <!--iframe class="music"  frameborder="no"   marginwidth="20" marginheight="0" width=420 height=42 src="//music.163.com/outchain/player?type=2&id=5179543&auto=1&height=32" ></iframe -->
+    <div class="copyright">
+        <span>© chenbd03 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+    
+</footer>
+
+    </div>
+</body>
+
+</html>

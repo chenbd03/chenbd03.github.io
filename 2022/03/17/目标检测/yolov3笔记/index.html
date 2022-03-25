@@ -221,6 +221,68 @@
                 <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
@@ -273,15 +335,43 @@
 <p>针对真实框的wh回归，实则wh的回归是需要引入锚框的；如上图所示，原始图片被划分为13x13个网络，实则对应有13x13组锚框，每组锚框对应三种不同的尺度矩形框，上面的以每个格子的左上角作为锚框的中心，不同尺度的锚框（先验框）和真实框进行对应的IOU的计算，大于我们设定的阈值那么我们就将其信息进行补充，其余的都为0；针对如上图所示，bh和bw分别表示真实框的hw，Ph和Pw表示锚框（先验框）的hw，而th和tw是要进行回归的值，也就是输出的值（这里输出的用指数进行输出）</p>
 <p>【补充】那么问题来了，yolov3不是有9组锚框坐标吗？怎么才3组？ 实则上图只是网络的一小部分，由于yolov3通过上采用后有26x26和52x52的网络分割，因此各自有对应三组；其次锚框长宽的设定通过k-means聚类的方式获得！</p>
 <p>通过上述的讲解，网络最终输出的大小为bs x （5+3）x 3 x 13 x13 ，这里乘3是因为有三个锚框（先验框）</p>
-<p>其次，把图像划分成网格，图像经过卷积网络筛选和融合特征后的特征图中的每个单元对应原图每个网格单元，给每个特征单元用1x1卷积替代全连接做回归预测，就能知道原图对应网格可能是什么东西在哪个位置，划分网格和anchor都是一种限制或者说叫经验排除一些不可能的因素，这会缩小变化空间，从而提升回归预测的准确率，最后利用nms（非极大值抑制）筛选结果。</p>
-<p>【补充】为什么作者要用26x26和52x52的划分呢？ 实际上是为了小目标的目标；针对13x13，一个网格的感受野较大，较大的目标针对感受野较大的更容易检测到，而小目标却不易被检测到；因此引入26x26和52x52的网格划分，每个网络的感受野变小，较小的目标也很容易被检测到；</p>
 <p>【这里再补充一点】上述笔记参考了b站up主-比飞鸟贵重的多_HKL，可看他yolov3的论文讲解视频，个人觉得全网算是讲的比较清晰的！（解决了我之前的一些疑惑！）</p>
-<p>理解了上述之后，来看看yolov3网络结构和整体的框架，</p>
-<p><img src="https://pic2.zhimg.com/v2-7444392920c5b0ed53e95ef409ee30e5_r.jpg" alt="preview"></p>
+<p>理解了上述之后，来看看yolov3网络结构和整体的框架，图像经过一系列卷积后生成的特征图,这个一系列的全卷积我们称之为DarkNet-53,然后这个特征图经过相关卷积,特征融合以及上采样后形成了3个yolo层,分别是13x13x255, 26x26x255, 52x52x255；我们可将255看作是3x(80+5), 3为3个锚框, 80为80个类别,5为xywh+框的置信度;而13x13 可看作是将图片划分为13x13个网格.</p>
+<p>为什么会有13x13,26x26,52x52不同的尺度划分? 实际上是为了小目标的目标；针对13x13，一个网格的感受野较大，较大的目标针对感受野较大的更容易检测到，而小目标却不易被检测到；因此引入26x26和52x52的网格划分，每个网络的感受野变小，较小的目标也很容易被检测到；</p>
+<p>其次，把图像划分成网格，图像经过卷积网络筛选和融合特征后的特征图中的每个单元对应原图每个网格单元，给每个特征单元用1x1卷积替代全连接做回归预测，就能知道原图对应网格可能是什么东西在哪个位置，划分网格和anchor都是一种限制或者说叫经验排除一些不可能的因素，这会缩小变化空间，从而提升回归预测的准确率，最后利用nms（非极大值抑制）筛选结果。</p>
+<p>【补充】nms（非极大值抑制）基本原理</p>
+<p>NMS，非极大值抑制，剔除同一个目标上的重叠建议框，最终一个目标保留一个得分最高的建议框。<strong>一般非极大值抑制每次仅针对一个类别来操作</strong>，要先多类别，可以外面套上一层for循环来遍历每个类别进行NMS操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    第一步：计算所有预测框的面积，areas = (y2 - y1) * (x2 - x1)，这是矩阵运算噢。</span></span><br><span class="line"><span class="string">    第二步：根据所有预测框的得分对其进行降序排序， _,order = scores.sort(0, descending=True)，order为排序后的得分对应的原数组索引值。</span></span><br><span class="line"><span class="string">    第三步：保留最高得分预测框索引值order[0]，计算其和剩余预测框的交集inter，这里也是矩阵运算。</span></span><br><span class="line"><span class="string">    第四步：求得分最高的预测框和其余预测框的交并比IOU。</span></span><br><span class="line"><span class="string">    第五步：保留IOU小于阈值的那部分预测框,原因是IOU越大，表明其和最高得分预测框的重合度越大，所以应该去除。</span></span><br><span class="line"><span class="string">    第六步：更新order，order = order[idx + 1]，返回第三步，直到IOU小于阈值的那部分预测框数量为零就停止。</span></span><br><span class="line"><span class="string">    通过上面的步骤，我们就可以完成非极大值抑制。同时选出最合适的预测框！</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">nms</span>(<span class="params">bboxs, scores, threshold</span>):  </span><br><span class="line">    x1 = bboxs[:, <span class="number">0</span>]  </span><br><span class="line">    y1 = bboxs[:, <span class="number">1</span>]  </span><br><span class="line">    x2 = bboxs[:, <span class="number">2</span>]  </span><br><span class="line">    y2 = bboxs[:, <span class="number">3</span>]  </span><br><span class="line">    areas = (y2 - y1) * (x2 - x1)  <span class="comment">#每个bbox的面积  </span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#order为排序后的得分对应的原数组索引值</span></span><br><span class="line">    _, order = scores.sort(<span class="number">0</span>, descending=<span class="literal">True</span>)  </span><br><span class="line"></span><br><span class="line">    keep = []  <span class="comment"># 保存所有结果框的索引值。  </span></span><br><span class="line">    <span class="keyword">while</span> order.numel() &gt; <span class="number">0</span>:  </span><br><span class="line">        <span class="keyword">if</span> order.numel() == <span class="number">1</span>:  </span><br><span class="line">            keep.append(order.item())  </span><br><span class="line">            <span class="keyword">break</span>  </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            i = order[<span class="number">0</span>].item()  </span><br><span class="line">            keep.append(i)  </span><br><span class="line"></span><br><span class="line">        <span class="comment"># 计算最大得分的bboxs[i]与其余各框的IOU</span></span><br><span class="line">        xx1 = x1[order[<span class="number">1</span>:]].clamp(<span class="built_in">min</span>=<span class="built_in">int</span>(x1[i]))  </span><br><span class="line">        yy1 = y1[order[<span class="number">1</span>:]].clamp(<span class="built_in">min</span>=<span class="built_in">int</span>(y1[i]))  </span><br><span class="line">        xx2 = x2[order[<span class="number">1</span>:]].clamp(<span class="built_in">max</span>=<span class="built_in">int</span>(x2[i]))  </span><br><span class="line">        yy2 = y2[order[<span class="number">1</span>:]].clamp(<span class="built_in">max</span>=<span class="built_in">int</span>(y2[i]))  </span><br><span class="line">        <span class="comment"># 计算相交的面积,不重叠时面积为0</span></span><br><span class="line">        inter = (yy2 - yy1).clamp(<span class="built_in">min</span>=<span class="number">0</span>) * (xx2 - xx1).clamp(<span class="built_in">min</span>=<span class="number">0</span>)  </span><br><span class="line">        <span class="comment"># #计算IoU：重叠面积 /（面积1+面积2-重叠面积）</span></span><br><span class="line">        iou = inter / (areas[i] + areas[order[<span class="number">1</span>:]] - inter)  </span><br><span class="line">        <span class="comment"># 如果bboxs长度为N，则iou长度为N-1  </span></span><br><span class="line">        <span class="comment">#保留iou小于阈值的剩余bboxs,  nonzero().squeeze()转化为数字索引，可验证</span></span><br><span class="line">        idx = (iou &lt;= threshold).nonzero().squeeze()  </span><br><span class="line">        <span class="keyword">if</span> idx.numel() == <span class="number">0</span>:  r</span><br><span class="line">                <span class="keyword">break</span>  </span><br><span class="line">        order = order[idx + <span class="number">1</span>]  <span class="comment">#idx+1表示对其每个值加一(保证和原来的order中索引一致)，并替换原来的order  </span></span><br><span class="line">	<span class="keyword">return</span> keep </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/20190329210004674.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdHQxZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <p><img src="https://upload-images.jianshu.io/upload_images/2709767-9b28d0f1c682b80a.png" alt="img"></p>
 <p>Darknet53结构和yolov3结构</p>
 <p><img src="https://img-blog.csdn.net/20180726102742325?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQxMDk3/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="img"></p>
-<p><img src="https://img-blog.csdnimg.cn/2019040211084050.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQxMDk3,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p><img src="https://img-blog.csdnimg.cn/2019040211084050.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NTQxMDk3,size_16,color_FFFFFF,t_70" alt="img">    </p>
+<h2 id="代码解析yolov3"><a href="#代码解析yolov3" class="headerlink" title="代码解析yolov3"></a>代码解析yolov3</h2><p>针对一般的目标检测，整体的流程可分为如下步骤进行：</p>
+<p>数据处理（包含预处理）</p>
+<ul>
+<li>针对数据方面，采用的voc数据集的数据格式，图片和对应xml文件标注数据的label放在规定的目录；通过读取对应目录，对数据集的预处理，将整体数据要进行划分，训练集，验证集和测试集，形成对应的txt文件，通过读取对应的图片路径来获取数据形成dataset，然后通过Dataloader形成一个可迭代的对象，为后续通过for循环数据集进行迭代训练；</li>
+<li>【注意】若对于少量的数据集，可通过数据增强的方式进行扩充数据集</li>
+</ul>
+<p>网络构建</p>
+<p>损失函数和优化函数</p>
+<ul>
+<li>损失函数：lxy + lwh + lconf + lcls<ul>
+<li>针对xy_loss: 锚框中心点的xy的损失回归</li>
+<li>针对wh_loss: 锚框宽高wh的损失回归</li>
+<li>针对conf_loss:是否具有目标的损失</li>
+<li>针对class_loss: 数据集类别的损失</li>
+</ul>
+</li>
+<li>优化函数<ul>
+<li>SGD 随机梯度下降法</li>
+<li>optim.SGD(model.parameters(), lr&#x3D;hyp[‘lr0’], momentum&#x3D;hyp[‘momentum’], weight_decay&#x3D;hyp[‘weight_decay’])</li>
+</ul>
+</li>
+</ul>
+<p>网络训练和模型保存</p>
+<p>模型评估和预测</p>
 
         </div>
 
@@ -332,6 +422,8 @@
             </div>
         </section>
         <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/03/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/">贪心算法理论基础</a>
             
             
             <a class="next" rel="next" href="/2022/03/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91/%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/">树与二叉树的理论基础</a>
