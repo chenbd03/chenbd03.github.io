@@ -334,7 +334,7 @@
 <p>套接字：唯一标识网络中的一台主机和其上的一个应用进程，套接字Socket&#x3D;（IP地址：端口号）</p>
 </li>
 </ul>
-<h2 id="二、UDP协议（用户数据报协议）"><a href="#二、UDP协议（用户数据报协议）" class="headerlink" title="二、UDP协议（用户数据报协议）"></a>二、UDP协议（用户数据报协议）</h2><ul>
+<h2 id="二、UDP协议（用户数据报协议，User-Datagram-Protocol）"><a href="#二、UDP协议（用户数据报协议，User-Datagram-Protocol）" class="headerlink" title="二、UDP协议（用户数据报协议，User Datagram Protocol）"></a>二、UDP协议（用户数据报协议，User Datagram Protocol）</h2><ul>
 <li><p>特点</p>
 <ul>
 <li>无须建立连接</li>
@@ -422,8 +422,8 @@
 <li>TCP“3次握手，4次挥手”：<ul>
 <li>3次握手<ul>
 <li><img src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/84c6bd43e7a6dfadaf9d21ef056e84ab785e838067ddc7e377e6c22de84de9fbb45f4e027a57ea940afe4f2b1680793b?pictype=scale&from=30113&version=3.3.3.3&uin=1784776200&fname=image-20220312104218390.png&size=750" alt="image-20220312104218390" style="zoom: 33%;" />        </li>
-<li>1、客户机的TCP向服务器TCP发送连接请求报文段<br>SYN&#x3D;1，seq&#x3D;x（随机）；SYN报文段不能携带数据<br>  此时TCP客户进程进入SYN-SENT（同步已发送）状态</li>
-<li>2、服务器的TCP收到连接请求报文段后，若同意连接，则向客户机发送确认，并为该TCP连接分配缓存和变量<br>SYN&#x3D;1，ACK&#x3D;1，确认号ack&#x3D;x+1，初始序列号seq&#x3D;y（随机），确认报文段不能携带数据<br>  TCP服务器进入SYN-RCVD（同步收到）状态</li>
+<li>1、客户机的TCP向服务器TCP发送<strong>连接请求报文段</strong><br>SYN&#x3D;1，seq&#x3D;x（随机）；SYN报文段不能携带数据<br>  此时TCP客户进程进入SYN-SENT（同步已发送）状态</li>
+<li>2、服务器的TCP收到连接请求报文段后，<strong>若同意连接，则向客户机发送确认</strong>，并为该TCP连接分配缓存和变量<br>SYN&#x3D;1，ACK&#x3D;1，确认号ack&#x3D;x+1，初始序列号seq&#x3D;y（随机），确认报文段不能携带数据<br>  TCP服务器进入SYN-RCVD（同步收到）状态</li>
 <li>3、客户机收到确认报文段，需要向服务器给出确认，并为该TCP连接分配缓存和变量<br>ACK&#x3D;1，序号seq&#x3D;x+1，确认号ack&#x3D;y+1，该报文段可以携带数据<br>  TCP客户进程进入ESTABLISHED(已建立连接)状态</li>
 </ul>
 </li>

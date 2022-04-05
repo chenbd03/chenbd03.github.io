@@ -13,7 +13,7 @@
 
 
 
-<title>回溯总结 | blog</title>
+<title>最大自序和 | blog</title>
 
 
 
@@ -225,7 +225,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">回溯总结</h1>
+            <h1 class="post-title">最大自序和</h1>
             
                 <div class="post-meta">
                     
@@ -234,14 +234,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">March 16, 2022&nbsp;&nbsp;13:00:57</a>
+                        Date: <a href="#">March 18, 2022&nbsp;&nbsp;21:57:50</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/">回溯算法</a>
+                                <a href="/categories/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a>
                             
                         </span>
                     
@@ -250,17 +250,22 @@
         </header>
 
         <div class="post-content">
-            <p>回溯总结：<strong>回溯是递归的副产品，只要有递归就会有回溯</strong>。组合、排列、子集、分割、棋盘问题，最好能抽象成树形结构</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 回溯算法可根据下列模板模式来解题</span><br><span class="line">void backtracking(参数) &#123;</span><br><span class="line">    if (终止条件) &#123;</span><br><span class="line">        存放结果;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (选择：本层集合中元素（树中节点孩子的数量就是集合的大小）) &#123;</span><br><span class="line">        处理节点;</span><br><span class="line">        backtracking(路径，选择列表); // 递归</span><br><span class="line">        回溯，撤销处理结果</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <p>最大自序和</p>
+<p>【题目链接】<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-subarray/">https://leetcode-cn.com/problems/maximum-subarray/</a></p>
+<p>给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
+<p>子数组 是数组中的一个连续部分。</p>
+<p>示例 1：</p>
+<p>输入：nums &#x3D; [-2,1,-3,4,-1,2,1,-5,4]<br>输出：6<br>解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。<br>示例 2：</p>
+<p>输入：nums &#x3D; [1]<br>输出：1<br>示例 3：</p>
+<p>输入：nums &#x3D; [5,4,-1,7,8]<br>输出：23</p>
+<p>提示：</p>
+<p>1 &lt;&#x3D; nums.length &lt;&#x3D; 105<br>-104 &lt;&#x3D; nums[i] &lt;&#x3D; 104</p>
+<p>【思路】</p>
+<p>局部最优：当前“连续和”为负数的时候立刻放弃，从下一个元素重新计算“连续和”，因为负数加上下一个元素 “连续和”只会越来越小。</p>
+<p>全局最优：选取最大“连续和”</p>
+<p>除了暴力解法外，还有这个贪心算法，局部找到最优，整合后得到整体最优</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxSubArray</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="comment"># 初始一个负无穷</span></span><br><span class="line">        result = -<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">        count = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(nums)):</span><br><span class="line">            count += nums[i]</span><br><span class="line">            <span class="comment"># 局部自序和前一次，则将其覆盖，这就是为什么result初始时为负无穷</span></span><br><span class="line">            <span class="keyword">if</span> count &gt; result:</span><br><span class="line">                result = count</span><br><span class="line">            <span class="comment"># 若局部和≤0，则从下一个开始，从0开始；相当于重置最大子序起始位置</span></span><br><span class="line">            <span class="keyword">if</span> count &lt;= <span class="number">0</span>:</span><br><span class="line">                count = <span class="number">0</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">   </span><br></pre></td></tr></table></figure>
 
-<p>1、组合：针对组合问题，可将其看作是树形结构，依次画出每取的值：<strong>for循环横向遍历，递归纵向遍历，回溯不断调整结果集</strong></p>
-<p>【注意】针对此类问题，可以通过剪枝的方式进行优化，<strong>for循环在寻找起点的时候要有一个范围，如果这个起点到集合终止之间的元素已经不够题目要求的k个元素了，就没有必要搜索了</strong></p>
-<p>2、组合Ⅲ：加了一个元素总和的限制，实则思想同1、组合一样，可以多加一些限制，要计算总和长度必须等于题目要求的k，而且总和必须等于题目要求的n，若总和大于n，直接return</p>
-<p>3、电话号码的字母组合：类似于我们手机九宫格输入法，2-9分别代表着不同的集合，通过题目给定的一串数字，返回其不同集合中的组合问题。我们首先要先将数字映射到字母中</p>
-<p>4、组合总和：给定的数组中没有重复元素，但不能有重复组合，且每个数字能重复多次用，思路步骤同上面类似</p>
-<p>5、组合总和Ⅱ：给定的数组中有重复元素，但不能有重复组合，且每个数字只能用一遍，因此去重之前需要先对集合排序；<strong>要去重的是同一树层上的“使用过”，同一树枝上的都是一个组合里的元素，不用去重</strong></p>
-<p>【注意】<strong>在求和问题中，排序之后加剪枝是常见的套路！</strong>，而且对于求和问题，总和超过给定的就返回了，不需要往下计算（剪枝操作）</p>
-<p>6、分割回文串：难点在于每次切割子串，因此为了不重复切割同一位置，需要start_index来做标记下一轮递归的起始位置(切割线)。</p>
 
         </div>
 
@@ -275,7 +280,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://chenbd03.github.io/2022/03/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E6%80%BB%E7%BB%93/">https://chenbd03.github.io/2022/03/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E6%80%BB%E7%BB%93/</a></span>
+                        <span><a href="https://chenbd03.github.io/2022/03/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/">https://chenbd03.github.io/2022/03/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/</a></span>
                     </p>
                 
                 
@@ -299,7 +304,7 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/"># 回溯算法</a>
+                        <a href="/tags/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/"># 贪心算法</a>
                     
                         
                 </span>
@@ -312,10 +317,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2022/03/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/%E5%88%86%E5%89%B2%E5%9B%9E%E6%96%87%E4%B8%B2/">分割回文串</a>
+                <a class="prev" rel="prev" href="/2022/03/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/%E5%88%86%E5%8F%91%E9%A5%BC%E5%B9%B2/">分发饼干</a>
             
             
-            <a class="next" rel="next" href="/2022/03/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/%E5%A4%8D%E5%8E%9FIP%E5%9C%B0%E5%9D%80/">复原IP地址</a>
+            <a class="next" rel="next" href="/2022/03/17/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/yolov3%E7%AC%94%E8%AE%B0/">yolov3笔记</a>
             
         </section>
 
